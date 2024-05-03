@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/SGopinath89/IT2342024studis#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dcryptjs": "^1.0.5",

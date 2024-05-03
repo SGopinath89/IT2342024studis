@@ -8,7 +8,7 @@ const userSchema = new Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     isAdmin: { type: Boolean, required: true, default: false },
-    tasks: [{type: Schema.Types, ObjectId, ref: "Task" }],
+    tasks: [{ type: Schema.Types.ObjectId, ref: "Task" }],
     isActive: { type: Boolean, required: true, default: false },
 },
 { timestamps: true}
