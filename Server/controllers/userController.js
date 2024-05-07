@@ -231,11 +231,3 @@ export const deleteUserProfile = async (req, res) => {
         return res.status(400).json({ status: false, message: error.message });
     }
 };
-
-// export const registerUser = async (req, res) => {
-//     try {
-
-//     } catch (error) {
-//         return res.status(400).json({ status: false, message: error.message });
-//     }
-// };
