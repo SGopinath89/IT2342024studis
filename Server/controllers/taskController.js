@@ -4,7 +4,24 @@ import User from "../models/user.js";
 
 export const createTask = async (req, res) => {
     try {
+        const { userId } = req.user;
+
         const { title, team, stage, date, priority, assets } = req.body;
+
+        let text = "New task has been assigned to you";
+        if (team?.length > 1){
+            text = text + ` and ${team?.length - 1} others.`;
+        }
+
+        text = 
+            text + 
+            ` the task priority is set a ${priority} priority. The task date is ${new Date(date).toDateString()}.`;
+        
+        const activity = {
+            type: "assigned",
+            activity: text,
+            by: userId,
+        };
 
         const task = await Task.create({
             title, 
@@ -12,17 +29,9 @@ export const createTask = async (req, res) => {
             stage: stage.toLowerCase(), 
             date, 
             priority: priority.toLowerCase(), 
-            assets
+            assets,
+            activities: activity,
         });
-        let text = "New task has been assigned to you"
-        if(task.team.length > 1){
-            text = text + ` and ${task.team.length - 1} others`;
-        }
-        text = 
-            text + 
-            ` the task priority is set a ${
-                task.priority
-            } priority. The task date is ${task.date.toDateString()}.`;
         
         await Notice.create({
             team,
@@ -32,7 +41,7 @@ export const createTask = async (req, res) => {
 
         res
             .status(200)
-            .json({ status: true, message: "Task created successfully."});
+            .json({ status: true, task, message: "Task created successfully."});
     } catch (error) {
         return res.status(400).json({ status: false, message: error.message });
     }
@@ -232,6 +241,105 @@ export const getTask = async (req, res) => {
             status: true,
             task,
         })
+    } catch (error) {
+        return res.status(400).json({ status: false, message: error.message });
+    }
+};
+
+export const createSubTask = async (req, res) => {
+    try {
+        const { title, tag, date } = req.body;
+        const { id } = req.params;
+
+        const newSubTask = {
+            title,
+            date,
+            tag
+        };
+
+        const task = await Task.findById(id);
+
+        task.subTasks.push(newSubTask);
+
+        await task.save();
+
+        res
+            .status(200)
+            .json({ status: true, message: "Subtask added successfully." });
+
+    } catch (error) {
+        return res.status(400).json({ status: false, message: error.message });
+    }
+};
+
+export const updateTask = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, date, team, state, priority, assets } = req.body;
+
+        const task = await Task.findById(id);
+
+        task.title = title;
+        task.date = date;
+        task.priority = priority.toLowerCase();
+        task.assets = assets;
+        task.stage = stage.toLowerCase();
+        task.team = team;
+
+        await task.save();
+
+        res
+            .status(200)
+            .json({ status: true, message: "Task updated successfully." });
+
+    } catch (error) {
+        return res.status(400).json({ status: false, message: error.message });
+    }
+};
+
+export const trashTask = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const task = await Task.findById(id);
+
+        task.isTrashed = true;
+
+        await task.save();
+
+        res
+            .status(200)
+            .json({ status: true, message: `Task trashed successfully.`,});
+    } catch (error) {
+        return res.status(400).json({ status: false, message: error.message });
+    }
+};
+
+export const deleteRestoreTask = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { actionType } = req.query;
+
+        if(actionType === "delete"){
+            await Task.findByIdAndDelete(id);
+        } else if(actionType === "deleteAll"){
+            await Task.deleteMany({ isTrashed: true });
+        } else if(actionType === "restore"){
+            const resp = await Task.findById(id);
+
+            resp.isTrashed = false;
+            resp.save();
+        } else if(actionType === "restoreAll"){
+            await Task.updateMany(
+                { isTrashed: true },
+                { $set: { isTrashed: false }},
+            );
+        }
+
+        res.status(200).json({
+            status: true,
+            message: `Operation performed successfully.`,
+        });
     } catch (error) {
         return res.status(400).json({ status: false, message: error.message });
     }
