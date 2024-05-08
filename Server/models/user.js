@@ -7,9 +7,16 @@ const userSchema = new Schema({
     role: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    regNumber: { type: String, required: true },
+    degree: { type: String },
+    contact: { type: String, },
+    birthday: { type: Date, },
+    academicBatch: { type: String, },
+    profilePic: { type: String, },
     isAdmin: { type: Boolean, required: true, default: false },
     tasks: [{ type: Schema.Types.ObjectId, ref: "Task" }],
     isActive: { type: Boolean, required: true, default: false },
+    timetable: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
 },
 { timestamps: true}
 );

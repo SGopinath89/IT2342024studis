@@ -1,11 +1,17 @@
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import Grid from "gridfs-stream";
 
 export const dbConnection = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI);
 
     console.log("DB connection established");
+
+    const conn = mongoose.connection;
+    const gfs = Grid(conn.db, mongoose.mongo);
+
+    return { gfs };
   } catch (error) {
     console.log("DB Error: " + error);
   }

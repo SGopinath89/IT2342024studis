@@ -6,16 +6,13 @@ export const createTask = async (req, res) => {
     try {
         const { userId } = req.user;
 
-        const { title, team, stage, date, priority, assets } = req.body;
+        const { title, stage, priority, assets, createdBy } = req.body;
 
-        let text = "New task has been assigned to you";
-        if (team?.length > 1){
-            text = text + ` and ${team?.length - 1} others.`;
-        }
+        let text = "New task has been created.";
 
         text = 
             text + 
-            ` the task priority is set a ${priority} priority. The task date is ${new Date(date).toDateString()}.`;
+            ` the task priority is set to ${priority}. The task date is ${new Date(Date.now()).toDateString()}.`;
         
         const activity = {
             type: "assigned",
@@ -25,18 +22,17 @@ export const createTask = async (req, res) => {
 
         const task = await Task.create({
             title, 
-            team, 
-            stage: stage.toLowerCase(), 
-            date, 
+            stage: stage.toLowerCase(),  
             priority: priority.toLowerCase(), 
             assets,
             activities: activity,
+            createdBy: userId,
         });
         
         await Notice.create({
-            team,
             text,
             task: task._id,
+            createdBy,
         });
 
         res
@@ -59,18 +55,15 @@ export const duplicateTask = async (req, res) => {
             title: task.title + " - Duplicate",
         });
 
-        newTask.team = task.team;
         newTask.subTasks = task.subTasks;
         newTask.assets = task.assets;
         newTask.priority = task.priority;
         newTask.stage = task.stage;
+        newTask.createdBy = task.createdBy;
 
         await newTask.save();
 
-        let text = "New task has been assigned to you"
-        if(newTask.team.length > 1){
-            text = text + ` and ${newTask.team.length - 1} others`;
-        }
+        let text = "New task has been created"
         text = 
             text + 
             ` the task priority is set a ${
@@ -78,9 +71,9 @@ export const duplicateTask = async (req, res) => {
             } priority. The task date is ${newTask.date.toDateString()}.`;
         
         await Notice.create({
-            team,
             text,
             task: newTask._id,
+            createdBy,
         });
 
         res
@@ -117,6 +110,7 @@ export const postTaskActivity = async (req, res) => {
     }
 };
 
+//might throw errors because admin non-admin user conflicts
 export const dashboardStatistics = async (req, res) => {
     try {
         const { userId, isAdmin } = req.user
@@ -125,19 +119,11 @@ export const dashboardStatistics = async (req, res) => {
          ? await Task.find({
             isTrashed: false,
          })
-            .populate({
-                path: "team",
-                select: "name role title email",
-            })
             .sort({ _id: -1 })
          : await Task.find({
             isTrashed: false,
             team: { $all: [userId] },
          })
-            .populate({
-                path: "team",
-                select: "name role title email",
-            })
             .sort({ _id: -1 });
 
         const users = await User.find ({iaActive: true})
@@ -195,27 +181,27 @@ export const dashboardStatistics = async (req, res) => {
 
 export const getTasks = async (req, res) => {
     try {
+        const { userId } = req.user;
         const { stage, isTrashed } = req.query;
 
-        let query = { isTrashed: isTrashed ? true : false };
+    let query = { 
+        createdBy: userId,
+        isTrashed: isTrashed ? true : false
+    };
 
-        if (stage) {
-            query.stage = stage;
-        }
+    if (stage) {
+      query.stage = stage;
+    }
 
-        let queryResult = Task.find(query)
-            .populate({
-                path: "team",
-                select: "name title email",
-            })
-            .sort({ _id: -1 });
+    let queryResult = Task.find(query)
+      .sort({ _id: -1 });
 
-        const tasks = await queryResult;
+    const tasks = await queryResult;
 
-        res.status(200).json({
-            status: true,
-            tasks,
-        });
+    res.status(200).json({
+      status: true,
+      tasks,
+    });
 
     } catch (error) {
         return res.status(400).json({ status: false, message: error.message });
@@ -224,23 +210,23 @@ export const getTasks = async (req, res) => {
 
 export const getTask = async (req, res) => {
     try {
+        const { userId } = req.user;
         const {id} = req.params
 
-        const task = await Task.findById(id)
-            .populate({
-                path: "team",
-                select: "name title role email",
-            })
-            .populate({
-                path: "activities.by",
-                select: "name",
-            })
-            .sort({ _id : -1 });
+        const userTasks = await Task.find({ createdBy: userId })
+            .sort({ _id: -1 });
+
+        const task = userTasks.find(task => task._id.toString() === id);
+
+        if (!task) {
+            return res.status(404).json({ status: false, message: 'Task not found' });
+        }
 
         res.status(200).json({
             status: true,
             task,
-        })
+        });
+
     } catch (error) {
         return res.status(400).json({ status: false, message: error.message });
     }
@@ -275,7 +261,7 @@ export const createSubTask = async (req, res) => {
 export const updateTask = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, date, team, state, priority, assets } = req.body;
+        const { title, date, state, priority, assets } = req.body;
 
         const task = await Task.findById(id);
 
@@ -284,7 +270,6 @@ export const updateTask = async (req, res) => {
         task.priority = priority.toLowerCase();
         task.assets = assets;
         task.stage = stage.toLowerCase();
-        task.team = team;
 
         await task.save();
 

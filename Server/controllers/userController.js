@@ -5,7 +5,7 @@ import Notice from "../models/notification.js";
 
 export const registerUser = async (req, res) => {
     try {
-      const { name, email, password, isAdmin, role, title } = req.body;
+      const { name, email, password, isAdmin, role, title, regNumber, degree } = req.body;
   
       const userExist = await User.findOne({ email });
   
@@ -20,6 +20,8 @@ export const registerUser = async (req, res) => {
         name,
         email,
         password,
+        regNumber,
+        degree,
         isAdmin,
         role,
         title,
@@ -136,6 +138,10 @@ export const updateUserProfile = async (req, res) => {
             user.name = req.body.name || user.name;
             user.title = req.body.title || user.title;
             user.role = req.body.role || user.role;
+            user.contact = req.body.contact || user.contact;
+            user.birthday = req.body.birthday || user.birthday;
+            user.academicBatch = req.body.academicBatch || user.academicBatch;
+            user.profilePic = req.body.profilePic || user.profilePic;
 
             const updateUser = await user.save();
 

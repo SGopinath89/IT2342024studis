@@ -1,5 +1,5 @@
 import express from 'express';
-import { isAdminRoute, protectRoute } from "../middlewares/authMiddleware.js";
+import { isAdminRoute, protectRoute, isTaskCreator } from "../middlewares/authMiddleware.js";
 import {
     createTask,
     duplicateTask,
@@ -15,22 +15,22 @@ import {
 
 const router = express.Router();
 
-router.post("/create", protectRoute, isAdminRoute, createTask);
-router.post("/duplicate/:id", protectRoute, isAdminRoute, duplicateTask);
-router.post("/activity/:i", protectRoute, postTaskActivity);
+router.post("/create", protectRoute, createTask);
+router.post("/duplicate/:id", protectRoute, isTaskCreator, duplicateTask);
+router.post("/activity/:i", protectRoute, isTaskCreator, postTaskActivity);
 
 router.get("/dashboard", protectRoute, dashboardStatistics);
 router.get("/", protectRoute, getTasks);
 router.get("/:id", protectRoute, getTask);
 
-router.put("/create-subtask/:id", protectRoute, isAdminRoute, createSubTask);
-router.put("/update/:id", protectRoute, isAdminRoute, updateTask);
-router.put("/:id", protectRoute, isAdminRoute, trashTask);
+router.put("/create-subtask/:id", protectRoute, isTaskCreator, createSubTask);
+router.put("/update/:id", protectRoute, isTaskCreator, updateTask);
+router.put("/:id", protectRoute, isTaskCreator, trashTask);
 
 router.delete(
     "/delete-restore/:id?",
     protectRoute,
-    isAdminRoute,
+    isTaskCreator,
     deleteRestoreTask
 );
 

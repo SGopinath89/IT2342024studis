@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
-
+import Task from "../models/task.js";
+import Event from "../models/event.js";
 
 const protectRoute = async (req, res, next) => {
     try {
@@ -44,4 +45,64 @@ const isAdminRoute = (req, res, next) => {
     }
 }; 
 
-export { isAdminRoute, protectRoute };
+const isTaskCreator = async (req, res, next) => {
+    try {
+        const { userId } = req.user;
+        const { id } = req.params;
+
+        const task = await Task.findById(id);
+
+        if (!task) {
+            return res.status(404).json({
+                status: false,
+                message: 'Task not found',
+            });
+        }
+
+        if (String(task.createdBy) === String(userId)) {
+            next();
+        } else {
+            return res.status(401).json({
+                status: false,
+                message: 'Not authorized to access this task.',
+            });
+        }
+    } catch (error) {
+        return res.status(400).json({
+            status: false,
+            message: error.message,
+        });
+    }
+};
+
+const isEventCreator = async (req, res, next) => {
+    try {
+        const { userId } = req.user;
+        const { id } = req.params;
+
+        const event = await Event.findById(id);
+
+        if (!event) {
+            return res.status(404).json({
+                status: false,
+                message: 'Event not found',
+            });
+        }
+
+        if (String(event.createdBy) === String(userId)) {
+            next();
+        } else {
+            return res.status(401).json({
+                status: false,
+                message: 'Not authorized to access this event.',
+            });
+        }
+    } catch (error) {
+        return res.status(400).json({
+            status: false,
+            message: error.message,
+        });
+    }
+};
+
+export { isAdminRoute, protectRoute, isTaskCreator, isEventCreator };
