@@ -95,24 +95,25 @@ export const logoutUser = async (req, res) => {
     }
 };
 
-export const getTeamList = async (req, res) => {
-    try {
-        const users = await User.find().select("name title role email isActive");
+// export const getTeamList = async (req, res) => {
+//     try {
+//         const users = await User.find().select("name title role email isActive");
 
-        res.status(200).json(users);
-    } catch (error) {
-        return res.status(400).json({ status: false, message: error.message });
-    }
-};
+//         res.status(200).json(users);
+//     } catch (error) {
+//         return res.status(400).json({ status: false, message: error.message });
+//     }
+// };
 
 export const getNotificationsList = async (req, res) => {
     try {
         const { userId } = req.user;
 
-        const notice = await Notice .findOne({
-            team: userId,
-            isRead: { $nin: [userId] },
-        }).populate("task", "title");
+        const notice = await Notice .find({
+            owner: userId,
+            isRead: false,
+        }).populate("task", "title")
+        .populate("owner","name");
 
         res.status(201).json(notice);
     } catch (error) {
@@ -163,20 +164,17 @@ export const updateUserProfile = async (req, res) => {
 export const markNotificationRead = async (req, res) => {
     try {
         const { userId } = req.user;
-
         const { isReadType, id } = req.query;
 
         if (isReadType === "all") {
             await Notice.updateMany(
-                { team: userId, isRead: { $nin: [userId] }},
-                { $push: {isRead: userId}},
-                { new: true }
+                { owner: userId, isRead: false },
+                { isRead: true }
             );
         } else {
             await Notice.findOneAndUpdate(
-                { _id: id, isRead: {$nin: [userId] }},
-                { $push: { isRead: userId }},
-                { new: true }
+                { _id: id, owner: userId, isRead: false },
+                { isRead: true }
             );
         }
 

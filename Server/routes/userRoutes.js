@@ -4,7 +4,7 @@ import {
     registerUser, 
     loginUser, 
     logoutUser, 
-    getTeamList,
+    // getTeamList,
     getNotificationsList,
     updateUserProfile,
     markNotificationRead,

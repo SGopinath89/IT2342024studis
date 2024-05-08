@@ -4,15 +4,15 @@ import User from "../models/user.js";
 
 export const createTask = async (req, res) => {
     try {
-        const { userId } = req.user;
+        const { userId, name } = req.user;
 
-        const { title, stage, priority, assets, createdBy } = req.body;
+        const { title, stage, priority, assets } = req.body;
 
         let text = "New task has been created.";
 
         text = 
             text + 
-            ` the task priority is set to ${priority}. The task date is ${new Date(Date.now()).toDateString()}.`;
+            ` The task priority is set to ${priority}. The task date is ${new Date(Date.now()).toDateString()}.`;
         
         const activity = {
             type: "assigned",
@@ -32,7 +32,7 @@ export const createTask = async (req, res) => {
         await Notice.create({
             text,
             task: task._id,
-            createdBy,
+            owner: userId,
         });
 
         res
@@ -64,17 +64,17 @@ export const duplicateTask = async (req, res) => {
 
         await newTask.save();
 
-        let text = "New task has been created"
+        let text = "A task has been duplicated."
         text = 
             text + 
-            ` the task priority is set a ${
+            ` The task priority is set to ${
                 newTask.priority
-            } priority. The task date is ${newTask.date.toDateString()}.`;
+            }. The task date is ${newTask.date.toDateString()}.`;
         
         await Notice.create({
             text,
             task: newTask._id,
-            createdBy: userId,
+            owner: userId,
         });
 
         res
