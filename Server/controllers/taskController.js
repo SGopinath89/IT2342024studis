@@ -46,20 +46,21 @@ export const createTask = async (req, res) => {
 
 export const duplicateTask = async (req, res) => {
     try {
+        const { userId } = req.user;
         const { id } = req.params;
 
         const task = await Task.findById(id);
 
         const newTask = await Task.create({
-            ...task,
             title: task.title + " - Duplicate",
+            subTasks: task.subTasks,
+            assets: task.assets,
+            priority: task.priority,
+            stage: task.stage,
+            createdBy: task.createdBy,
         });
 
-        newTask.subTasks = task.subTasks;
-        newTask.assets = task.assets;
-        newTask.priority = task.priority;
-        newTask.stage = task.stage;
-        newTask.createdBy = task.createdBy;
+        
 
         await newTask.save();
 
@@ -73,38 +74,12 @@ export const duplicateTask = async (req, res) => {
         await Notice.create({
             text,
             task: newTask._id,
-            createdBy,
+            createdBy: userId,
         });
 
         res
             .status(200)
             .json({ status: true, message: "Task duplicated successfully."});
-    } catch (error) {
-        return res.status(400).json({ status: false, message: error.message });
-    }
-};
-
-export const postTaskActivity = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { userId } = req.user;
-        const { type, activity } = req.body;
-
-        const task = await Task.findById(id);
-
-        const data = {
-            type,
-            activity,
-            by: userId,
-        };
-
-        task.activities.push(data);
-
-        await task.save();
-
-        res
-            .status(200)
-            .json({ status: true, message: "Activity posted successfully." });
     } catch (error) {
         return res.status(400).json({ status: false, message: error.message });
     }
@@ -122,7 +97,6 @@ export const dashboardStatistics = async (req, res) => {
             .sort({ _id: -1 })
          : await Task.find({
             isTrashed: false,
-            team: { $all: [userId] },
          })
             .sort({ _id: -1 });
 
@@ -133,7 +107,7 @@ export const dashboardStatistics = async (req, res) => {
 
         // group task by stage and calculat counts
         const groupTasks = allTasks.reduce((result, task) => {
-            const tage = task.stage;
+            const stage = task.stage;
 
             if(!result[stage]){
                 result[stage] = 1
@@ -145,7 +119,7 @@ export const dashboardStatistics = async (req, res) => {
         }, {});
 
         // group task by priority
-        const groupData = object.entries(
+        const groupData = Object.entries(
             allTasks.reduce((result, task) => {
                 const {priority} = task
 
@@ -175,6 +149,7 @@ export const dashboardStatistics = async (req, res) => {
         })
 
     } catch (error) {
+        console.log(error);
         return res.status(400).json({ status: false, message: error.message });
     }
 };
@@ -234,13 +209,12 @@ export const getTask = async (req, res) => {
 
 export const createSubTask = async (req, res) => {
     try {
-        const { title, tag, date } = req.body;
+        const { title, date } = req.body;
         const { id } = req.params;
 
         const newSubTask = {
             title,
             date,
-            tag
         };
 
         const task = await Task.findById(id);
@@ -261,7 +235,7 @@ export const createSubTask = async (req, res) => {
 export const updateTask = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, date, state, priority, assets } = req.body;
+        const { title, date, stage, priority, assets } = req.body;
 
         const task = await Task.findById(id);
 

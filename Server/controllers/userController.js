@@ -97,7 +97,7 @@ export const logoutUser = async (req, res) => {
 
 export const getTeamList = async (req, res) => {
     try {
-        const users = await User.find().select("name title role enail isActive");
+        const users = await User.find().select("name title role email isActive");
 
         res.status(200).json(users);
     } catch (error) {
@@ -162,7 +162,7 @@ export const updateUserProfile = async (req, res) => {
 
 export const markNotificationRead = async (req, res) => {
     try {
-        const { userID } = req.user;
+        const { userId } = req.user;
 
         const { isReadType, id } = req.query;
 

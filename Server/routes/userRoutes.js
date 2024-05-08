@@ -19,12 +19,12 @@ router.post("/register", registerUser)
 router.post("/login", loginUser)
 router.post("/logout", logoutUser)
 
-router.get("/get-team", protectRoute, isAdminRoute, getTeamList);
+// router.get("/get-team", protectRoute, isAdminRoute, getTeamList);
 router.get("/notifications", protectRoute, getNotificationsList);
 
-router.get("/profile", protectRoute, updateUserProfile);
-router.get("/read-noti", protectRoute, markNotificationRead);
-router.get("/change-password", protectRoute, changePassword);
+router.put("/profile", protectRoute, updateUserProfile);
+router.put("/read-noti", protectRoute, markNotificationRead);
+router.put("/change-password", protectRoute, changePassword);
 
 // // FOR ADMIN ONLY - ADMIN ROUTES
 

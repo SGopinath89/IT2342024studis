@@ -3,10 +3,11 @@ import mongoose, { Schema } from 'mongoose';
 const fileSchema = new Schema({
     fileName: { type: String, required: true },
     dateAdded: { type: Date, default: Date.now },
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true }, // Reference to the user who uploaded the file
-    file: { type: String, required: true } // Store file ID or filename
+    file: { type: String, required: true },
+    createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    isTrashed: { type:Boolean, default: false },
 });
 
-const File = mongoose.model("File", fileSchema);
+const File = mongoose.model("File", fileSchema); 
 
 export default File;

@@ -1,64 +1,59 @@
-import Event from "../models/event.js";
+import File from "../models/files.js";
 import Notice from "../models/notification.js";
 
-export const createEvent = async (req, res) => {
+export const uploadFile = async (req, res) => {
     try {
         const { userId } = req.user;
-        const { eventName, date, startTime, duration, description } = req.body;
+        const { fileName, file } = req.body;
         
-        const event = await Event.create({
-            eventName, 
-            date, 
-            startTime,
-            duration, 
-            description,
+        const uploadfile = await File.create({
+            fileName, 
+            file, 
             createdBy: userId,
         });
 
         res
             .status(200)
-            .json({ status: true, event, message: "Event created successfully."});
+            .json({ status: true, uploadfile, message: "File uploaded successfully."});
     } catch (error) {
         return res.status(400).json({ status: false, message: error.message });
     }
 
 };
 
-export const duplicateEvent = async (req, res) => {
+export const duplicateFile = async (req, res) => {
     try {
         const { userId } = req.user;
         const { id } = req.params;
 
-        const event = await Event.findById(id);
+        const upload = await File.findById(id);
 
-        const newEvent = await Event.create({
-            eventName: event.eventName + " - Duplicate",
-            date: event.date,
-            startTime: event.startTime,
-            duration: event.duration,
-            description: event.description,
+        const newFile = await File.create({
+            fileName: upload.fileName + " - Duplicate",
+            dateAdded: upload.dateAdded,
+            file: upload.file,
             createdBy: userId,
         });
 
-        await newEvent.save();
+        await newFile.save();
 
-        let text = "New Event has been created,"
+        let text = "New File has been duplicated."
         
         await Notice.create({
             text,
-            task: newEvent._id,
+            task: newFile._id,
             createdBy: userId,
         });
 
         res
             .status(200)
-            .json({ status: true, message: "Event duplicated successfully."});
+            .json({ status: true, message: "File duplicated successfully."});
     } catch (error) {
         return res.status(400).json({ status: false, message: error.message });
     }
 };
 
-export const getEvents = async (req, res) => {
+export const getFiles = async (req, res) => {
     try {
         const { userId } = req.user;
         const { isTrashed } = req.query;
@@ -68,37 +63,37 @@ export const getEvents = async (req, res) => {
             isTrashed: isTrashed ? true : false
         };
 
-        let queryResult = Event.find(query)
+        let queryResult = File.find(query)
             .sort({ _id: -1 });
 
-        const events = await queryResult;
+        const files = await queryResult;
 
         res.status(200).json({
             status: true,
-            events,
+            files,
         });
     } catch (error) {
         return res.status(400).json({ status: false, message: error.message });
     }
 };
 
-export const getEvent = async (req, res) => {
+export const getFile = async (req, res) => {
     try {
         const { userId } = req.user;
         const {id} = req.params
 
-        const userEvents = await Event.find({ createdBy: userId })
+        const userFiles = await File.find({ createdBy: userId })
             .sort({ _id: -1 });
 
-        const event = userEvents.find(event => event._id.toString() === id);
+        const upload = userFiles.find(files => files._id.toString() === id);
 
-        if (!event) {
-            return res.status(404).json({ status: false, message: 'Event not found' });
+        if (!upload) {
+            return res.status(404).json({ status: false, message: 'File not found' });
         }
 
         res.status(200).json({
             status: true,
-            event,
+            upload,
         });
 
     } catch (error) {
@@ -106,65 +101,61 @@ export const getEvent = async (req, res) => {
     }
 };
 
-export const updateEvent = async (req, res) => {
+export const renameFile = async (req, res) => {
     try {
         
         const { id } = req.params;
-        const { eventName, date, startTime, duration, description } = req.body;
+        const { fileName } = req.body;
 
-        const event = await Event.findById(id);
+        const upload = await File.findById(id);
 
-        event.eventName = eventName;
-        event.date = date;
-        event.startTime = startTime;
-        event.duration = duration;
-        event.description = description;
+        upload.fileName = fileName;
 
-        await event.save();
+        await upload.save();
 
         res
             .status(200)
-            .json({ status: true, message: "Event updated successfully." });
+            .json({ status: true, message: "File renamed successfully." });
 
     } catch (error) {
         return res.status(400).json({ status: false, message: error.message });
     }
 };
 
-export const trashEvent = async (req, res) => {
+export const trashFile = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const event = await Event.findById(id);
+        const upload = await File.findById(id);
 
-        event.isTrashed = true;
+        upload.isTrashed = true;
 
-        await event.save();
+        await upload.save();
 
         res
             .status(200)
-            .json({ status: true, message: `Event trashed successfully.`,});
+            .json({ status: true, message: `File trashed successfully.`,});
     } catch (error) {
         return res.status(400).json({ status: false, message: error.message });
     }
 };
 
-export const deleteRestoreEvent = async (req, res) => {
+export const deleteRestoreFile = async (req, res) => {
     try {
         const { id } = req.params;
         const { actionType } = req.query;
 
         if(actionType === "delete"){
-            await Event.findByIdAndDelete(id);
+            await File.findByIdAndDelete(id);
         } else if(actionType === "deleteAll"){
-            await Event.deleteMany({ isTrashed: true });
+            await File.deleteMany({ isTrashed: true });
         } else if(actionType === "restore"){
-            const resp = await Event.findById(id);
+            const resp = await File.findById(id);
 
             resp.isTrashed = false;
             resp.save();
         } else if(actionType === "restoreAll"){
-            await Event.updateMany(
+            await File.updateMany(
                 { isTrashed: true },
                 { $set: { isTrashed: false }},
             );

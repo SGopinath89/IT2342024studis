@@ -3,7 +3,6 @@ import { isAdminRoute, protectRoute, isTaskCreator } from "../middlewares/authMi
 import {
     createTask,
     duplicateTask,
-    postTaskActivity,
     dashboardStatistics,
     getTasks,
     getTask,
@@ -17,7 +16,6 @@ const router = express.Router();
 
 router.post("/create", protectRoute, createTask);
 router.post("/duplicate/:id", protectRoute, isTaskCreator, duplicateTask);
-router.post("/activity/:i", protectRoute, isTaskCreator, postTaskActivity);
 
 router.get("/dashboard", protectRoute, dashboardStatistics);
 router.get("/", protectRoute, getTasks);

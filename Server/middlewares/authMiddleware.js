@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 import Task from "../models/task.js";
 import Event from "../models/event.js";
+import File from "../models/files.js";
 
 const protectRoute = async (req, res, next) => {
     try {
@@ -105,4 +106,34 @@ const isEventCreator = async (req, res, next) => {
     }
 };
 
-export { isAdminRoute, protectRoute, isTaskCreator, isEventCreator };
+const isFileUploader = async (req, res, next) => {
+    try {
+        const { userId } = req.user;
+        const { id } = req.params;
+
+        const file = await File.findById(id);
+
+        if (!file) {
+            return res.status(404).json({
+                status: false,
+                message: 'File not found',
+            });
+        }
+
+        if (String(file.createdBy) === String(userId)) {
+            next();
+        } else {
+            return res.status(401).json({
+                status: false,
+                message: 'Not authorized to access this file.',
+            });
+        }
+    } catch (error) {
+        return res.status(400).json({
+            status: false,
+            message: error.message,
+        });
+    }
+};
+
+export { isAdminRoute, protectRoute, isTaskCreator, isEventCreator, isFileUploader };
