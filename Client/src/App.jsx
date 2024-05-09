@@ -14,6 +14,9 @@ import Tasks from "./pages/Tasks";
 import Trash from "./pages/Trash";
 import Users from "./pages/Users";
 import Dashboard from "./pages/Dashboard";
+import TimeTable from "./pages/TimeTable";
+import Files from "./pages/Files";
+import Courses from "./pages/Courses";
 import { setOpenSidebar } from "./redux/slices/authSlice";
 
 function Layout() {
@@ -103,8 +106,10 @@ function App() {
           <Route path='/tasks' element={<Tasks />} />
           <Route path='/completed/:status' element={<Tasks />} />
           <Route path='/in-progress/:status' element={<Tasks />} />
-          <Route path='/todo/:status' element={<Tasks />} />
-          <Route path='/team' element={<Users />} />
+          <Route path='/timetable' element={<TimeTable />} />
+          <Route path='/files' element={<Files />} />
+          <Route path='/courses' element={<Courses />} />
+          <Route path='/profile' element={<Users />} />
           <Route path='/trashed' element={<Trash />} />
           <Route path='/task/:id' element={<TaskDetails />} />
         </Route>
