@@ -146,35 +146,6 @@ const TaskDetails = () => {
                 </div>
 
                 <div className='space-y-4 py-6'>
-                  <p className='text-gray-600 font-semibold test-sm'>
-                    TASK TEAM
-                  </p>
-                  <div className='space-y-3'>
-                    {task?.team?.map((m, index) => (
-                      <div
-                        key={index}
-                        className='flex gap-4 py-2 items-center border-t border-gray-200'
-                      >
-                        <div
-                          className={
-                            "w-10 h-10 rounded-full text-white flex items-center justify-center text-sm -mr-1 bg-blue-600"
-                          }
-                        >
-                          <span className='text-center'>
-                            {getInitials(m?.name)}
-                          </span>
-                        </div>
-
-                        <div>
-                          <p className='text-lg font-semibold'>{m?.name}</p>
-                          <span className='text-gray-500'>{m?.title}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className='space-y-4 py-6'>
                   <p className='text-gray-500 font-semibold text-sm'>
                     SUB-TASKS
                   </p>
