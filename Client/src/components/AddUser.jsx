@@ -4,7 +4,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import ModalWrapper from "./ModalWrapper";
-import { Dialog } from "@headlessui/react";
+import { Dialog, DialogTitle } from "@headlessui/react";
 import Textbox from "./Textbox";
 import Loading from "./Loader";
 import Button from "./Button";
@@ -28,12 +28,12 @@ const AddUser = ({ open, setOpen, userData }) => {
     <>
       <ModalWrapper open={open} setOpen={setOpen}>
         <form onSubmit={handleSubmit(handleOnSubmit)} className=''>
-          <Dialog.Title
+          <DialogTitle
             as='h2'
             className='text-base font-bold leading-6 text-gray-900 mb-4'
           >
             {userData ? "UPDATE PROFILE" : "ADD NEW USER"}
-          </Dialog.Title>
+          </DialogTitle>
           <div className='mt-2 flex flex-col gap-6'>
             <Textbox
               placeholder='Full name'
@@ -47,17 +47,6 @@ const AddUser = ({ open, setOpen, userData }) => {
               error={errors.name ? errors.name.message : ""}
             />
             <Textbox
-              placeholder='Title'
-              type='text'
-              name='title'
-              label='Title'
-              className='w-full rounded'
-              register={register("title", {
-                required: "Title is required!",
-              })}
-              error={errors.title ? errors.title.message : ""}
-            />
-            <Textbox
               placeholder='Email Address'
               type='email'
               name='email'
@@ -68,7 +57,17 @@ const AddUser = ({ open, setOpen, userData }) => {
               })}
               error={errors.email ? errors.email.message : ""}
             />
-
+            <Textbox
+              placeholder='Password'
+              type='password'
+              name='password'
+              label='Password'
+              className='w-full rounded'
+              register={register("password", {
+                required: "Password is required!",
+              })}
+              error={errors.email ? errors.email.message : ""}
+            />
             <Textbox
               placeholder='Role'
               type='text'
@@ -79,6 +78,18 @@ const AddUser = ({ open, setOpen, userData }) => {
                 required: "User role is required!",
               })}
               error={errors.role ? errors.role.message : ""}
+            />
+
+            <Textbox
+              placeholder='Registration Number'
+              type='text'
+              name='regNumber'
+              label='Registration Number'
+              className='w-full rounded'
+              register={register("regNumber", {
+                required: "Registration Number is required!",
+              })}
+              error={errors.regNumber ? errors.regNumber.message : ""}
             />
           </div>
 

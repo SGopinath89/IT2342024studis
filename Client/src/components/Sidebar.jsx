@@ -54,15 +54,20 @@ const linkData = [
     link: "files",
     icon: <FaRegFile  />,
   },
-  // {
-  //   label: "Team",
-  //   link: "team",
-  //   icon: <FaUsers />,
-  // },
   {
     label: "Trash",
     link: "trashed",
     icon: <FaRegTrashCan />,
+  },
+  {
+    label: "Users",
+    link: "profile",
+    icon: <FaUsers />,
+  },
+  {
+    label: "Users",
+    link: "profile/user",
+    icon: <FaUsers />,
   },
 ];
 
@@ -74,7 +79,7 @@ const Sidebar = () => {
 
   const path = location.pathname.split("/")[1];
 
-  const sidebarLinks = linkData;
+  const sidebarLinks = user?.isAdmin ? linkData : linkData.slice(0, 7);
 
   const closeSidebar = () => {
     dispatch(setOpenSidebar(false));

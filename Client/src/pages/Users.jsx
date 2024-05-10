@@ -45,11 +45,6 @@ const Users = () => {
     <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-400/10'>
       <td className='p-2'>
         <div className='flex items-center gap-3'>
-          <div className='w-9 h-9 rounded-full text-white flex items-center justify-center text-sm bg-blue-700'>
-            <span className='text-xs md:text-sm text-center'>
-              {getInitials(user.name)}
-            </span>
-          </div>
           {user.name}
         </div>
       </td>
@@ -92,7 +87,7 @@ const Users = () => {
     <>
       <div className='w-full md:px-1 px-0 mb-6'>
         <div className='flex items-center justify-between mb-8'>
-          <Title title='  Team Members' />
+          <Title title='  User Data' />
           <Button
             label='Add New User'
             icon={<IoMdAdd className='text-lg' />}

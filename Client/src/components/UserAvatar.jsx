@@ -9,6 +9,7 @@ import { getInitials } from "../utils";
 import { toast } from "sonner";
 import { useLogoutMutation } from '../redux/slices/api/authApiSlice.js';
 import { logout } from "../redux/slices/authSlice.js";
+import ProfileInfo from './ProfileInfo.jsx';
 
 const UserAvatar = () => {
   const [open, setOpen] = useState(false);
@@ -61,6 +62,7 @@ const UserAvatar = () => {
                       <FaUser className='mr-2' aria-hidden='true' />
                       Profile
                     </button>
+                    
                   )}
                 </MenuItem>
 

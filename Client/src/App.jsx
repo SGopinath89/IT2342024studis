@@ -18,6 +18,7 @@ import TimeTable from "./pages/TimeTable";
 import Files from "./pages/Files";
 import Courses from "./pages/Courses";
 import { setOpenSidebar } from "./redux/slices/authSlice";
+import Profile from "./pages/Profile";
 
 function Layout() {
   const { user } = useSelector((state) => state.auth);
@@ -110,6 +111,7 @@ function App() {
           <Route path='/files' element={<Files />} />
           <Route path='/courses' element={<Courses />} />
           <Route path='/profile' element={<Users />} />
+          <Route path='/profile/:id' element={<Profile />} />
           <Route path='/trashed' element={<Trash />} />
           <Route path='/task/:id' element={<TaskDetails />} />
         </Route>
