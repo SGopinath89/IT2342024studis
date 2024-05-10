@@ -64,11 +64,11 @@ const linkData = [
     link: "profile",
     icon: <FaUsers />,
   },
-  {
-    label: "Users",
-    link: "profile/user",
-    icon: <FaUsers />,
-  },
+  // {
+  //   label: "Users",
+  //   link: "profile/user",
+  //   icon: <FaUsers />,
+  // },
 ];
 
 const Sidebar = () => {

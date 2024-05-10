@@ -29,6 +29,9 @@ const UserAvatar = () => {
       toast.error("Something went wrong");
     }
   };
+  const goToProfilePage = () => {
+    navigate(`/profile/${user.id}`)
+  };
 
   return (
     <>
@@ -56,7 +59,7 @@ const UserAvatar = () => {
                 <MenuItem>
                   {({ active }) => (
                     <button
-                      onClick={() => setOpen(true)}
+                    onClick={goToProfilePage}
                       className='text-gray-700 group flex w-full items-center rounded-md px-2 py-2 text-base'
                     >
                       <FaUser className='mr-2' aria-hidden='true' />

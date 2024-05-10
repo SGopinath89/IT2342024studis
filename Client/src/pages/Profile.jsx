@@ -1,140 +1,61 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
-import Title from "../components/Title";
-import Button from "../components/Button";
-import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
-import { IoMdAdd } from "react-icons/io";
 import { summary } from "../assets/data";
-import { getInitials } from "../utils";
-import clsx from "clsx";
-import ConfirmatioDialog, { UserAction } from "../components/Dialogs";
-import Textbox from "../components/Textbox";
+import UpdateUser from "../components/UpdateUser";
+import Button from "../components/Button";
+import { IoMdAdd } from "react-icons/io";
 
-const Profile = ({ userData }) => {
-    let defaultValues = userData ?? {};
-  const [openDialog, setOpenDialog] = useState(false);
+const Profile = () => {
+  const { name, email, regNumber, degree, contact, birthday, academicBatch, profilePic } = summary.users;
   const [open, setOpen] = useState(false);
-  const [openAction, setOpenAction] = useState(false);
-  const [selected, setSelected] = useState(null);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ defaultValues });
-
-  const userActionHandler = () => {};
-  const deleteHandler = () => {};
-
-  const deleteClick = (id) => {
-    setSelected(id);
-    setOpenDialog(true);
-  };
-
-  const editClick = (el) => {
-    setSelected(el);
-    setOpen(true);
-  };
+  const [loading, setLoading] = useState(false);
 
   return (
-    <>
-      <div className='w-full md:px-1 px-0 mb-6'>
-        <div className='flex items-center justify-between mb-8'>
-          <Title title= 'Profile' />
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold">User Profile</h1>
+          <Button
+              onClick={() => setOpen(true)}
+              label='Update Profile'
+              icon={<IoMdAdd className='text-lg' />}
+              className='flex flex-row-reverse gap-1 items-center bg-blue-600 text-white rounded-md py-2 2xl:py-2.5'
+            />
+      </div>
+      <div className="flex items-center space-x-4">
+        <img src={profilePic} alt="Profile" className="w-24 h-24 rounded-full" />
+        <div>
+          <h2 className="text-lg font-semibold">{name}</h2>
+          <p className="text-gray-600">{email}</p>
         </div>
-
-        <div className='bg-white px-2 md:px-4 py-4 shadow-md rounded'>
-          <div className='overflow-x-auto'>
-            <Textbox
-                placeholder='Full name'
-                type='text'
-                name='name'
-                label='Full Name'
-                className='w-full rounded'
-                register={register("name", {
-                  required: "Full name is required!",
-                })}
-                error={errors.name ? errors.name.message : ""}
-            />
-             <Textbox
-                placeholder='Email'
-                type='email'
-                name='email'
-                label='Email'
-                className='w-full rounded'
-                register={register("email", {
-                  required: "Email is required!",
-                })}
-                error={errors.email ? errors.email.message : ""}
-            />
-             <Textbox
-                placeholder='Degree'
-                type='text'
-                name='degree'
-                label='Degree'
-                className='w-full rounded'
-                register={register("degree", {
-                  required: "Degree is required!",
-                })}
-                error={errors.degree ? errors.degree.message : ""}
-            />
-             <Textbox
-                placeholder='Contact Number'
-                type='text'
-                name='contact'
-                label='Contact Number'
-                className='w-full rounded'
-                register={register("contact", {
-                  required: "Contact Number is required!",
-                })}
-                error={errors.contact ? errors.contact.message : ""}
-            />
-             <Textbox
-                placeholder='Birthday'
-                type='date'
-                name='birthday'
-                label='Birthday'
-                className='w-full rounded'
-                register={register("birthday", {
-                  required: "Birthday is required!",
-                })}
-                error={errors.birthday ? errors.birthday.message : ""}
-            />
-             <Textbox
-                placeholder='Academic Batch'
-                type='year'
-                name='academicBatch'
-                label='Academic Batch'
-                className='w-full rounded'
-                register={register("academicBatch", {
-                  required: "Academic Batch is required!",
-                })}
-                error={errors.academicBatch ? errors.academicBatch.message : ""}
-            />
-            <Textbox
-                placeholder='Profile Picture'
-                type='text'
-                name='profilePic'
-                label='Profile Picture'
-                className='w-full rounded'
-                register={register("profilePic", {
-                  required: "Profile Picture is required!",
-                })}
-                error={errors.profilePic ? errors.profilePic.message : ""}
-            />
-
+      </div>
+      <div className="mt-8">
+        <h3 className="text-lg font-semibold mb-2">User Details</h3>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <p className="font-medium">Registration Number:</p>
+            <p>{regNumber}</p>
+          </div>
+          <div>
+            <p className="font-medium">Degree:</p>
+            <p>{degree}</p>
+          </div>
+          <div>
+            <p className="font-medium">Contact Number:</p>
+            <p>{contact}</p>
+          </div>
+          <div>
+            <p className="font-medium">Birthday:</p>
+            <p>{birthday}</p>
+          </div>
+          <div>
+            <p className="font-medium">Academic Batch:</p>
+            <p>{academicBatch}</p>
           </div>
         </div>
       </div>
-
-      <ConfirmatioDialog
-        open={openDialog}
-        setOpen={setOpenDialog}
-        onClick={deleteHandler}
-      />
-    </>
+      {open && <UpdateUser open={open} setOpen={setOpen} />}
+    </div>
+    
   );
 };
 
