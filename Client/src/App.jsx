@@ -114,7 +114,7 @@ function App() {
           <Route path='/profile/:id' element={<Profile />} />
           <Route path='/trashed' element={<Trash />} />
           <Route path='/task/:id' element={<TaskDetails />} />
-        </Route>
+        </Route> 
 
         <Route path='/log-in' element={<Login />} />
       </Routes>

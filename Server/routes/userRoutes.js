@@ -4,7 +4,7 @@ import {
     registerUser, 
     loginUser, 
     logoutUser, 
-    // getTeamList,
+    getUserList,
     getNotificationsList,
     updateUserProfile,
     markNotificationRead,
@@ -19,7 +19,7 @@ router.post("/register", registerUser)
 router.post("/login", loginUser)
 router.post("/logout", logoutUser)
 
-// router.get("/get-team", protectRoute, isAdminRoute, getTeamList);
+router.get("/get-user", protectRoute, isAdminRoute, getUserList);
 router.get("/notifications", protectRoute, getNotificationsList);
 
 router.put("/profile", protectRoute, updateUserProfile);

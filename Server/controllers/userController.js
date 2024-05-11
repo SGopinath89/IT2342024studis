@@ -95,15 +95,15 @@ export const logoutUser = async (req, res) => {
     }
 };
 
-// export const getTeamList = async (req, res) => {
-//     try {
-//         const users = await User.find().select("name title role email isActive");
+export const getUserList = async (req, res) => {
+    try {
+        const users = await User.find().select("name title role email isActive");
 
-//         res.status(200).json(users);
-//     } catch (error) {
-//         return res.status(400).json({ status: false, message: error.message });
-//     }
-// };
+        res.status(200).json(users);
+    } catch (error) {
+        return res.status(400).json({ status: false, message: error.message });
+    }
+};
 
 export const getNotificationsList = async (req, res) => {
     try {
