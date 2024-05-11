@@ -45,7 +45,7 @@ const Users = () => {
       const result = await deleteUser(selected)
 
       refetch();
-      toast.success(result?.data?.message);
+      toast.success("Deleted successfully");
       setSelected(null);
       setTimeout(() => {
         setOpenAction(false);
@@ -68,7 +68,7 @@ const Users = () => {
 
   const userStatusClick = (el) => {
     setSelected(el);
-    setOpen(true);
+    setOpenAction(true);
   };
 
   const TableHeader = () => (

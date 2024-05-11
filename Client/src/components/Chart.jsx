@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from "react";
 import {
@@ -10,12 +11,12 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { chartData } from "../assets/data";
 
-export const Chart = () => {
+
+export const Chart = ({data}) => {
   return (
     <ResponsiveContainer width={"100%"} height={300}>
-      <BarChart width={150} height={40} data={chartData}>
+      <BarChart width={150} height={40} data={data}>
         <XAxis dataKey='name' />
         <YAxis />
         <Tooltip />

@@ -139,7 +139,7 @@ export const dashboardStatistics = async (req, res) => {
             last10Task, 
             users: isAdmin ? users : [],
             tasks: groupTasks,
-            groupData: groupData,
+            graphData: groupData,
         };
 
         res.status(200).json({
@@ -163,7 +163,7 @@ export const getTasks = async (req, res) => {
         createdBy: userId,
         isTrashed: isTrashed ? true : false
     };
-
+    
     if (stage) {
       query.stage = stage;
     }
@@ -172,7 +172,6 @@ export const getTasks = async (req, res) => {
       .sort({ _id: -1 });
 
     const tasks = await queryResult;
-
     res.status(200).json({
       status: true,
       tasks,
