@@ -1,20 +1,18 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { FaList } from "react-icons/fa";
+import { IoMdAdd } from "react-icons/io";
 import { MdGridView } from "react-icons/md";
 import { useParams } from "react-router-dom";
-import Loading from "../components/Loader";
-import Title from "../components/Title";
+import BoardView from "../components/BoardView";
 import Button from "../components/Button";
-import { IoMdAdd } from "react-icons/io";
+import Loading from "../components/Loader";
 import Tabs from "../components/Tabs";
 import TaskTitle from "../components/TaskTitle";
-import BoardView from "../components/BoardView";
-import { tasks } from "../assets/data";
-import Table from "../components/task/Table";
+import Title from "../components/Title";
 import AddTask from "../components/task/AddTask";
+import Table from "../components/task/Table";
 import { useGetAllTaskQuery } from "../redux/slices/api/taskApiSlice";
-
 const TABS = [
   { title: "Board View", icon: <MdGridView /> },
   { title: "List View", icon: <FaList /> },

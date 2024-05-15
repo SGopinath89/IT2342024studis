@@ -41,31 +41,37 @@ const AddTask = ({ open, setOpen, task }) => {
   const URLS = task?.assets ? [...task.assets] : [];
 
   const submitHandler = async(data) => {
+    console.log("submit start");
     for (const file of assets){
       setUploading(true);
+      console.log("upload start");
       try {
         await uploadFile(file);
+        console.log("upload");
       } catch (error) {
         console.error("Error uploading file:", error.message);
         return;
       } finally {
         setUploading(false);
+        console.log("upload done");
       }
     }
+    console.log("file creation");
 
     try {
+      console.log("task start");
       const newData = {
         ...data,
         assets: [...URLS, ...uploadedFileURLs],
         stage,
         priority,
       };
-
+      console.log("task create");
       const res = task?._id
         ? await updateTask({ ...newData, _id: task._id }).unwrap()
         : await createTask(newData).unwrap();
       toast.success(res.message);
-
+      console.log("task done");
       setTimeout(() => {
         setOpen(false);
       }, 500);
@@ -78,15 +84,12 @@ const AddTask = ({ open, setOpen, task }) => {
   const handleSelect = (e) => {
     setAssets(e.target.files);
   };
-
   const uploadFile = async (file) => {
     const storage = getStorage(app);
-
     const name = new Date().getTime() + file.name;
     const storageRef = ref(storage, name);
-
     const uploadTask = uploadBytesResumable(storageRef, file);
-
+  
     return new Promise((resolve, reject) => {
       uploadTask.on(
         "state_changed",
@@ -94,20 +97,28 @@ const AddTask = ({ open, setOpen, task }) => {
           console.log("Uploading");
         },
         (error) => {
+          console.error("Error uploading file:", error);
           reject(error);
         },
         () => {
+          // Upload completed successfully, get download URL
           getDownloadURL(uploadTask.snapshot.ref)
             .then((downloadURL) => {
+              // Add download URL to the list of uploadedFileURLs
               uploadedFileURLs.push(downloadURL);
+              // Resolve the promise with the download URL
+              resolve(downloadURL);
             })
             .catch((error) => {
+              // Handle error while getting download URL
+              console.error("Error getting download URL:", error);
               reject(error);
             });
         }
       );
     });
   };
+  
 
   return (
     <>
