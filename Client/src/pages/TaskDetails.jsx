@@ -21,6 +21,7 @@ import Tabs from "../components/Tabs";
 import { PRIOTITYSTYELS, TASK_TYPE, getInitials } from "../utils";
 import Loading from "../components/Loader";
 import Button from "../components/Button";
+import { useGetSigleTaskQuery, usePostTaskActivityMutation } from "../redux/slices/api/taskApiSlice";
 
 const assets = [
   "https://images.pexels.com/photos/2418664/pexels-photo-2418664.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
@@ -90,10 +91,16 @@ const act_types = [
 
 const TaskDetails = () => {
   const { id } = useParams();
-
+  const { data, isLoading } = useGetSigleTaskQuery(id);
   const [selected, setSelected] = useState(0);
-  const task = tasks[3];
+  const task = data?.task;
 
+  if (isLoading)
+    return (
+      <div className="py-10">
+        <Loading />
+      </div>
+    );
   return (
     <div className='w-full flex flex-col gap-3 mb-4 overflow-y-hidden'>
       <h1 className='text-2xl text-gray-600 font-bold'>{task?.title}</h1>
@@ -193,7 +200,7 @@ const TaskDetails = () => {
           </>
         ) : (
           <>
-            <Activities activity={task?.activities} id={id} />
+            <Activities activity={data?.activities} id={id} />
           </>
         )}
       </Tabs>
@@ -201,12 +208,32 @@ const TaskDetails = () => {
   );
 };
 
-const Activities = ({ activity, id }) => {
+const Activities = ({ activity, id, refetch }) => {
   const [selected, setSelected] = useState(act_types[0]);
   const [text, setText] = useState("");
-  const isLoading = false;
+  //const isLoading = false;
 
-  const handleSubmit = async () => {};
+  const [postActivity, { isLoading } ] = usePostTaskActivityMutation();
+
+  const handleSubmit = async () => {
+    try {
+      const activityData = {
+        type: selected?.toLocaleLowerCase(),
+        activity: text, 
+      }
+      const res = await postActivity({
+        data: activityData,
+        id
+      }).unwrap();
+
+      setText("");
+      toast.success(res?.message);
+      refetch();
+    } catch (err) {
+      console.log(err);
+      toast.error(err?.data?.message || err.error);
+    }
+  };
 
   const Card = ({ item }) => {
     return (
