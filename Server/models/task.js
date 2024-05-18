@@ -12,6 +12,25 @@ const taskSchema = new Schema({
             date: Date,
         },
     ],
+    activities: [
+        {
+          type: {
+            type: String,
+            default: "assigned",
+            enum: [
+              "assigned",
+              "started",
+              "in progress",
+              "bug",
+              "completed",
+              "commented",
+            ],
+          },
+          activity: String,
+          date: { type: Date, default: new Date() },
+          by: { type: Schema.Types.ObjectId, ref: "User" },
+        },
+      ],
     assets:[String],
     isTrashed: { type:Boolean, default: false },
     createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },

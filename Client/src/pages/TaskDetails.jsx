@@ -91,7 +91,7 @@ const act_types = [
 
 const TaskDetails = () => {
   const { id } = useParams();
-  const { data, isLoading } = useGetSigleTaskQuery(id);
+  const { data, isLoading, refetch } = useGetSigleTaskQuery(id);
   const [selected, setSelected] = useState(0);
   const task = data?.task;
 
@@ -200,7 +200,7 @@ const TaskDetails = () => {
           </>
         ) : (
           <>
-            <Activities activity={data?.activities} id={id} />
+            <Activities activity={data?.task?.activities} id={id} refetch={refetch}/>
           </>
         )}
       </Tabs>
@@ -211,7 +211,6 @@ const TaskDetails = () => {
 const Activities = ({ activity, id, refetch }) => {
   const [selected, setSelected] = useState(act_types[0]);
   const [text, setText] = useState("");
-  //const isLoading = false;
 
   const [postActivity, { isLoading } ] = usePostTaskActivityMutation();
 

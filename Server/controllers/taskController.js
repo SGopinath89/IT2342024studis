@@ -85,7 +85,6 @@ export const duplicateTask = async (req, res) => {
     }
 };
 
-//might throw errors because admin non-admin user conflicts
 export const dashboardStatistics = async (req, res) => {
     try {
         const { userId, isAdmin } = req.user
@@ -93,10 +92,12 @@ export const dashboardStatistics = async (req, res) => {
         const allTasks = isAdmin
          ? await Task.find({
             isTrashed: false,
+            createdBy: userId,
          })
             .sort({ _id: -1 })
          : await Task.find({
             isTrashed: false,
+            createdBy: userId,
          })
             .sort({ _id: -1 });
 
@@ -276,13 +277,14 @@ export const trashTask = async (req, res) => {
 
 export const deleteRestoreTask = async (req, res) => {
     try {
+        const { userId } = req.user;
         const { id } = req.params;
         const { actionType } = req.query;
 
         if(actionType === "delete"){
             await Task.findByIdAndDelete(id);
         } else if(actionType === "deleteAll"){
-            await Task.deleteMany({ isTrashed: true });
+            await Task.deleteMany({ isTrashed: true, createdBy: userId });
         } else if(actionType === "restore"){
             const resp = await Task.findById(id);
 
@@ -303,6 +305,33 @@ export const deleteRestoreTask = async (req, res) => {
         return res.status(400).json({ status: false, message: error.message });
     }
 };
+
+export const postTaskActivity = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { userId } = req.user;
+      const { type, activity } = req.body;
+  
+      const task = await Task.findById(id);
+  
+      const data = {
+        type,
+        activity,
+        by: userId,
+      };
+  
+      task.activities.push(data);
+  
+      await task.save();
+  
+      res
+        .status(200)
+        .json({ status: true, message: "Activity posted successfully." });
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({ status: false, message: error.message });
+    }
+  };
 
 // export const  = async (req, res) => {
 //     try {

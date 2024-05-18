@@ -10,12 +10,14 @@ import {
     updateTask,
     trashTask,
     deleteRestoreTask,
+    postTaskActivity,
 } from "../controllers/taskController.js";
 
 const router = express.Router();
 
 router.post("/create", protectRoute, createTask);
 router.post("/duplicate/:id", protectRoute, isTaskCreator, duplicateTask);
+router.post("/activity/:id", protectRoute, postTaskActivity);
 
 router.get("/dashboard", protectRoute, dashboardStatistics);
 router.get("/", protectRoute, getTasks);
@@ -28,7 +30,7 @@ router.put("/:id", protectRoute, isTaskCreator, trashTask);
 router.delete(
     "/delete-restore/:id?",
     protectRoute,
-    isTaskCreator,
+    //isTaskCreator,
     deleteRestoreTask
 );
 
