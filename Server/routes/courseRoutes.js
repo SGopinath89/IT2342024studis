@@ -13,14 +13,14 @@ const router = express.Router();
 
 router.post("/create", protectRoute, isAdminRoute, addCourse);
 
-router.get("/get-courses", protectRoute, getCourse);
+router.get("/", protectRoute, getCourse);
 router.get("/get-course/:id", protectRoute, getCourseById);
 
 router.put("/update/:id", protectRoute, isAdminRoute, updateCourse);
 router.put("/:id", protectRoute, isAdminRoute, trashCourse);
 
 router.delete(
-    "/delete-restore/:id?",
+    "/delete/:id",
     protectRoute,
     isAdminRoute,
     deleteRestoreCourse

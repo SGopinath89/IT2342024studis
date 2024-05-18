@@ -21,10 +21,17 @@ export const addCourse = async (req, res) => {
     }
 
 };
-
+ 
 export const getCourse = async (req, res) => {
     try {
-        const courses = await Course.find();
+        const { isTrashed } = req.query;
+        let query = { 
+            isTrashed: isTrashed ? true : false
+        };
+        let queryResult = Course.find(query)
+            .sort({ _id: -1 });
+
+        const courses = await queryResult;
 
         res.status(200).json({ status: true, courses });
     } catch (error) {
@@ -97,23 +104,13 @@ export const trashCourse = async (req, res) => {
 export const deleteRestoreCourse = async (req, res) => {
     try {
         const { id } = req.params;
-        const { actionType } = req.query;
-
-        if(actionType === "delete"){
-            await Course.findByIdAndDelete(id);
-        } else if(actionType === "deleteAll"){
-            await Course.deleteMany({ isTrashed: true });
-        } else if(actionType === "restore"){
-            const resp = await Course.findById(id);
-
-            resp.isTrashed = false;
-            resp.save();
-        } else if(actionType === "restoreAll"){
-            await Course.updateMany(
-                { isTrashed: true },
-                { $set: { isTrashed: false }},
-            );
-        }
+        // const { actionType } = req.query;
+        await Course.findByIdAndDelete(id);
+        // if(actionType === "delete"){
+        //     await Course.findByIdAndDelete(id);
+        // } else if (actionType === "deleteAll"){
+        //     await Course.deleteMany({ isTrashed: true });
+        // }
 
         res.status(200).json({
             status: true,
