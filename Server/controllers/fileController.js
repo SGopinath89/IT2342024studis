@@ -12,6 +12,14 @@ export const uploadFile = async (req, res) => {
             createdBy: userId,
         });
 
+        let text = "New File has been Uploaded."
+
+        await Notice.create({
+            text,
+            task: fileName._id,
+            createdBy: userId,
+        });
+
         res
             .status(200)
             .json({ status: true, uploadfile, message: "File uploaded successfully."});
@@ -21,37 +29,37 @@ export const uploadFile = async (req, res) => {
 
 };
 
-export const duplicateFile = async (req, res) => {
-    try {
-        const { userId } = req.user;
-        const { id } = req.params;
+// export const duplicateFile = async (req, res) => {
+//     try {
+//         const { userId } = req.user;
+//         const { id } = req.params;
 
-        const upload = await File.findById(id);
+//         const upload = await File.findById(id);
 
-        const newFile = await File.create({
-            fileName: upload.fileName + " - Duplicate",
-            dateAdded: upload.dateAdded,
-            file: upload.file,
-            createdBy: userId,
-        });
+//         const newFile = await File.create({
+//             fileName: upload.fileName + " - Duplicate",
+//             dateAdded: upload.dateAdded,
+//             file: upload.file,
+//             createdBy: userId,
+//         });
 
-        await newFile.save();
+//         await newFile.save();
 
-        let text = "New File has been duplicated."
+//         let text = "File has been duplicated."
         
-        await Notice.create({
-            text,
-            task: newFile._id,
-            createdBy: userId,
-        });
+//         await Notice.create({
+//             text,
+//             task: newFile._id,
+//             createdBy: userId,
+//         });
 
-        res
-            .status(200)
-            .json({ status: true, message: "File duplicated successfully."});
-    } catch (error) {
-        return res.status(400).json({ status: false, message: error.message });
-    }
-};
+//         res
+//             .status(200)
+//             .json({ status: true, message: "File duplicated successfully."});
+//     } catch (error) {
+//         return res.status(400).json({ status: false, message: error.message });
+//     }
+// };
 
 export const getFiles = async (req, res) => {
     try {
@@ -103,24 +111,21 @@ export const getFile = async (req, res) => {
 
 export const renameFile = async (req, res) => {
     try {
-        
         const { id } = req.params;
         const { fileName } = req.body;
 
-        const upload = await File.findById(id);
+        const updatedFile = await File.findByIdAndUpdate(id, { fileName }, { new: true });
 
-        upload.fileName = fileName;
+        if (!updatedFile) {
+            return res.status(404).json({ status: false, message: "File not found." });
+        }
 
-        await upload.save();
-
-        res
-            .status(200)
-            .json({ status: true, message: "File renamed successfully." });
-
+        return res.status(200).json({ status: true, message: "File renamed successfully.", data: updatedFile });
     } catch (error) {
         return res.status(400).json({ status: false, message: error.message });
     }
 };
+
 
 export const trashFile = async (req, res) => {
     try {
@@ -140,26 +145,27 @@ export const trashFile = async (req, res) => {
     }
 };
 
-export const deleteRestoreFile = async (req, res) => {
+export const deleteFile = async (req, res) => {
     try {
         const { id } = req.params;
-        const { actionType } = req.query;
+        // const { actionType } = req.query;
+        await File.findByIdAndDelete(id);
+        
+        // if(actionType === "delete"){
+        //     await File.findByIdAndDelete(id);
+        // } else if(actionType === "deleteAll"){
+        //     await File.deleteMany({ isTrashed: true });
+        // } else if(actionType === "restore"){
+        //     const resp = await File.findById(id);
 
-        if(actionType === "delete"){
-            await File.findByIdAndDelete(id);
-        } else if(actionType === "deleteAll"){
-            await File.deleteMany({ isTrashed: true });
-        } else if(actionType === "restore"){
-            const resp = await File.findById(id);
-
-            resp.isTrashed = false;
-            resp.save();
-        } else if(actionType === "restoreAll"){
-            await File.updateMany(
-                { isTrashed: true },
-                { $set: { isTrashed: false }},
-            );
-        }
+        //     resp.isTrashed = false;
+        //     resp.save();
+        // } else if(actionType === "restoreAll"){
+        //     await File.updateMany(
+        //         { isTrashed: true },
+        //         { $set: { isTrashed: false }},
+        //     );
+        // }
 
         res.status(200).json({
             status: true,

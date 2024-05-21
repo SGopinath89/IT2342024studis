@@ -1,19 +1,24 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from "react";
+import { DialogTitle } from "@headlessui/react";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useSelector, useDispatch } from "react-redux";
-import ModalWrapper from "./ModalWrapper";
-import { Dialog, DialogTitle } from "@headlessui/react";
-import Textbox from "./Textbox";
-import Loading from "./Loader";
-import Button from "./Button";
-import { useRegisterMutation } from "../redux/slices/api/authApiSlice";
+import { BiImages } from "react-icons/bi";
+import { useDispatch } from "react-redux";
 import { toast } from "sonner";
-import { useUpdateUserMutation } from "../redux/slices/api/userApiSlice";
-import { setCredentials } from "../redux/slices/authSlice";
 import { useAddCourseMutation, useUpdateCourseMutation } from "../redux/slices/api/courseApiSlice";
+import { app } from "../utils/firebase.js";
+import Button from "./Button";
+import Loading from "./Loader";
+import ModalWrapper from "./ModalWrapper";
+import Textbox from "./Textbox";
 
 const AddCourse = ({ open, setOpen, courseData }) => {
   const defaultValues = {
@@ -25,7 +30,13 @@ const AddCourse = ({ open, setOpen, courseData }) => {
     courseContent: courseData?.courseContent || "",
   };
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+  let uploadedFileURLs = "";
+
+  const { 
+    register, 
+    handleSubmit, 
+    formState: { errors }, 
+    reset } = useForm({
     defaultValues,
   });
 
@@ -33,16 +44,28 @@ const AddCourse = ({ open, setOpen, courseData }) => {
     reset(defaultValues);
   }, [courseData, reset]);
 
+  const [assets, setAssets] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
+  const [fileLink, setFileLink] = useState(courseData?.courseContent || "");
+  
   const dispatch = useDispatch();
   const [addNewCourse, { isLoading }] = useAddCourseMutation();
   const [updateCourse, { isLoading: isUpdating }] = useUpdateCourseMutation();
 
   const submitHandler = async (data) => {
     try {
-      const newData = data;
+      if (assets.length > 0) {
+        setUploading(true);
+        const fileUrl = await uploadFile(assets[0]);
+        data.courseContent = fileUrl;
+        setFileLink(fileUrl);
+        setUploading(false);
+      }
+
       const res = data._id
-        ? await updateCourse(newData).unwrap()
-        : await addNewCourse(newData).unwrap();
+        ? await updateCourse(data).unwrap()
+        : await addNewCourse(data).unwrap();
       toast.success(res.message);
 
       setTimeout(() => {
@@ -52,6 +75,45 @@ const AddCourse = ({ open, setOpen, courseData }) => {
       console.log(err);
       toast.error(err?.data?.message || err.error);
     }
+  };
+
+  const handleSelect = (e) => {
+    setAssets(e.target.files);
+  };
+
+  const uploadFile = async (file) => {
+    const storage = getStorage(app);
+    const name = new Date().getTime() + file.name;
+    const storageRef = ref(storage, name);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+  
+    return new Promise((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          console.log("Uploading");
+        },
+        (error) => {
+          console.error("Error uploading file:", error);
+          reject(error);
+        },
+        () => {
+          // Upload completed successfully, get download URL
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then((downloadURL) => {
+              // Add download URL to the list of uploadedFileURLs
+              //uploadedFileURLs = downloadURL;
+              // Resolve the promise with the download URL
+              resolve(downloadURL);
+            })
+            .catch((error) => {
+              // Handle error while getting download URL
+              console.error("Error getting download URL:", error);
+              reject(error);
+            });
+        }
+      );
+    });
   };
 
   return (
@@ -109,17 +171,32 @@ const AddCourse = ({ open, setOpen, courseData }) => {
               })}
               error={errors.duration ? errors.duration.message : ""}
             />
-            <Textbox
-              placeholder='Course Content'
-              type='text'
-              name='courseContent'
-              label='Course Content'
-              className='w-full rounded'
-              register={register("courseContent", {
-                required: "Course Content is required!",
-              })}
-              error={errors.courseContent ? errors.courseContent.message : ""}
-            />
+            <div className='w-full flex items-center justify-center mt-4'>
+                <label
+                  className='flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1 cursor-pointer my-4'
+                  htmlFor='fileUpload'
+                >
+                  <input
+                    type='file'
+                    className='hidden'
+                    id='fileUpload'
+                    onChange={(e) => handleSelect(e)}
+                    accept='.pdf'
+                  />
+                  <BiImages />
+                  <span>Add Course Content</span>
+                </label>
+              </div>
+              {fileLink && (
+                <div className='text-sm text-gray-700 mt-2'>
+                  Uploaded File: <a href={fileLink} target='_blank' rel='noopener noreferrer'>{fileLink}</a>
+                </div>
+              )}
+              {uploading && (
+                <div className='text-sm text-gray-700 mt-2'>
+                  Uploading file, please wait...
+                </div>
+              )}
           </div>
 
           {isLoading || isUpdating ? (

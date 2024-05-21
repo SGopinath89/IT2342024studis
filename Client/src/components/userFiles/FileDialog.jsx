@@ -10,34 +10,80 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { Menu, Transition, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import AddFiles from "./AddFiles";
 import ConfirmatioDialog from "../Dialogs";
+import { toast } from "sonner";
+import { useDeleteFileMutation, useDuplicateFileMutation } from "../../redux/slices/api/filesApiSlice";
+import AddFile from "./AddFiles";
 
 const FileDialog = ({ file }) => {
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [selected, setSelected] = useState(null);
 
+  //const [duplicateFile] = useDuplicateFileMutation();
+  const [deleteFile] = useDeleteFileMutation();
   const navigate = useNavigate();
 
-  const duplicateHandler = () => {};
-  const deleteClicks = () => {};
-  const deleteHandler = () => {};
+  // const duplicateHandler = async () => {
+  //   try {
+  //     const res = await duplicateFile(file._id).unwrap();
+
+  //     toast.success(res?.message);
+
+  //     setTimeout(() => {
+  //       setOpenDialog(false);
+  //       window.location.reload();
+  //     }, 500);
+  //   } catch (err) {
+  //       console.log(err);
+  //       toast.error(err?.data?.message || err.error);
+  //   }
+  // };
+
+  const deleteClicks = () => {
+    setOpenDialog(true);
+  };
+
+  const editFileHandler = (file) => {
+    setSelected(file);
+    setOpenEdit(true);
+  };
+
+  const deleteHandler = async () => {
+    try {
+      const res = await deleteFile({
+        id:file._id,
+        // isTrashed: "trash",
+      }).unwrap();
+
+      toast.success(res?.message);
+
+      setTimeout(() => {
+        setOpenDialog(false),
+        window.location.reload();
+      }, 500);
+    } catch (err) {
+      console.log(err);
+      toast.error(err?.data?.message || err.error);
+    }
+  };
 
   const items = [
     {
       label: "Open File",
       icon: <AiTwotoneFolderOpen className='mr-2 h-5 w-5' aria-hidden='true' />,
-      onClick: () => navigate(`/file/${file._id}`),
+      onClick: () => window.open(file.file, '_blank', 'noopener,noreferrer'),
     },
     {
       label: "Edit",
       icon: <MdOutlineEdit className='mr-2 h-5 w-5' aria-hidden='true' />,
-      onClick: () => setOpenEdit(true),
+      onClick: () => editFileHandler(file),
     },
-    {
-      label: "Duplicate",
-      icon: <HiDuplicate className='mr-2 h-5 w-5' aria-hidden='true' />,
-      onClick: () => duplicateHandler(),
-    },
+    // {
+    //   label: "Duplicate",
+    //   icon: <HiDuplicate className='mr-2 h-5 w-5' aria-hidden='true' />,
+    //   onClick: () => duplicateHandler(),
+    // },
   ];
 
   return (
@@ -99,10 +145,10 @@ const FileDialog = ({ file }) => {
         </Menu>
       </div>
 
-      <AddFiles
+      <AddFile
         open={openEdit}
         setOpen={setOpenEdit}
-        file={file}
+        fileData={selected}
         key={new Date().getTime()}
       />
 
@@ -114,5 +160,5 @@ const FileDialog = ({ file }) => {
     </>
   );
 };
-
+ 
 export default FileDialog;

@@ -18,7 +18,7 @@ const TaskDialog = ({ task }) => {
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
- 
+  
   const [duplicateTask] = useDuplicateTaskMutation();
   const [deleteTask] = useTrashTaskMutation();
   const navigate = useNavigate();

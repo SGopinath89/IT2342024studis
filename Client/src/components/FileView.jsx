@@ -5,16 +5,46 @@ import moment from "moment";
 import Button from './Button';
 import React, { useState } from "react";
 import FileDialog from "./userFiles/FileDialog";
+import { useDeleteFileMutation } from "../redux/slices/api/filesApiSlice";
+import { toast } from "sonner";
+import AddFile from "./userFiles/AddFiles";
+import ConfirmatioDialog from "./Dialogs";
 
 const FileView = ({ files }) => {
     const [openDialog, setOpenDialog] = useState(false);
-
+    const [openEdit, setOpenEdit] = useState(false);
     const [selected, setSelected] = useState(null);
+// console.log(files);
+    const [deleteFIle] = useDeleteFileMutation();
 
     const deleteClicks = (id) => {
-        setSelected(id);
-        setOpenDialog(true);
-      };
+      setSelected(id);
+      setOpenDialog(true);
+    };
+  
+    const editFileHandler = (file) => {
+      setSelected(file);
+      setOpenEdit(true);
+    };
+
+    const deleteHandler = async () => {
+      try {
+        const res = await deleteFIle({
+          id: selected,
+          isTrashed: "trash",
+        }).unwrap();
+  
+        toast.success(res?.message);
+  
+        setTimeout(() => {
+          setOpenDialog(false),
+          window.location.reload();
+        }, 500);
+      } catch (err) {
+        console.log(err);
+        toast.error(err?.data?.message || err.error);
+      }
+    };
 
     const TableHeader = () => (
         <thead className='border-b border-gray-300 '>
@@ -48,7 +78,7 @@ const FileView = ({ files }) => {
           <td className='py-2'>
             <div className='flex items-center gap-3'>    
               <div>
-                <p> <FileDialog file={file} /></p>
+                <FileDialog file={file} />
               </div>
             </div>
           </td>
@@ -59,13 +89,14 @@ const FileView = ({ files }) => {
                 className='text-blue-600 hover:text-blue-500 sm:px-0 text-sm md:text-base'
                 label='Edit'
                 type='button'
+                onClick={() => editFileHandler(file)}
             />
 
             <Button
                 className='text-red-700 hover:text-red-500 sm:px-0 text-sm md:text-base'
                 label='Delete'
                 type='button'
-                onClick={() => deleteClicks(files._id)}
+                onClick={() => deleteClicks(file._id)}
             />
         </td>
     </tr>
@@ -73,6 +104,7 @@ const FileView = ({ files }) => {
 
     
       return (
+        <>
         <div className='w-full bg-white px-2 md:px-4 pt-4 pb-4 shadow-md rounded'>
           <table className='w-full mb-5'>
             <TableHeader />
@@ -83,6 +115,18 @@ const FileView = ({ files }) => {
             </tbody>
           </table>
         </div>
+        <ConfirmatioDialog
+        open={openDialog}
+        setOpen={setOpenDialog}
+        onClick={deleteHandler}
+      />
+      <AddFile
+        open={openEdit}
+        setOpen={setOpenEdit}
+        fileData={selected}
+        key={new Date().getTime()}
+      />
+        </>
       );
 }
 

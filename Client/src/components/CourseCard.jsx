@@ -1,21 +1,14 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
-import clsx from "clsx";
 import React, { useState } from "react";
-import { MdAttachFile, MdDelete, MdEdit, MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboardDoubleArrowUp, MdOutlineRestore } from "react-icons/md";
+import { MdAttachFile, MdDelete, MdEdit } from "react-icons/md";
 import { useSelector } from "react-redux";
-import { BGS, PRIOTITYSTYELS, TASK_TYPE, formatDate } from "../utils";
-import TaskDialog from "./task/TaskDialog";
-import { BiMessageAltDetail } from "react-icons/bi";
-import { FaList } from "react-icons/fa";
-import { IoMdAdd } from "react-icons/io";
-import AddSubTask from "./task/AddSubTask";
-import Button from "./Button";
-import ConfirmatioDialog from "./Dialogs";
 import { toast } from "sonner";
 import { useDeleteCourseMutation } from "../redux/slices/api/courseApiSlice";
 import AddCourse from "./AddCourse";
+import Button from "./Button";
+import ConfirmatioDialog from "./Dialogs";
 
 const CourseCard = ({ course }) => {
   const { user } = useSelector((state) => state.auth);
@@ -62,14 +55,26 @@ const CourseCard = ({ course }) => {
           <div className='flex flex-1 gap-1 items-center font-medium'>
             <span className='text-lg'> {course?.courseCode}</span>
           </div>
-          <Button
+          {user?.isAdmin && (
+            <div className='flex gap-2'>
+            <Button
+              icon={<MdEdit className='text-xl text-gray-600' />}
+              onClick={() => editClick(course._id)}
+            />
+            <Button
+              icon={<MdDelete className='text-xl text-red-600' />}
+              onClick={() => deleteClick(course._id)}
+            />
+          </div>
+          )}
+          {/* <Button
             icon={<MdEdit className='text-xl text-gray-600' />}
             onClick={() => editClick(course._id)}
           />
           <Button
             icon={<MdDelete className='text-xl text-red-600' />}
             onClick={() => deleteClick(course._id)}
-          />
+          /> */}
         </div>
         <div className='flex items-center gap-2'>
           <h4 className='text-black text-sm'>Title: {course?.title}</h4>
@@ -79,6 +84,24 @@ const CourseCard = ({ course }) => {
         </div>
         <div className='flex items-center gap-2'>
           <h4 className='text-black text-sm'>Course duration: {course?.duration}</h4>
+        </div>
+        <div className='flex items-center gap-2'>
+          <h4 className='text-black text-sm'>
+            {/* Course content:{" "} */}
+            {course?.courseContent ? (
+              <a
+                href={course.courseContent}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='text-blue-600 underline flex items-center gap-1'
+              >
+                <MdAttachFile className='text-lg' />
+                View Course Content
+              </a>
+            ) : (
+              "No content available"
+            )}
+          </h4>
         </div>
         <div className='w-full border-t border-gray-200 my-2' />
       </div>

@@ -2,30 +2,30 @@ import express from 'express';
 import { protectRoute, isFileUploader } from "../middlewares/authMiddleware.js";
 import {
     uploadFile,
-    duplicateFile,
+    //duplicateFile,
     getFiles,
     getFile,
     renameFile,
     trashFile,
-    deleteRestoreFile,
+    deleteFile,
 } from "../controllers/fileController.js";
 
 const router = express.Router();
 
 router.post("/upload", protectRoute, uploadFile);
-router.post("/duplicate/:id", protectRoute, isFileUploader, duplicateFile);
+// router.post("/duplicate/:id", protectRoute, isFileUploader, duplicateFile);
 
 router.get("/", protectRoute, getFiles);
 router.get("/:id", protectRoute, getFile);
 
 router.put("/rename/:id", protectRoute, isFileUploader, renameFile);
 router.put("/:id", protectRoute, isFileUploader, trashFile);
-
+ 
 router.delete(
-    "/delete-restore/:id?",
+    "/delete/:id?",
     protectRoute,
     isFileUploader,
-    deleteRestoreFile
+    deleteFile,
 );
 
 export default router;

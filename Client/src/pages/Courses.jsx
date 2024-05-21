@@ -3,6 +3,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import CourseView from '../components/CourseView';
 import Loading from '../components/Loader';
 import Title from '../components/Title';
@@ -12,6 +13,7 @@ import { IoMdAdd } from 'react-icons/io';
 import AddCourse from '../components/AddCourse';
 
 const Courses = ({ course }) => {
+  const { user } = useSelector((state) => state.auth);
   const params = useParams();
  
 
@@ -33,12 +35,15 @@ const Courses = ({ course }) => {
     <div className='w-full'>
       <div className='flex items-center justify-between mb-4'>
         <Title title={status ? `${status} courses` : "Courses"} />
-        <Button
+        {user?.isAdmin && (
+          <Button
             onClick={() => setOpen(true)}
             label='Add Course'
             icon={<IoMdAdd className='text-lg' />}
             className='flex flex-row-reverse gap-1 items-center bg-blue-600 text-white rounded-md py-2 2xl:py-2.5'
           />
+        )}
+        
       </div>
 
       <div className='w-full flex justify-between gap-4 md:gap-x-6 py-4'>
