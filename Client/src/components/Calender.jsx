@@ -1,37 +1,44 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React from 'react';
-import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
+import React, { useState } from 'react';
+import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-
 import "../index.css";
+import EventDialog from './userEvents/EventDialog.jsx';
+import AddEvent from './userEvents/AddEvent.jsx';
 
 const localizer = momentLocalizer(moment);
 
 const Calender = ({ events }) => {
-  const renderEvents = ({ date }) => {
-    const dayEvents = events.filter(event =>
-      date >= new Date(event.start) && date <= new Date(event.end)
-    ); return dayEvents.length ? (
-      <ul>
-        {dayEvents.map(event => (
-          <li key={event.id}>{event.title}</li>
-        ))}
-      </ul>
-    ) : null;
-  };
-    return (
-      <div className="App w-full">
-        <BigCalendar
-          localizer={localizer}
-          events={events}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: 500 }}
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleSelectEvent = (event) => {
+    setSelectedEvent(event);
+    setOpen(true);
+  };  
+
+  return (
+    <div className="App w-full">
+      <BigCalendar
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+        style={{ height: 500 }}
+        onSelectEvent={handleSelectEvent}
+      />
+      {selectedEvent && (
+        <AddEvent
+          open={open}
+          setOpen={setOpen}
+          event={selectedEvent}
         />
-      </div>
-    );
-  };
+      )}
+    </div>
+  );
+};
 
 export default Calender;

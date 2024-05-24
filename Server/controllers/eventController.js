@@ -109,14 +109,13 @@ export const updateEvent = async (req, res) => {
     try {
         
         const { id } = req.params;
-        const { eventName, date, startTime, duration, description } = req.body;
+        const { eventName, startTime, endTime, description } = req.body;
 
-        const event = await Event.findById(id);
+        const event = await Event.findByIdAndUpdate(id);
 
         event.eventName = eventName;
-        event.date = date;
         event.startTime = startTime;
-        event.duration = duration;
+        event.endTime = endTime;
         event.description = description;
 
         await event.save();

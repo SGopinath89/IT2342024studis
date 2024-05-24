@@ -5,12 +5,15 @@ import moment from "moment";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useCreateEventMutation, useUpdateEventMutation } from "../../redux/slices/api/eventApiSlice";
+import { useCreateEventMutation, useDeleteEventMutation, useUpdateEventMutation } from "../../redux/slices/api/eventApiSlice";
 import Button from "../Button";
 import ModalWrapper from "../ModalWrapper";
 import Textbox from "../Textbox";
+import ConfirmatioDialog from "../Dialogs";
  
 const AddEvent = ({ open, setOpen, event }) => {
+  const [openDialog, setOpenDialog] = useState(false);
+
   const defaultValues =  {
     eventName: event?.eventName || "",
     startTime: event?.startTime ? new Date(event.startTime).toISOString().slice(0, 16) : "",
@@ -26,28 +29,7 @@ const AddEvent = ({ open, setOpen, event }) => {
 
   const [createEvent, { isLoading }] = useCreateEventMutation();
   const [updateEvent, { isLoading: isUpdating }] = useUpdateEventMutation();
-
-  const [events, setEvents] = useState([
-    {
-      id: 0,
-      title: 'Existing Event',
-      start: new Date(),
-      end: new Date(moment().add(1, 'hours').toDate()),
-      description: 'This is an existing event',
-    },
-  ]);
-
-  const [newEvent, setNewEvent] = useState({
-    title: '',
-    start: '',
-    end: '',
-    description: '',
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewEvent({ ...newEvent, [name]: value });
-  };
+  const [deleteEvent] = useDeleteEventMutation();
 
   const submitHandler = async(data) => {
     try {
@@ -74,6 +56,28 @@ const AddEvent = ({ open, setOpen, event }) => {
     }
   };
 
+  const deleteClicks = () => {
+    setOpenDialog(true);
+  };
+
+  const deleteHandler = async () => {
+    try {
+      const res = await deleteEvent({
+        id:event.id,
+        // isTrashed: "trash",
+      }).unwrap();
+
+      toast.success(res?.message);
+
+      setTimeout(() => {
+        setOpenDialog(false),
+        window.location.reload();
+      }, 500);
+    } catch (err) {
+      console.log(err);
+      toast.error(err?.data?.message || err.error);
+    }
+  };
 
   return (
     <>
@@ -136,7 +140,13 @@ const AddEvent = ({ open, setOpen, event }) => {
               />
               <Button
                 type="button"
-                className="bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto"
+                className="bg-red-600 px-5 text-sm font-semibold text-white hover:bg-red-700 sm:w-auto"
+                onClick={() => deleteClicks()}
+                label="Delete"
+              />
+              <Button
+                type="button"
+                className="bg-gray-200 px-5 text-sm font-semibold text-gray-900 hover:bg-gray-400 sm:w-auto"
                 onClick={() => setOpen(false)}
                 label="Cancel"
               />
@@ -144,6 +154,11 @@ const AddEvent = ({ open, setOpen, event }) => {
           </div>
         </form>
       </ModalWrapper>
+      <ConfirmatioDialog
+        open={openDialog}
+        setOpen={setOpenDialog}
+        onClick={deleteHandler}
+      />
     </>
   );
 };

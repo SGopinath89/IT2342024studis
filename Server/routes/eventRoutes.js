@@ -22,10 +22,10 @@ router.put("/update/:id", protectRoute, isEventCreator, updateEvent);
 router.put("/:id", protectRoute, isEventCreator, trashEvent);
 
 router.delete(
-    "/delete/:id?",
+    "/delete/:id",
     protectRoute,
     isEventCreator,
     deleteEvent
 );
-
+ 
 export default router;
