@@ -4,13 +4,12 @@ import Notice from "../models/notification.js";
 export const createEvent = async (req, res) => {
     try {
         const { userId } = req.user;
-        const { eventName, date, startTime, duration, description } = req.body;
+        const { eventName, startTime, endTime, description } = req.body;
         
         const event = await Event.create({
-            eventName, 
-            date, 
+            eventName,  
             startTime,
-            duration, 
+            endTime, 
             description,
             createdBy: userId,
         });
@@ -149,26 +148,11 @@ export const trashEvent = async (req, res) => {
     }
 };
 
-export const deleteRestoreEvent = async (req, res) => {
+export const deleteEvent = async (req, res) => {
     try {
         const { id } = req.params;
-        const { actionType } = req.query;
 
-        if(actionType === "delete"){
-            await Event.findByIdAndDelete(id);
-        } else if(actionType === "deleteAll"){
-            await Event.deleteMany({ isTrashed: true });
-        } else if(actionType === "restore"){
-            const resp = await Event.findById(id);
-
-            resp.isTrashed = false;
-            resp.save();
-        } else if(actionType === "restoreAll"){
-            await Event.updateMany(
-                { isTrashed: true },
-                { $set: { isTrashed: false }},
-            );
-        }
+        await Event.findByIdAndDelete(id);
 
         res.status(200).json({
             status: true,

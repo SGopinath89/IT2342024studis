@@ -20,7 +20,7 @@ import { dateFormatter } from "../../utils/index.js";
 import { useCreateTaskMutation, useUpdateTaskMutation } from "../../redux/slices/api/taskApiSlice";
 const LISTS = ["IN PROGRESS", "COMPLETED"];
 const PRIORIRY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
-
+ 
 const uploadedFileURLs = [];
 
 const AddTask = ({ open, setOpen, task }) => {

@@ -81,7 +81,7 @@ const TaskTable = ({ tasks }) => {
 const FileTable = ({ files }) => {
   const TableHeader = () => (
     <thead className='border-b border-gray-300 '>
-      <tr className='text-black  text-left'>
+      <tr className='text-black text-left'>
         <th className='py-2'>File Name</th>
         <th className='py-2'>Date Added</th>
       </tr>
@@ -176,8 +176,9 @@ const Dashboard = () => {
       </div>
     );
   };
+
   return (
-    <div className='h-full py-4'>
+    <div className='h-full py-4 bg-[#F8F9FA]'>
       <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
         {stats.map(({ icon, bg, label, total }, index) => (
           <Card key={index} icon={icon} bg={bg} label={label} count={total} />

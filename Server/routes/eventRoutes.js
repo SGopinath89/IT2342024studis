@@ -7,9 +7,9 @@ import {
     getEvent,
     updateEvent,
     trashEvent,
-    deleteRestoreEvent,
+    deleteEvent,
 } from "../controllers/eventController.js";
-
+ 
 const router = express.Router();
 
 router.post("/create", protectRoute, createEvent);
@@ -22,10 +22,10 @@ router.put("/update/:id", protectRoute, isEventCreator, updateEvent);
 router.put("/:id", protectRoute, isEventCreator, trashEvent);
 
 router.delete(
-    "/delete-restore/:id?",
+    "/delete/:id?",
     protectRoute,
     isEventCreator,
-    deleteRestoreEvent
+    deleteEvent
 );
 
 export default router;

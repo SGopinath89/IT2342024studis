@@ -2,14 +2,14 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
-import { summary } from "../assets/data";
-import Calender from "../components/Calender";
-import Title from '../components/Title';
+import { IoMdAdd } from "react-icons/io";
 import { useParams } from "react-router-dom";
 import Button from "../components/Button";
-import { IoMdAdd } from "react-icons/io";
-import AddEvent from '../components/userEvents/AddEvent';
 import EventView from '../components/EventView';
+import Loading from '../components/Loader';
+import Title from '../components/Title';
+import AddEvent from '../components/userEvents/AddEvent';
+import { useGetAllEventsQuery } from '../redux/slices/api/eventApiSlice';
 
 const TimeTable = () => {
   const params = useParams();
@@ -19,8 +19,16 @@ const TimeTable = () => {
   const [loading, setLoading] = useState(false);
 
   const status = params?.status || "";
+ 
+  const {data, isLoading} = useGetAllEventsQuery({
+    isTrashed: "",
+  });
 
-  return (
+  return isLoading ? (
+    <div className='py-10'>
+      <Loading />
+    </div>
+  ) : (
     <div className='w-full'>
       <div className='flex items-center justify-between mb-4'>
         <Title title={status ? `${status} timetable` : "TimeTable"} />
