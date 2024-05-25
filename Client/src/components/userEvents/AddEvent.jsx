@@ -2,10 +2,15 @@
 /* eslint-disable no-unused-vars */
 import { DialogTitle } from "@headlessui/react";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useCreateEventMutation, useDeleteEventMutation, useUpdateEventMutation } from "../../redux/slices/api/eventApiSlice";
+import { 
+  useCreateEventMutation, 
+  useDeleteEventMutation, 
+  useDuplicateEventMutation, 
+  useUpdateEventMutation 
+} from "../../redux/slices/api/eventApiSlice";
 import Button from "../Button";
 import ModalWrapper from "../ModalWrapper";
 import Textbox from "../Textbox";
@@ -14,34 +19,43 @@ import ConfirmatioDialog from "../Dialogs";
 const AddEvent = ({ open, setOpen, event }) => {
   const [openDialog, setOpenDialog] = useState(false);
 
-  const defaultValues =  {
-    eventName: event?.eventName || "",
-    startTime: event?.startTime ? new Date(event.startTime).toISOString().slice(0, 16) : "",
-    endTime: event?.endTime ? new Date(event.endTime).toISOString().slice(0, 16) : "",
-    description: event?.description || "",
-  };
-
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({defaultValues});
+    reset,
+  } = useForm({});
+
+  useEffect(() => {
+    if (event) {
+      const defaultValues = {
+        id: event.id || "",
+        eventName: event.title || "",
+        startTime: event.start ? new Date(event.start).toISOString().slice(0, 16) : "",
+        endTime: event.end ? new Date(event.end).toISOString().slice(0, 16) : "",
+        description: event.description || "",
+      };
+      reset(defaultValues);
+    }
+  }, [event, reset]);
 
   const [createEvent, { isLoading }] = useCreateEventMutation();
   const [updateEvent, { isLoading: isUpdating }] = useUpdateEventMutation();
+  const [duplicateEvent] = useDuplicateEventMutation();
   const [deleteEvent] = useDeleteEventMutation();
 
   const submitHandler = async(data) => {
     try {
       const eventData = {
+        id: data.id,
         eventName: data.eventName,
         startTime: new Date(data.startTime),
         endTime: new Date(data.endTime),
         description: data.description,
       };
 
-      const res = event?._id
-        ? await updateEvent({ ...eventData, _id: event._id }).unwrap()
+      const res = event?.id
+        ? await updateEvent({ ...eventData, _id: event.id }).unwrap()
         : await createEvent(eventData).unwrap();
       
       toast.success(res.message);
@@ -76,6 +90,22 @@ const AddEvent = ({ open, setOpen, event }) => {
     } catch (err) {
       console.log(err);
       toast.error(err?.data?.message || err.error);
+    }
+  };
+
+  const duplicateHandler = async () => {
+    try {
+      const res = await duplicateEvent(event.id).unwrap();
+
+      toast.success(res?.message);
+
+      setTimeout(() => {
+        setOpenDialog(false);
+        window.location.reload();
+      }, 500);
+    } catch (err) {
+        console.log(err);
+        toast.error(err?.data?.message || err.error);
     }
   };
 
@@ -139,6 +169,12 @@ const AddEvent = ({ open, setOpen, event }) => {
                 loading={isLoading || isUpdating}
               />
               <Button
+                type="button"
+                className="bg-purple-600 px-5 text-sm font-semibold text-white hover:bg-purple-700 sm:w-auto"
+                onClick={() => duplicateHandler()}
+                label="Duplicae"
+              />
+               <Button
                 type="button"
                 className="bg-red-600 px-5 text-sm font-semibold text-white hover:bg-red-700 sm:w-auto"
                 onClick={() => deleteClicks()}

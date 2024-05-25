@@ -24,7 +24,6 @@ const EventView = () => {
         end: new Date(event.endTime),
         description: event.description,
       }));
-      console.log(formattedEvents);
       setEvents(formattedEvents);
     }
   }, [allEvents]);

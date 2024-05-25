@@ -5,20 +5,19 @@ import React, { useState } from 'react';
 import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import "../index.css";
-import EventDialog from './userEvents/EventDialog.jsx';
 import AddEvent from './userEvents/AddEvent.jsx';
 
 const localizer = momentLocalizer(moment);
 
 const Calender = ({ events }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
   const [open, setOpen] = useState(false);
 
   const handleSelectEvent = (event) => {
     setSelectedEvent(event);
     setOpen(true);
   };  
+
 
   return (
     <div className="App w-full">

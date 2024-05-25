@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
@@ -20,7 +21,7 @@ import { useAddFileMutation, useRenameFileMutation } from "../../redux/slices/ap
 import Loading from "../Loader.jsx";
 
 const AddFile = ({ open, setOpen, fileData }) => {
-  //console.log(fileData);
+
     const defaultValues = {
         _id: fileData?._id || "",
         fileName: fileData?.fileName || "",
@@ -59,7 +60,7 @@ const AddFile = ({ open, setOpen, fileData }) => {
                 setFileLink(fileUrl);
                 setUploading(false);
             }
-            console.log(data._id);
+  
             const res = data._id
                 ? await renameFile({ id: data._id, data }).unwrap()
                 : await addNewFile(data).unwrap();

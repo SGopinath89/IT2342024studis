@@ -32,9 +32,8 @@ export const duplicateEvent = async (req, res) => {
 
         const newEvent = await Event.create({
             eventName: event.eventName + " - Duplicate",
-            date: event.date,
             startTime: event.startTime,
-            duration: event.duration,
+            endTime: event.endTime,
             description: event.description,
             createdBy: userId,
         });
@@ -110,14 +109,17 @@ export const updateEvent = async (req, res) => {
         
         const { id } = req.params;
         const { eventName, startTime, endTime, description } = req.body;
-
+ 
         const event = await Event.findByIdAndUpdate(id);
-
-        event.eventName = eventName;
-        event.startTime = startTime;
-        event.endTime = endTime;
-        event.description = description;
-
+        if (!event) {
+            return res.status(404).json({ status: false, message: "Event not found" });
+        }
+        
+        event.eventName = eventName || event.eventName;
+        event.startTime = startTime || event.startTime;
+        event.endTime = endTime || event.endTime;
+        event.description = description || event.description;
+        
         await event.save();
 
         res
