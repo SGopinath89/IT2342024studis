@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaList } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import { MdGridView } from "react-icons/md";

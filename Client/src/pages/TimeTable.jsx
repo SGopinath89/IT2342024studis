@@ -1,7 +1,4 @@
-/* eslint-disable no-undef */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { IoMdAdd } from "react-icons/io";
 import { useParams } from "react-router-dom";
 import Button from "../components/Button";
@@ -14,13 +11,11 @@ import { useGetAllEventsQuery } from '../redux/slices/api/eventApiSlice';
 const TimeTable = () => {
   const params = useParams();
 
-  const [selected, setSelected] = useState(0);
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const status = params?.status || "";
  
-  const {data, isLoading} = useGetAllEventsQuery({
+  const {isLoading} = useGetAllEventsQuery({
     isTrashed: "",
   });
 

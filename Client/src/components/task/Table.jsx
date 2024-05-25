@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import { useState } from "react";
 import { BiMessageAltDetail } from "react-icons/bi";
 import {
   MdAttachFile,
@@ -9,14 +8,18 @@ import {
   MdKeyboardDoubleArrowUp,
 } from "react-icons/md";
 import { toast } from "sonner";
-import { BGS, PRIOTITYSTYELS, TASK_TYPE, formatDate } from "../../utils";
+import { 
+  PRIOTITYSTYELS, 
+  TASK_TYPE, 
+  formatDate 
+} from "../../utils";
 import clsx from "clsx";
 import { FaList } from "react-icons/fa";
-import UserInfo from "../UserInfo";
 import Button from "../Button";
 import ConfirmatioDialog from "../Dialogs";
 import { useTrashTaskMutation } from "../../redux/slices/api/taskApiSlice";
 import AddTask from "./AddTask";
+import PropTypes from 'prop-types';
 
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,
@@ -135,6 +138,7 @@ const Table = ({ tasks }) => {
       </td>
     </tr>
   );
+
   return (
     <>
       <div className='bg-white  px-2 md:px-4 pt-4 pb-9 shadow-md rounded'>
@@ -163,6 +167,10 @@ const Table = ({ tasks }) => {
       />
     </>
   );
+};
+
+Table.propTypes = {
+  tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default Table;

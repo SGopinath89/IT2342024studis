@@ -11,7 +11,7 @@ const userSchema = new Schema({
     contact: { type: String, },
     birthday: { type: Date, },
     academicBatch: { type: String, },
-    profilePic: { data: Buffer, contentType: String },
+    profilePic: { type: String },
     isAdmin: { type: Boolean, required: true, default: false },
     tasks: [{ type: Schema.Types.ObjectId, ref: "Task" }],
     isActive: { type: Boolean, required: true, default: false },

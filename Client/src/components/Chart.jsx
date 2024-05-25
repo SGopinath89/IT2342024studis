@@ -1,6 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React from "react";
 import {
   Bar,
   BarChart,
@@ -8,17 +5,17 @@ import {
   Legend,
   ResponsiveContainer,
   Tooltip,
-  XAxis,
-  YAxis,
+  XAxis as RechartsXAxis,
+  YAxis as RechartsYAxis,
 } from "recharts";
-
+import PropTypes from 'prop-types';
 
 export const Chart = ({data}) => {
   return (
     <ResponsiveContainer width={"100%"} height={300}>
       <BarChart width={150} height={40} data={data}>
-        <XAxis dataKey='name' />
-        <YAxis />
+        <RechartsXAxis dataKey={'name'} />
+        <RechartsYAxis />
         <Tooltip />
         <Legend />
         <CartesianGrid strokeDasharray='3 3' />
@@ -26,4 +23,8 @@ export const Chart = ({data}) => {
       </BarChart>
     </ResponsiveContainer>
   );
+};
+
+Chart.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

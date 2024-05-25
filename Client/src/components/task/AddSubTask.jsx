@@ -1,12 +1,11 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
 import ModalWrapper from "../ModalWrapper";
-import { Dialog, DialogTitle } from "@headlessui/react";
+import { DialogTitle } from "@headlessui/react";
 import Textbox from "../Textbox";
 import Button from "../Button";
 import { useCreateSubtaskMutation } from "../../redux/slices/api/taskApiSlice";
 import { toast } from "sonner";
+import PropTypes from 'prop-types';
 
 const AddSubTask = ({ open, setOpen, id }) => {
   const {
@@ -85,6 +84,12 @@ const AddSubTask = ({ open, setOpen, id }) => {
       </ModalWrapper>
     </>
   );
+};
+
+AddSubTask.propTypes = {
+  open: PropTypes.bool.isRequired, 
+  setOpen: PropTypes.func.isRequired, 
+  id: PropTypes.string,
 };
 
 export default AddSubTask;

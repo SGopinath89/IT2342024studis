@@ -1,87 +1,80 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React, { useState } from "react";
-import ModalWrapper from "../ModalWrapper";
-import { Dialog, DialogTitle } from "@headlessui/react";
-import Textbox from "../Textbox";
-import { useForm } from "react-hook-form";
-import SelectList from "../SelectList";
-import { BiImages } from "react-icons/bi";
-import Button from "../Button";
+import { DialogTitle } from "@headlessui/react";
 import {
-  getStorage, 
-  ref, 
   getDownloadURL,
+  getStorage,
+  ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import {app} from "../../utils/firebase.js";
+import PropTypes from 'prop-types';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { BiImages } from "react-icons/bi";
 import { toast } from "sonner";
+import {
+  useCreateTaskMutation,
+  useUpdateTaskMutation
+} from "../../redux/slices/api/taskApiSlice";
+import { app } from "../../utils/firebase.js";
 import { dateFormatter } from "../../utils/index.js";
-import { useCreateTaskMutation, useUpdateTaskMutation } from "../../redux/slices/api/taskApiSlice";
+import Button from "../Button";
+import ModalWrapper from "../ModalWrapper";
+import SelectList from "../SelectList";
+import Textbox from "../Textbox";
+
 const LISTS = ["IN PROGRESS", "COMPLETED"];
-const PRIORIRY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
- 
+const PRIORITY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
+
 const uploadedFileURLs = [];
 
 const AddTask = ({ open, setOpen, task }) => {
   const defaultValues =  {
     title: task?.title || "",
-    date: dateFormatter(task?.date ||  new Date()),
-    team: [],
-    stage: "",
-    priority: "",
-    assets: [],
+    date: dateFormatter(task?.date || new Date()),
+    team: task?.team || [],
+    stage: task?.stage?.toUpperCase() || LISTS[0],
+    priority: task?.priority?.toUpperCase() || PRIORITY[2],
+    assets: task?.assets || [],
   };
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({defaultValues});
+  } = useForm({ defaultValues });
 
   const [stage, setStage] = useState(task?.stage?.toUpperCase() || LISTS[0]);
-  const [priority, setPriority] = useState(
-    task?.priority?.toUpperCase() || PRIORIRY[2]
-  );
+  const [priority, setPriority] = useState(task?.priority?.toUpperCase() || PRIORITY[2]);
   const [assets, setAssets] = useState([]);
   const [uploading, setUploading] = useState(false);
 
-  const [createTask, { isLoading }] = useCreateTaskMutation();
-  const [updateTask, { isLoading: isUpdating }] = useUpdateTaskMutation();
+  const [createTask] = useCreateTaskMutation();
+  const [updateTask] = useUpdateTaskMutation();
   const URLS = task?.assets ? [...task.assets] : [];
 
   const submitHandler = async(data) => {
-    console.log("submit start");
-    for (const file of assets){
+    for (const file of assets) {
       setUploading(true);
-      console.log("upload start");
       try {
         await uploadFile(file);
-        console.log("upload");
       } catch (error) {
         console.error("Error uploading file:", error.message);
         return;
       } finally {
         setUploading(false);
-        console.log("upload done");
       }
     }
-    console.log("file creation");
 
     try {
-      console.log("task start");
       const newData = {
         ...data,
         assets: [...URLS, ...uploadedFileURLs],
         stage,
         priority,
       };
-      console.log("task create");
       const res = task?._id
         ? await updateTask({ ...newData, _id: task._id }).unwrap()
         : await createTask(newData).unwrap();
       toast.success(res.message);
-      console.log("task done");
       setTimeout(() => {
         setOpen(false);
       }, 500);
@@ -94,6 +87,7 @@ const AddTask = ({ open, setOpen, task }) => {
   const handleSelect = (e) => {
     setAssets(e.target.files);
   };
+
   const uploadFile = async (file) => {
     const storage = getStorage(app);
     const name = new Date().getTime() + file.name;
@@ -103,24 +97,18 @@ const AddTask = ({ open, setOpen, task }) => {
     return new Promise((resolve, reject) => {
       uploadTask.on(
         "state_changed",
-        (snapshot) => {
-          console.log("Uploading");
-        },
+        () => {},
         (error) => {
           console.error("Error uploading file:", error);
           reject(error);
         },
         () => {
-          // Upload completed successfully, get download URL
           getDownloadURL(uploadTask.snapshot.ref)
             .then((downloadURL) => {
-              // Add download URL to the list of uploadedFileURLs
               uploadedFileURLs.push(downloadURL);
-              // Resolve the promise with the download URL
               resolve(downloadURL);
             })
             .catch((error) => {
-              // Handle error while getting download URL
               console.error("Error getting download URL:", error);
               reject(error);
             });
@@ -128,7 +116,6 @@ const AddTask = ({ open, setOpen, task }) => {
       );
     });
   };
-  
 
   return (
     <>
@@ -178,7 +165,7 @@ const AddTask = ({ open, setOpen, task }) => {
             <div className='flex gap-4'>
               <SelectList
                 label='Priority Level'
-                lists={PRIORIRY}
+                lists={PRIORITY}
                 selected={priority}
                 setSelected={setPriority}
               />
@@ -227,6 +214,20 @@ const AddTask = ({ open, setOpen, task }) => {
       </ModalWrapper>
     </>
   );
+};
+
+AddTask.propTypes = {
+  open: PropTypes.bool.isRequired,
+  setOpen: PropTypes.func.isRequired,
+  task: PropTypes.shape({
+    _id: PropTypes.string,
+    title: PropTypes.string,
+    date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+    team: PropTypes.arrayOf(PropTypes.string),
+    stage: PropTypes.string,
+    priority: PropTypes.string,
+    assets: PropTypes.arrayOf(PropTypes.string),
+  }),
 };
 
 export default AddTask;

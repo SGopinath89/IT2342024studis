@@ -1,8 +1,5 @@
-/* eslint-disable no-undef */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import clsx from "clsx";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   MdDelete,
   MdKeyboardArrowDown,
@@ -10,11 +7,10 @@ import {
   MdKeyboardDoubleArrowUp,
   MdOutlineRestore,
 } from "react-icons/md";
-import { tasks } from "../assets/data";
+import PropTypes from 'prop-types';
 import Title from "../components/Title";
 import Button from "../components/Button";
 import { PRIOTITYSTYELS, TASK_TYPE } from "../utils";
-import AddUser from "../components/AddUser";
 import ConfirmatioDialog from "../components/Dialogs";
 import { useDeleteRestoreTaskMutation, useGetAllTaskQuery } from "../redux/slices/api/taskApiSlice";
 import Loading from "../components/Loader";
@@ -28,7 +24,6 @@ const ICONS = {
 
 const Trash = () => {
   const [openDialog, setOpenDialog] = useState(false);
-  const [open, setOpen] = useState(false);
   const [msg, setMsg] = useState(null);
   const [type, setType] = useState("delete");
   const [selected, setSelected] = useState("");
@@ -216,6 +211,16 @@ const Trash = () => {
       />
     </>
   );
+};
+
+Trash.propTypes = {
+  item: PropTypes.shape({
+    _id: PropTypes.string,
+    title: PropTypes.string,
+    date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+    stage: PropTypes.string,
+    priority: PropTypes.string,
+  }),
 };
 
 export default Trash;

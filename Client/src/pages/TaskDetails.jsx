@@ -1,9 +1,13 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import clsx from "clsx";
 import moment from "moment";
-import React, { useState } from "react";
-import { FaBug, FaTasks, FaThumbsUp, FaUser } from "react-icons/fa";
+import PropTypes from 'prop-types';
+import { useState } from "react";
+import {
+  FaBug,
+  FaTasks,
+  FaThumbsUp,
+  FaUser
+} from "react-icons/fa";
 import { GrInProgress } from "react-icons/gr";
 import {
   MdKeyboardArrowDown,
@@ -16,19 +20,17 @@ import {
 import { RxActivityLog } from "react-icons/rx";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { tasks } from "../assets/data";
-import Tabs from "../components/Tabs";
-import { PRIOTITYSTYELS, TASK_TYPE, getInitials } from "../utils";
-import Loading from "../components/Loader";
 import Button from "../components/Button";
-import { useGetSigleTaskQuery, usePostTaskActivityMutation } from "../redux/slices/api/taskApiSlice";
-
-const assets = [
-  "https://images.pexels.com/photos/2418664/pexels-photo-2418664.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  "https://images.pexels.com/photos/8797307/pexels-photo-8797307.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  "https://images.pexels.com/photos/2534523/pexels-photo-2534523.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  "https://images.pexels.com/photos/804049/pexels-photo-804049.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-];
+import Loading from "../components/Loader";
+import Tabs from "../components/Tabs";
+import {
+  useGetSigleTaskQuery,
+  usePostTaskActivityMutation
+} from "../redux/slices/api/taskApiSlice";
+import {
+  PRIOTITYSTYELS,
+  TASK_TYPE
+} from "../utils";
 
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,
@@ -279,13 +281,13 @@ const Activities = ({ activity, id, refetch }) => {
           Add Activity
         </h4>
         <div className='w-full flex flex-wrap gap-5'>
-          {act_types.map((item, index) => (
+          {act_types.map((item) => (
             <div key={item} className='flex gap-2 items-center'>
               <input
                 type='checkbox'
                 className='w-4 h-4'
                 checked={selected === item ? true : false}
-                onChange={(e) => setSelected(item)}
+                onChange={() => setSelected(item)}
               />
               <p>{item}</p>
             </div>
@@ -312,4 +314,65 @@ const Activities = ({ activity, id, refetch }) => {
     </div>
   );
 };
+
+TaskDetails.propTypes = {
+  data: PropTypes.shape({
+    task: PropTypes.shape({
+      _id: PropTypes.string,
+      title: PropTypes.string,
+      date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+      team: PropTypes.arrayOf(PropTypes.string),
+      stage: PropTypes.string,
+      priority: PropTypes.string,
+      assets: PropTypes.arrayOf(PropTypes.string),
+      subTasks: PropTypes.arrayOf(
+        PropTypes.shape({
+          date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+          tag: PropTypes.string,
+          title: PropTypes.string,
+        })
+      ),
+      activities: PropTypes.arrayOf(
+        PropTypes.shape({
+          type: PropTypes.string,
+          activity: PropTypes.string,
+          by: PropTypes.shape({
+            name: PropTypes.string
+          }),
+          date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+        })
+      ),
+    }),
+  }),
+  isLoading: PropTypes.bool,
+  refetch: PropTypes.func,
+};
+
+Activities.propTypes = {
+  activity: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.string,
+      activity: PropTypes.string,
+      by: PropTypes.shape({
+        name: PropTypes.string,
+      }),
+      date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+    })
+  ).isRequired,
+  item: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      type: PropTypes.string,
+      activity: PropTypes.string,
+      by: PropTypes.shape({
+        name: PropTypes.string,
+      }),
+      date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+    })
+  ).isRequired,
+  id: PropTypes.string.isRequired,
+  refetch: PropTypes.func.isRequired,
+  
+};
+
 export default TaskDetails;

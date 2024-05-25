@@ -1,8 +1,6 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import clsx from "clsx";
 import moment from "moment";
-import React from "react";
+import PropTypes from 'prop-types';
 import { FaNewspaper } from "react-icons/fa";
 import { LuClipboardEdit } from "react-icons/lu";
 import {
@@ -10,11 +8,10 @@ import {
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
   MdKeyboardDoubleArrowUp,
-  MdOutlineFileOpen,
 } from "react-icons/md";
 import { Chart } from "../components/Chart";
 import Loading from "../components/Loader";
-import { useGetDashboardStatsQuery } from "../redux/slices/api/taskApiSlice";
+import { useGetDashboardStatsQuery } from "../redux/slices/api/taskApiSlice.js";
 import { PRIOTITYSTYELS, TASK_TYPE } from "../utils";
 
 const TaskTable = ({ tasks }) => {
@@ -62,6 +59,16 @@ const TaskTable = ({ tasks }) => {
       </td>
     </tr>
   );
+
+  TableRow.propTypes = {
+    task: PropTypes.shape({
+      stage: PropTypes.string,
+      title: PropTypes.string,
+      priority: PropTypes.string,
+      date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)])
+    }).isRequired
+  };
+
   return (
     <>
       <div className='w-full md:w-2/3 bg-white px-2 md:px-4 pt-4 pb-4 shadow-md rounded'>
@@ -78,49 +85,17 @@ const TaskTable = ({ tasks }) => {
   );
 };
 
-const FileTable = ({ files }) => {
-  const TableHeader = () => (
-    <thead className='border-b border-gray-300 '>
-      <tr className='text-black text-left'>
-        <th className='py-2'>File Name</th>
-        <th className='py-2'>Date Added</th>
-      </tr>
-    </thead>
-  );
-
-  const TableRow = ({ file }) => (
-    <tr className='border-b border-gray-200  text-gray-600 hover:bg-gray-400/10'>
-      <td className='py-2'>
-        <div className='flex items-center gap-3'>
-          <a href={file.file} target="_blank" rel="noopener noreferrer">
-            <div className='w-9 h-9 rounded-full text-white flex items-center justify-center text-sm bg-violet-700'>
-              <span className='text-center'><MdOutlineFileOpen /></span>
-            </div>
-          </a>
-
-          <div>
-            <p> {file.fileName}</p>
-          </div>
-        </div>
-      </td>
-
-      <td className='py-2 text-sm'>{moment(file?.dateAdded).format('YYYY-MM-DD')}</td>
-    </tr>
-  );
-
-  return (
-    <div className='w-full md:w-1/3 bg-white h-fit px-2 md:px-6 py-4 shadow-md rounded'>
-      <table className='w-full mb-5'>
-        <TableHeader />
-        <tbody>
-          {files?.map((file, index) => (
-            <TableRow key={index + file?._id} file={file} />
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+TaskTable.propTypes = {
+  tasks: PropTypes.arrayOf(
+    PropTypes.shape({
+      stage: PropTypes.string,
+      title: PropTypes.string,
+      priority: PropTypes.string,
+      date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)])
+    })
+  ).isRequired
 };
+
 const Dashboard = () => {
   const { data, isLoading } = useGetDashboardStatsQuery();
 
@@ -177,6 +152,13 @@ const Dashboard = () => {
     );
   };
 
+  Card.propTypes = {
+    label: PropTypes.string.isRequired,
+    count: PropTypes.number.isRequired,
+    bg: PropTypes.string.isRequired,
+    icon: PropTypes.element.isRequired,
+  };
+
   return (
     <div className='h-full py-4 bg-[#F8F9FA]'>
       <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
@@ -197,12 +179,20 @@ const Dashboard = () => {
 
         <TaskTable tasks={data.last10Task} />
 
-        {/* /right */}
-
-        <FileTable files={data.files} />
       </div>
     </div>
   );
+};
+
+Dashboard.propTypes = {
+  data: PropTypes.shape({
+    totalTasks: PropTypes.number,
+    tasks: PropTypes.object,
+    graphData: PropTypes.array,
+    last10Task: PropTypes.array,
+    files: PropTypes.array,
+  }),
+  isLoading: PropTypes.bool,
 };
 
 export default Dashboard;

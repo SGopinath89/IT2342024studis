@@ -1,25 +1,17 @@
-/* eslint-disable no-undef */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import { summary } from "../assets/data";
-import Title from '../components/Title';
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import FileView from '../components/FileView';
-import Button from "../components/Button";
+import { useState } from 'react';
 import { IoMdAdd } from "react-icons/io";
+import { useParams } from "react-router-dom";
+import Button from "../components/Button";
+import FileView from '../components/FileView';
+import Loading from '../components/Loader';
+import Title from '../components/Title';
 import AddFile from '../components/userFiles/AddFiles';
 import { useGetFilesQuery } from '../redux/slices/api/filesApiSlice';
-import Loading from '../components/Loader';
  
-const Files = ({ files }) => {
-  const { user } = useSelector((state) => state.auth);
+const Files = () => {
   const params = useParams();
 
-  const [selected, setSelected] = useState(0);
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const {data, isLoading} = useGetFilesQuery({
     isTrashed: "",
@@ -34,7 +26,7 @@ const Files = ({ files }) => {
   ) : (
     <div className='w-full'>
       <div className='flex items-center justify-between mb-4'>
-        <Title title={status ? `${status} files` : "Files"} />
+        <Title title={"Files"} />
 
         {!status && (
           <Button

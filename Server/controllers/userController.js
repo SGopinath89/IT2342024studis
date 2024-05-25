@@ -123,15 +123,8 @@ export const getNotificationsList = async (req, res) => {
 
 export const updateUserProfile = async (req, res) => {
     try {
-        const { userId, isAdmin } = req.user
+        const { userId } = req.user
         const { _id } = req.body;
-
-        const id = 
-            isAdmin && userId === _id 
-                ? userId 
-                : isAdmin && userId !== _id
-                ? _id
-                : userId;
 
         const user = await User.findById(id)
 

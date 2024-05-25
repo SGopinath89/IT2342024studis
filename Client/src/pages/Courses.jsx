@@ -1,25 +1,19 @@
-/* eslint-disable no-undef */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import { useParams } from "react-router-dom";
+import { useState } from 'react';
+import { IoMdAdd } from 'react-icons/io';
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import AddCourse from '../components/AddCourse';
+import Button from '../components/Button';
 import CourseView from '../components/CourseView';
 import Loading from '../components/Loader';
 import Title from '../components/Title';
 import { useGetCourseDetailsQuery } from '../redux/slices/api/courseApiSlice';
-import Button from '../components/Button';
-import { IoMdAdd } from 'react-icons/io';
-import AddCourse from '../components/AddCourse';
 
-const Courses = ({ course }) => {
+const Courses = () => {
   const { user } = useSelector((state) => state.auth);
   const params = useParams();
  
-
-  const [selected, setSelected] = useState(0);
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const {data, isLoading} = useGetCourseDetailsQuery({
     isTrashed: "",

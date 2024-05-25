@@ -1,9 +1,7 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-import React from 'react';
-import ModalWrapper from './ModalWrapper';
 import { DialogTitle } from '@headlessui/react';
+import PropTypes from 'prop-types';
 import Button from './Button';
+import ModalWrapper from './ModalWrapper';
 
 const ViewNotification = ({ open, setOpen, el }) => {
   return (
@@ -24,6 +22,15 @@ const ViewNotification = ({ open, setOpen, el }) => {
         </ModalWrapper>
     </>
   )
-}
+};
+
+ViewNotification.propTypes = {
+    open: PropTypes.bool.isRequired,
+    setOpen: PropTypes.func.isRequired,
+    el: PropTypes.shape({
+      task: PropTypes.object,
+      text: PropTypes.string,
+    }),
+  };
 
 export default ViewNotification

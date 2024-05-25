@@ -1,15 +1,12 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React, { useState } from "react";
-import Title from "../components/Title";
-import Button from "../components/Button";
-import { IoMdAdd } from "react-icons/io";
-import { summary } from "../assets/data";
-import { getInitials } from "../utils";
 import clsx from "clsx";
-import ConfirmatioDialog, { UserAction } from "../components/Dialogs";
-import AddUser from "../components/AddUser";
+import { useState } from "react";
+import { IoMdAdd } from "react-icons/io";
 import { toast } from "sonner";
+import PropTypes from 'prop-types';
+import AddUser from "../components/AddUser";
+import Button from "../components/Button";
+import ConfirmatioDialog, { UserAction } from "../components/Dialogs";
+import Title from "../components/Title";
 import { useDeleteUserMutation, useGetUserListQuery, useUserActionMutation } from "../redux/slices/api/userApiSlice";
 
 const Users = () => {
@@ -18,7 +15,7 @@ const Users = () => {
   const [openAction, setOpenAction] = useState(false);
   const [selected, setSelected] = useState(null);
 
-  const { data, isLoading, refetch } = useGetUserListQuery();
+  const { data, refetch } = useGetUserListQuery();
   const [deleteUser] = useDeleteUserMutation();
   const [userAction] = useUserActionMutation();
 
@@ -42,7 +39,8 @@ const Users = () => {
 
   const deleteHandler = async () => {
     try {
-      const result = await deleteUser(selected)
+
+      await deleteUser(selected)
 
       refetch();
       toast.success("Deleted successfully");
@@ -172,6 +170,17 @@ const Users = () => {
       />
     </>
   );
+};
+
+Users.propTypes = {
+  user: PropTypes.shape({
+    name: PropTypes.string,
+    email: PropTypes.string,
+    role: PropTypes.string,
+    title: PropTypes.string,
+    isActive: PropTypes.bool,
+    _id: PropTypes.object
+  }),
 };
 
 export default Users;

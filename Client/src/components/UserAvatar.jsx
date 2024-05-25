@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
 import { Fragment, useState } from "react";
 import { FaUser, FaUserLock } from "react-icons/fa";
@@ -59,7 +58,7 @@ const UserAvatar = () => {
             <MenuItems className='absolute right-0 mt-2 w-56 origin-top-right divide-gray-100 rounded-md bg-white shadow-2xl ring-1 ring-black/5 focus:outline-none'>
               <div className='p-4'>
                 <MenuItem>
-                  {({ active }) => (
+                  {() => (
                     <button
                     onClick={goToProfilePage}
                       className='text-gray-700 group flex w-full items-center rounded-md px-2 py-2 text-base'
@@ -72,7 +71,7 @@ const UserAvatar = () => {
                 </MenuItem>
 
                 <MenuItem>
-                  {({ active }) => (
+                  {() => (
                     <button
                       onClick={() => setOpenPassword(true)}
                       className={`tetx-gray-700 group flex w-full items-center rounded-md px-2 py-2 text-base`}
@@ -84,7 +83,7 @@ const UserAvatar = () => {
                 </MenuItem>
 
                 <MenuItem>
-                  {({ active }) => (
+                  {() => (
                     <button
                       onClick={logoutHandler}
                       className={`text-red-600 group flex w-full items-center rounded-md px-2 py-2 text-base`}

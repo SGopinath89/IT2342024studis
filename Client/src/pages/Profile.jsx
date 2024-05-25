@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import { useState } from "react";
 import { summary } from "../assets/data";
 import UpdateUser from "../components/UpdateUser";
 import Button from "../components/Button";
@@ -8,7 +7,6 @@ import { IoMdAdd } from "react-icons/io";
 const Profile = () => {
   const { name, email, regNumber, degree, contact, birthday, academicBatch, profilePic } = summary.users;
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   return (
     <div className="container mx-auto px-4 py-8">

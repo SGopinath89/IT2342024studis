@@ -1,7 +1,6 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import { Popover, Transition, PopoverButton, PopoverPanel } from "@headlessui/react";
-import React, { Fragment } from "react";
+import { Popover, PopoverButton, PopoverPanel, Transition } from "@headlessui/react";
+import PropTypes from 'prop-types';
+import { Fragment } from "react";
 import { getInitials } from "../utils";
 
 const UserInfo = ({ user }) => {
@@ -45,6 +44,14 @@ const UserInfo = ({ user }) => {
       </Popover>
     </div>
   );
+};
+
+UserInfo.propTypes = {
+  user: PropTypes.shape({
+    name: PropTypes.string,
+    email: PropTypes.string,
+    title: PropTypes.string,
+  }),
 };
 
 export default UserInfo;

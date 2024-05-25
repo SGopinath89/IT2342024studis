@@ -1,21 +1,19 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import { DialogTitle } from "@headlessui/react";
-import moment from "moment";
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { 
-  useCreateEventMutation, 
-  useDeleteEventMutation, 
-  useDuplicateEventMutation, 
-  useUpdateEventMutation 
+import {
+  useCreateEventMutation,
+  useDeleteEventMutation,
+  useDuplicateEventMutation,
+  useUpdateEventMutation
 } from "../../redux/slices/api/eventApiSlice";
 import Button from "../Button";
+import ConfirmatioDialog from "../Dialogs";
 import ModalWrapper from "../ModalWrapper";
 import Textbox from "../Textbox";
-import ConfirmatioDialog from "../Dialogs";
- 
+import PropTypes from 'prop-types';
+
 const AddEvent = ({ open, setOpen, event }) => {
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -77,8 +75,7 @@ const AddEvent = ({ open, setOpen, event }) => {
   const deleteHandler = async () => {
     try {
       const res = await deleteEvent({
-        id:event.id,
-        // isTrashed: "trash",
+        id: event.id,
       }).unwrap();
 
       toast.success(res?.message);
@@ -172,7 +169,7 @@ const AddEvent = ({ open, setOpen, event }) => {
                 type="button"
                 className="bg-purple-600 px-5 text-sm font-semibold text-white hover:bg-purple-700 sm:w-auto"
                 onClick={() => duplicateHandler()}
-                label="Duplicae"
+                label="Duplicate"
               />
                <Button
                 type="button"
@@ -197,6 +194,24 @@ const AddEvent = ({ open, setOpen, event }) => {
       />
     </>
   );
+};
+
+AddEvent.propTypes = {
+  open: PropTypes.bool.isRequired, 
+  setOpen: PropTypes.func.isRequired, 
+  event: PropTypes.shape({
+    id: PropTypes.string,
+    title: PropTypes.string,
+    start: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Date),
+    ]),
+    end: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Date),
+    ]),
+    description: PropTypes.string,
+  }),
 };
 
 export default AddEvent;
