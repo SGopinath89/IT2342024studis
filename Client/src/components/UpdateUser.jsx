@@ -1,130 +1,184 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React, { useState } from "react";
-import Title from "../components/Title";
-import Button from "../components/Button";
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import PropTypes from 'prop-types';
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { toast } from "sonner";
+import Button from "../components/Button";
 import ModalWrapper from "../components/ModalWrapper";
-import { IoMdAdd } from "react-icons/io";
-import { summary } from "../assets/data";
-import { getInitials } from "../utils";
-import clsx from "clsx";
-import ConfirmatioDialog, { UserAction } from "../components/Dialogs";
 import Textbox from "../components/Textbox";
-import { Field, Fieldset, Input, Label, Legend, Select, Textarea } from '@headlessui/react'
+import { useUpdateMeMutation } from "../redux/slices/api/userApiSlice";
+import { app } from "../utils/firebase";
+import { BiImages } from "react-icons/bi";
 
-const UpdateUser = ({ setOpen }) => {
-  const [userData, setUserData] = useState({
-    name: summary.users.name || "",
-    email: summary.users.email || "",
-    regNumber: summary.users.regNumber || "",
-    degree: summary.users.degree || "",
-    contact: summary.users.contact || "",
-    birthday: summary.users.birthday || "",
-    academicBatch: summary.users.academicBatch || "",
-  });
+const UpdateUser = ({ open, setOpen, userData }) => {
+  const { user } = useSelector((state) => state.auth);
 
   const {
     register,
+    handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
-  };
+  useEffect(() => {
+    if (userData) {
+      setValue("name", userData.name);
+      setValue("email", userData.email);
+      setValue("contact", userData.contact);
+      setValue("birthday", userData.birthday ? new Date(userData.birthday).toISOString().split('T')[0] : "");
+    }
+  }, [userData, setValue]);
+
+  const [updateUser, { isLoading: isUpdating }] = useUpdateMeMutation();
   const [uploading, setUploading] = useState(false);
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Updated user data:", userData);
+  const [assets, setAssets] = useState([]);
+  const [fileLink,setFileLink] = useState(user?.profilePic || "");
+
+  const handleSelect = (e) => {
+    setAssets(e.target.files);
   };
+
+  const onSubmit = async (data) => {
+    try {
+      if (assets.length > 0) {
+        setUploading(true);
+        const fileUrl = await uploadFile(assets[0]);
+        data.profilePic  = fileUrl;
+        setFileLink(fileUrl);
+        setUploading(false);
+      }
+
+      const updateData = { ...data, _id: userData._id };
+      const res = await updateUser({ data: updateData }).unwrap();
+      toast.success(res.message);
+      
+      setTimeout(() => {
+        setOpen(false);
+      }, 1500);
+
+    } catch (err) {
+      console.error(err);
+      toast.error(err?.data?.message || err.error);
+    }
+  };
+
+  const uploadFile = async (file) => {
+    const storage = getStorage(app);
+    const name = new Date().getTime() + file.name;
+    const storageRef = ref(storage, name);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    return new Promise((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        () => {},
+        (error) => {
+          console.error("Error uploading file:", error);
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref)
+          .then((downloadURL) => {
+            resolve(downloadURL);
+          })
+          .catch((error) => {
+            console.error("Error getting download URL:", error);
+            reject(error);
+          });
+        }
+      );
+    }
+  );
+};
 
   return (
     <>
-    <ModalWrapper open={open} setOpen={setOpen}>
-        <form onSubmit={handleSubmit}>
-            <legend>Update User Details</legend>
-                <Textbox
-                    placeholder= {userData.name}
-                    type='text'
-                    name='name'
-                    label='Name'
-                    className='w-full rounded'
-                    register={register("name", {})}
-                    error={errors.name ? errors.name.message : ""}
+      <ModalWrapper open={open} setOpen={setOpen}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <legend>Update User Details</legend>
+            <Textbox
+              placeholder= {user?.name}
+              type='text'
+              name='name'
+              label='Name'
+              className='w-full rounded'
+              register={register("name")}
+              error={errors.name ? errors.name.message : ""}
+            />
+            <Textbox
+              placeholder={user?.email}
+              type='text'
+              name='email'
+              label='Email'
+              className='w-full rounded'
+              register={register("email")}
+              error={errors.email ? errors.email.message : ""}
+            />
+            <Textbox
+              placeholder={user?.contact}
+              type='text'
+              name='contact'
+              label='Contact Number'
+              className='w-full rounded'
+              register={register("contact")}
+              error={errors.contact ? errors.contact.message : ""}
+            />
+            <Textbox
+              placeholder={user?.birthday}
+              type='date'
+              name='birthday'
+              label='Birthday'
+              className='w-full rounded'
+              register={register("birthday")}
+              error={errors.birthday ? errors.birthday.message : ""}
+            />
+            <div className='w-full flex items-center justify-center mt-4'>
+              <label
+                className='flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1 cursor-pointer my-4'
+                htmlFor='imgUpload'
+              >
+                <input
+                  type='file'
+                  className='hidden'
+                  id='imgUpload'
+                  onChange={(e) => handleSelect(e)}
+                  accept='.jpg, .png, .jpeg'
+                  multiple={true}
                 />
-                <Textbox
-                    placeholder={userData.email}
-                    type='text'
-                    name='email'
-                    label='Email'
-                    className='w-full rounded'
-                    register={register("email", {})}
-                    error={errors.email ? errors.email.message : ""}
-                />
-                <Textbox
-                    placeholder={userData.regNumber}
-                    type='text'
-                    name='regNumber'
-                    label='Registration Number'
-                    className='w-full rounded'
-                    register={register("regNumber", {})}
-                    error={errors.regNumber ? errors.regNumber.message : ""}
-                />
-                <Textbox
-                    placeholder={userData.degree}
-                    type='text'
-                    name='degree'
-                    label='Degree'
-                    className='w-full rounded'
-                    register={register("degree", {})}
-                    error={errors.degree ? errors.degree.message : ""}
-                />
-                <Textbox
-                    placeholder={userData.contact}
-                    type='text'
-                    name='contact'
-                    label='Contact Number'
-                    className='w-full rounded'
-                    register={register("contact", {})}
-                    error={errors.contact ? errors.contact.message : ""}
-                />
-                <Textbox
-                    placeholder={userData.academicBatch}
-                    type='text'
-                    name='academicBatch'
-                    label='Academic Batch'
-                    className='w-full rounded'
-                    register={register("academicBatch", {})}
-                    error={errors.academicBatch ? errors.academicBatch.message : ""}
-                />
-                <Textbox
-                    placeholder={userData.birthday}
-                    type='date'
-                    name='birthday'
-                    label='Birthday'
-                    className='w-full rounded'
-                    register={register("birthday", {})}
-                    error={errors.birthday ? errors.birthday.message : ""}
-                />
-                 <div className='bg-gray-50 py-6 sm:flex sm:flex-row-reverse gap-4'>
+                <BiImages />
+                <span>Add picture</span>
+              </label>
+            </div>    
+            <div className='bg-gray-50 py-6 sm:flex sm:flex-row-reverse gap-4'>
+              {uploading || isUpdating ?  (
+                <span className='text-sm py-2 text-red-500'>
+                  Uploading
+                </span>
+              ) :(
                 <Button
-                    type='button'
-                    className='bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto'
-                    onClick={() => setOpen(false)}
-                    label='Cancel'
+                  type='submit'
+                  label='Submit'
+                  className='bg-blue-600 text-white rounded'
                 />
-                <Button
-                    label='Submit'
-                    type='submit'
-                    className='bg-blue-600 px-8 mt-4 text-sm font-semibold text-white hover:bg-blue-700  sm:w-auto'
-                />
-                </div>
-            </form>
-        </ModalWrapper>
+              )} 
+              <Button
+                type='button'
+                className='bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto'
+                onClick={() => setOpen(false)}
+                label='Cancel'
+              />
+            </div>
+        </form>
+      </ModalWrapper>
     </>
   );
+};
+
+UpdateUser.propTypes = {
+  open: PropTypes.bool.isRequired,
+  setOpen: PropTypes.func.isRequired,
+  userData: PropTypes.object.isRequired,
 };
 
 export default UpdateUser;

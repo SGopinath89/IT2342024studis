@@ -11,6 +11,8 @@ import {
     changePassword,
     activateUserProfile,
     deleteUserProfile,
+    getUser,
+    updateMyProfile,
  } from '../controllers/userController.js';
 
 const router = express.Router();
@@ -20,9 +22,11 @@ router.post("/login", loginUser)
 router.post("/logout", logoutUser)
 
 router.get("/get-user", protectRoute, isAdminRoute, getUserList);
+router.get("/get-user/:id", protectRoute, getUser);
 router.get("/notifications", protectRoute, getNotificationsList);
 
-router.put("/profile/:id", protectRoute, updateUserProfile);
+router.put("/profiles", protectRoute, updateUserProfile);
+router.put("/profiles/:id", protectRoute, updateMyProfile);
 router.put("/read-noti", protectRoute, markNotificationRead);
 router.put("/change-password", protectRoute, changePassword);
 

@@ -26,6 +26,7 @@ const AddUser = ({ open, setOpen, userData }) => {
   const dispatch = useDispatch();
   const [addNewUser, { isLoading }] = useRegisterMutation();
   const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
+
   const handleOnSubmit = async (data) => {
     try {
       if(userData){
@@ -49,7 +50,7 @@ const AddUser = ({ open, setOpen, userData }) => {
         setOpen(false);
       }, 1500);
     } catch (error) {
-      toast.error("New User added successfully");
+      toast.error("New User not added successfully");
     }
   };
 
@@ -119,6 +120,17 @@ const AddUser = ({ open, setOpen, userData }) => {
                 required: "Registration Number is required!",
               })}
               error={errors.regNumber ? errors.regNumber.message : ""}
+            />
+            <Textbox
+              placeholder='Degree'
+              type='text'
+              name='degree'
+              label='Degree'
+              className='w-full rounded'
+              register={register("degree", {
+                required: "Degree is required!",
+              })}
+              error={errors.degree ? errors.degree.message : ""}
             />
           </div>
 

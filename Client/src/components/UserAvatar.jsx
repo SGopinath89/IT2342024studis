@@ -31,7 +31,7 @@ const UserAvatar = () => {
   };
 
   const goToProfilePage = () => {
-    navigate(`/profile/${user.id}`)
+    navigate(`/profile/${user._id}`)
   };
 
   return (

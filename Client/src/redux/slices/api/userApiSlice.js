@@ -7,7 +7,16 @@ export const userApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         updateUser: builder.mutation({
             query: (data) => ({
-                url: `${USER_URL}/profile/${data._id}`,
+                url: `${USER_URL}/profiles`,
+                method: "PUT",
+                body: data,
+                credentials: "include",
+            }),
+        }),
+
+        updateMe: builder.mutation({
+            query: ({ data }) => ({
+                url: `${USER_URL}/profiles/${data._id}`,
                 method: "PUT",
                 body: data,
                 credentials: "include",
@@ -17,6 +26,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
         getUserList: builder.query({
             query: () => ({
                 url: `${USER_URL}/get-user`,
+                method: "GET",
+                credentials: "include",
+            }),
+        }),
+
+        getUser: builder.query({
+            query: ({ id }) => ({
+                url: `${USER_URL}/get-user/${id}`,
                 method: "GET",
                 credentials: "include",
             }),
@@ -76,4 +93,6 @@ export const {
     useGetNotificationsQuery,
     useMarkNotificationsAsReadMutation,
     useChangePasswordMutation,
+    useGetUserQuery,
+    useUpdateMeMutation,
 } = userApiSlice;

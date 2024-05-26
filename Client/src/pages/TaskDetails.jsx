@@ -353,9 +353,7 @@ Activities.propTypes = {
     PropTypes.shape({
       type: PropTypes.string,
       activity: PropTypes.string,
-      by: PropTypes.shape({
-        name: PropTypes.string,
-      }),
+      by: PropTypes.string,
       date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
     })
   ).isRequired,
@@ -369,7 +367,7 @@ Activities.propTypes = {
       }),
       date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
     })
-  ).isRequired,
+  ),
   id: PropTypes.string.isRequired,
   refetch: PropTypes.func.isRequired,
   

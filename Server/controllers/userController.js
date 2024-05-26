@@ -123,19 +123,23 @@ export const getNotificationsList = async (req, res) => {
 
 export const updateUserProfile = async (req, res) => {
     try {
-        const { userId } = req.user
+        const { userId, isAdmin } = req.user
         const { _id } = req.body;
+
+        const id = 
+            isAdmin && userId === _id 
+                ? userId 
+                : isAdmin && userId !== _id
+                ? _id
+                : userId;
 
         const user = await User.findById(id)
 
         if (user) {
             user.name = req.body.name || user.name;
-            user.title = req.body.title || user.title;
             user.role = req.body.role || user.role;
-            user.contact = req.body.contact || user.contact;
-            user.birthday = req.body.birthday || user.birthday;
-            user.academicBatch = req.body.academicBatch || user.academicBatch;
-            user.profilePic = req.body.profilePic || user.profilePic;
+            user.regNumber = req.body.regNumber || user.regNumber;
+            user.degree = req.body.degree || user.degree;
 
             const updateUser = await user.save();
 
@@ -236,6 +240,46 @@ export const deleteUserProfile = async (req, res) => {
         res
             .status(200)
             .json({ status: true, message: "User deleted successfully" });
+    } catch (error) {
+        return res.status(400).json({ status: false, message: error.message });
+    }
+};
+
+export const getUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findById(id);
+
+        if (!user) {
+      return res.status(404).json({ status: false, message: "User not found" });
+    }
+
+    res.status(200).json(user);
+    } catch (error) {
+        return res.status(400).json({ status: false, message: error.message });
+    }
+};
+
+export const updateMyProfile = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, email, contact, birthday, profilePic } = req.body;
+
+        const user = await User.findById(id)
+
+            user.name = name || user.name;
+            user.email = email || user.email;
+            user.contact = contact || user.contact;
+            user.birthday = birthday || user.birthday;
+            user.profilePic = profilePic || user.profilePic;
+
+            await user.save();
+
+            user.password = undefined;
+
+            res
+            .status(200)
+            .json({ status: true, message: "Profile updated successfully." });
     } catch (error) {
         return res.status(400).json({ status: false, message: error.message });
     }
