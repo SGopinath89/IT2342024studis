@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import PropTypes from 'prop-types';
 
+//renders a title text
 const Title = ({ title, className }) => {
   return (
     <h2 className={clsx("text-2xl font-semibold capitalize", className)}>

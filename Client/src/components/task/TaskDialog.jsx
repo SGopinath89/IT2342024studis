@@ -13,15 +13,20 @@ import ConfirmatioDialog from "../Dialogs";
 import { useDuplicateTaskMutation, useTrashTaskMutation } from "../../redux/slices/api/taskApiSlice";
 import { toast } from "sonner";
 
+//uses @headlessui 
+//renders a dropdown menu
 const TaskDialog = ({ task }) => {
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   
+  //calls mutations
   const [duplicateTask] = useDuplicateTaskMutation();
   const [deleteTask] = useTrashTaskMutation();
+  
   const navigate = useNavigate();
 
+  //handles duplication
   const duplicateHandler = async () => {
     try {
       const res = await duplicateTask(task._id).unwrap();
@@ -42,6 +47,7 @@ const TaskDialog = ({ task }) => {
     setOpenDialog(true);
   };
 
+  //handles delete
   const deleteHandler = async () => {
     try {
       const res = await deleteTask({
@@ -61,6 +67,7 @@ const TaskDialog = ({ task }) => {
     }
   };
 
+  //items in the menu
   const items = [
     {
       label: "Open Task",

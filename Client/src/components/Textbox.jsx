@@ -1,6 +1,7 @@
 import Reacts from "react";
 import clsx from "clsx";
 
+//customized textbox
 const Textbox = Reacts.forwardRef(
   ({ type, placeholder, label, className, register, name, error }, ref) => {
     return (

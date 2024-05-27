@@ -10,11 +10,13 @@ import Title from '../components/Title';
 import { useGetCourseDetailsQuery } from '../redux/slices/api/courseApiSlice';
 
 const Courses = () => {
+  //verify the current user is admin
   const { user } = useSelector((state) => state.auth);
   const params = useParams();
  
   const [open, setOpen] = useState(false);
 
+  //get course details
   const {data, isLoading} = useGetCourseDetailsQuery({
     isTrashed: "",
   });

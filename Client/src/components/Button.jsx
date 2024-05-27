@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import PropTypes from 'prop-types';
 
-
+//customized button
 const Button = ({ icon, className, label, type, onClick = () => {} }) => {
   return (
     <button

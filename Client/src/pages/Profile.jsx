@@ -6,16 +6,20 @@ import { useSelector } from "react-redux";
 import { useGetUserQuery } from "../redux/slices/api/userApiSlice";
 import { dateFormatter } from "../utils";
 
+//shows user details
 const Profile = () => {
+  //get current user
   const { user } = useSelector((state) => state.auth);
   const [open, setOpen] = useState(false);
   
+  //call user details query
   const { data, isLoading } = useGetUserQuery({ 
     id: user._id 
   });
 
   if (isLoading) return <p>Loading...</p>;
 
+  //saving data geting from query
   const { 
     name, 
     email, 
@@ -27,6 +31,7 @@ const Profile = () => {
     profilePic 
   } = data;
 
+  //format the date of birth properly
   const formattedBirthday = dateFormatter(birthday);
 
   return (

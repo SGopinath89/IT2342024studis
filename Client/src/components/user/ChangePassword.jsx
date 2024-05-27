@@ -8,6 +8,7 @@ import Loading from '../Loader';
 import ModalWrapper from '../ModalWrapper';
 import Textbox from '../Textbox';
 
+//change password
 const ChangePassword = ({ open, setOpen }) => {
     const {
         register,
@@ -15,20 +16,24 @@ const ChangePassword = ({ open, setOpen }) => {
         formState: { errors },
     } = useForm();
 
+    //call mutation
     const [changeUserPassword, { isLoading }] = useChangePasswordMutation();
 
+    //handles password changing
     const handleOnSubmit = async (data) => {
+        //checks passwords match
         if (data.password !== data.cpass) {
             toast.warning("Passwords doesn't match");
             return;
         }
         try {
             await changeUserPassword(data).unwrap();
-            toast.success("New User added successfully");
+            toast.success("Password changed successfully");
 
             setTimeout(() => {
                 setOpen(false);
             }, 1500);
+            
         } catch (err) {
             console.log(err);
             toast.error(err?.date?.message || err.error);

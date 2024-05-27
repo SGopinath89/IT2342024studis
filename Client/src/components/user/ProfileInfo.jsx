@@ -6,19 +6,21 @@ import Loading from "../Loader";
 import ModalWrapper from "../ModalWrapper";
 import Textbox from "../Textbox";
 
+//displays profile details for the user
 const ProfileInfo = ({ open, setOpen, userData }) => {
-    let defaultValues = userData ?? {};
+  //get default values from userdata  
+  let defaultValues = userData ?? {};
   
-    const isLoading = false,
-      isUpdating = false;
+  const isLoading = false,
+    isUpdating = false;
   
-    const {
-      register,
-      handleSubmit,
-      formState: { errors },
-    } = useForm({ defaultValues });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ defaultValues });
   
-    const handleOnSubmit = () => {};
+  const handleOnSubmit = () => {};
   
     return (
       <>

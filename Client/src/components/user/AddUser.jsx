@@ -11,8 +11,13 @@ import Loading from "../Loader";
 import ModalWrapper from "../ModalWrapper";
 import Textbox from "../Textbox";
 
+//for admins
+//can add or edit users
 const AddUser = ({ open, setOpen, userData }) => {
+  //gets default values
   let defaultValues = userData ?? {};
+
+  //authenticate user is admin
   const { user } = useSelector((state) => state.auth);
 
   const {
@@ -22,11 +27,15 @@ const AddUser = ({ open, setOpen, userData }) => {
   } = useForm({ defaultValues });
 
   const dispatch = useDispatch();
+
+  //call mutations
   const [addNewUser, { isLoading }] = useRegisterMutation();
   const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation();
 
+  //handles adding/updating user
   const handleOnSubmit = async (data) => {
     try {
+      //updates user
       if(userData){
         const result = await updateUser(data).unwrap();
 
@@ -36,6 +45,7 @@ const AddUser = ({ open, setOpen, userData }) => {
           dispatch(setCredentials({...result.user }));
         }
       } else {
+        //adds a new usr
         await addNewUser({
           ...data, 
           password: data.email

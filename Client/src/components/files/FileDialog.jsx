@@ -1,3 +1,7 @@
+//uses @headlessui dropdown manu
+//documentation
+//https://headlessui.com/react/menu
+
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
 import PropTypes from 'prop-types';
 import { Fragment, useState } from "react";
@@ -10,24 +14,27 @@ import { useDeleteFileMutation } from "../../redux/slices/api/filesApiSlice";
 import ConfirmatioDialog from "../Dialogs";
 import AddFile from "./AddFiles";
 
+//dropdown menu for files
 const FileDialog = ({ file }) => {
 
   const [openEdit, setOpenEdit] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [selected, setSelected] = useState(null);
 
-
+//delete file mutation
   const [deleteFile] = useDeleteFileMutation();
 
   const deleteClicks = () => {
     setOpenDialog(true);
   };
 
+  //rename handler
   const editFileHandler = (file) => {
     setSelected(file);
     setOpenEdit(true);
   };
 
+  //delete handler
   const deleteHandler = async () => {
     try {
       const res = await deleteFile({
@@ -46,6 +53,7 @@ const FileDialog = ({ file }) => {
     }
   };
 
+  //items in dropdown menu
   const items = [
     {
       label: "Open File",

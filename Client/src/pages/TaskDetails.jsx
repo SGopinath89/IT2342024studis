@@ -32,23 +32,27 @@ import {
   TASK_TYPE
 } from "../utils";
 
+//priority icons
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,
   medium: <MdKeyboardArrowUp />,
   low: <MdKeyboardArrowDown />,
 };
 
+//bg colors for images
 const bgColor = {
   high: "bg-red-200",
   medium: "bg-yellow-200",
   low: "bg-blue-200",
 };
 
+//view options
 const TABS = [
   { title: "Task Detail", icon: <FaTasks /> },
   { title: "Activities/Timeline", icon: <RxActivityLog /> },
 ];
 
+//task type icons
 const TASKTYPEICON = {
   commented: (
     <div className='w-10 h-10 rounded-full bg-gray-500 flex items-center justify-center text-white'>
@@ -82,6 +86,7 @@ const TASKTYPEICON = {
   ),
 };
 
+//activity types
 const act_types = [
   "Started",
   "Completed",
@@ -91,9 +96,13 @@ const act_types = [
   "Assigned",
 ];
 
+//task details main body
 const TaskDetails = () => {
   const { id } = useParams();
+
+  //get selected tasks details
   const { data, isLoading, refetch } = useGetSigleTaskQuery(id);
+
   const [selected, setSelected] = useState(0);
   const task = data?.task;
 
@@ -210,12 +219,15 @@ const TaskDetails = () => {
   );
 };
 
+//activities view
 const Activities = ({ activity, id, refetch }) => {
   const [selected, setSelected] = useState(act_types[0]);
   const [text, setText] = useState("");
 
+  //add task activity
   const [postActivity, { isLoading } ] = usePostTaskActivityMutation();
 
+  //submit activity details
   const handleSubmit = async () => {
     try {
       const activityData = {
@@ -236,6 +248,7 @@ const Activities = ({ activity, id, refetch }) => {
     }
   };
 
+  //display the card
   const Card = ({ item }) => {
     return (
       <div className='flex space-x-4'>
@@ -315,6 +328,7 @@ const Activities = ({ activity, id, refetch }) => {
   );
 };
 
+//task details propTypes
 TaskDetails.propTypes = {
   data: PropTypes.shape({
     task: PropTypes.shape({
@@ -348,6 +362,7 @@ TaskDetails.propTypes = {
   refetch: PropTypes.func,
 };
 
+//activities proptypes
 Activities.propTypes = {
   activity: PropTypes.arrayOf(
     PropTypes.shape({

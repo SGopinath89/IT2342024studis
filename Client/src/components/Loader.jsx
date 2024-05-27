@@ -1,3 +1,5 @@
+//simple loading screen
+
 const Loading = () => {
   return (
     <div className='dots-container'>

@@ -8,6 +8,7 @@ import Title from '../components/Title';
 import AddEvent from '../components/calender/AddEvent';
 import { useGetAllEventsQuery } from '../redux/slices/api/eventApiSlice';
 
+//renders calender and add event
 const TimeTable = () => {
   const params = useParams();
 
@@ -15,6 +16,7 @@ const TimeTable = () => {
 
   const status = params?.status || "";
  
+  //retrieve all events
   const {isLoading} = useGetAllEventsQuery({
     isTrashed: "",
   });

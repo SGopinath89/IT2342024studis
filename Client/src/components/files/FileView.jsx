@@ -9,11 +9,13 @@ import { toast } from "sonner";
 import AddFile from "./AddFiles";
 import ConfirmatioDialog from "../Dialogs";
 
+//renders files to view
 const FileView = ({ files }) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [selected, setSelected] = useState(null);
 
+    //delete file mutation
     const [deleteFIle] = useDeleteFileMutation();
 
     const deleteClicks = (id) => {
@@ -26,6 +28,7 @@ const FileView = ({ files }) => {
       setOpenEdit(true);
     };
 
+    //handles delete function
     const deleteHandler = async () => {
       try {
         const res = await deleteFIle({
@@ -45,6 +48,7 @@ const FileView = ({ files }) => {
       }
     };
 
+    //table structure
     const TableHeader = () => (
         <thead className='border-b border-gray-300 '>
           <tr className='text-black  text-left'>

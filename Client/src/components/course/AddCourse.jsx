@@ -20,6 +20,9 @@ import Loading from "../Loader.jsx";
 import ModalWrapper from "../ModalWrapper.jsx";
 import Textbox from "../Textbox.jsx";
 
+//to add courses
+//courseContent is uploads to the firebase storage.
+//it can be accessed via the give link
 const AddCourse = ({ open, setOpen, courseData }) => {
   
   const { 
@@ -29,6 +32,7 @@ const AddCourse = ({ open, setOpen, courseData }) => {
     reset 
   } = useForm({});
 
+  //create default values to make editing easier
   useEffect(() => {
     if (courseData){
       const defaultValues = {
@@ -47,11 +51,13 @@ const AddCourse = ({ open, setOpen, courseData }) => {
   const [uploading, setUploading] = useState(false);
   const [fileLink, setFileLink] = useState(courseData?.courseContent || "");
   
+  //mutations for adding and updating courses
   const [addNewCourse, { isLoading }] = useAddCourseMutation();
   const [updateCourse, { isLoading: isUpdating }] = useUpdateCourseMutation();
 
   const submitHandler = async (data) => {
     try {
+      //uploads the file, retrieves the link and saves it in courseContent
       if (assets.length > 0) {
         setUploading(true);
         const fileUrl = await uploadFile(assets[0]);
@@ -60,6 +66,7 @@ const AddCourse = ({ open, setOpen, courseData }) => {
         setUploading(false);
       }
 
+      //proceeds with creation or modification
       const res = data._id
         ? await updateCourse(data).unwrap()
         : await addNewCourse(data).unwrap();
@@ -69,6 +76,7 @@ const AddCourse = ({ open, setOpen, courseData }) => {
         setOpen(false);
         window.location.reload();
       }, 500);
+
     } catch (err) {
       console.log(err);
       toast.error(err?.data?.message || err.error);
@@ -79,6 +87,7 @@ const AddCourse = ({ open, setOpen, courseData }) => {
     setAssets(e.target.files);
   };
 
+  //function for uploading file
   const uploadFile = async (file) => {
     const storage = getStorage(app);
     const name = new Date().getTime() + file.name;
@@ -96,17 +105,15 @@ const AddCourse = ({ open, setOpen, courseData }) => {
         () => {
           // Upload completed successfully, get download URL
           getDownloadURL(uploadTask.snapshot.ref)
-            .then((downloadURL) => {
-              // Add download URL to the list of uploadedFileURLs
-              //uploadedFileURLs = downloadURL;
+            .then((downloadURL) => {   
               // Resolve the promise with the download URL
               resolve(downloadURL);
             })
             .catch((error) => {
-              // Handle error while getting download URL
               console.error("Error getting download URL:", error);
               reject(error);
-            });
+            }
+          );
         }
       );
     });
@@ -168,33 +175,32 @@ const AddCourse = ({ open, setOpen, courseData }) => {
               error={errors.duration ? errors.duration.message : ""}
             />
             <div className='w-full flex items-center justify-center mt-4'>
-                <label
-                  className='flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1 cursor-pointer my-4'
-                  htmlFor='fileUpload'
-                >
-                  <input
-                    type='file'
-                    className='hidden'
-                    id='fileUpload'
-                    onChange={(e) => handleSelect(e)}
-                    accept='.pdf'
-                  />
-                  <BiImages />
-                  <span>Add Course Content</span>
-                </label>
+              <label
+                className='flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1 cursor-pointer my-4'
+                htmlFor='fileUpload'
+              >
+                <input
+                  type='file'
+                  className='hidden'
+                  id='fileUpload'
+                  onChange={(e) => handleSelect(e)}
+                  accept='.pdf'
+                />
+                <BiImages />
+                <span>Add Course Content</span>
+              </label>
+            </div>
+            {fileLink && (
+              <div className='text-sm text-gray-700 mt-2'>
+                Uploaded File: <a href={fileLink} target='_blank' rel='noopener noreferrer'>{fileLink}</a>
               </div>
-              {fileLink && (
-                <div className='text-sm text-gray-700 mt-2'>
-                  Uploaded File: <a href={fileLink} target='_blank' rel='noopener noreferrer'>{fileLink}</a>
-                </div>
-              )}
-              {uploading && (
-                <div className='text-sm text-gray-700 mt-2'>
-                  Uploading file, please wait...
-                </div>
-              )}
+            )}
+            {uploading && (
+              <div className='text-sm text-gray-700 mt-2'>
+                Uploading file, please wait...
+              </div>
+            )}
           </div>
-
           {isLoading || isUpdating ? (
             <div className='py-5'>
               <Loading />

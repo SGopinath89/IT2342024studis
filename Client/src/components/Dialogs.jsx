@@ -5,6 +5,7 @@ import ModalWrapper from "./ModalWrapper";
 import PropTypes from 'prop-types';
 import Button from "./Button";
 
+//confirm dialog function
 export default function ConfirmatioDialog({
   open,
   setOpen,
@@ -77,6 +78,7 @@ ConfirmatioDialog.propTypes = {
   setType: PropTypes.func,
 };
 
+//user action function
 export function UserAction({ open, setOpen, onClick = () => {} }) {
   const closeDialog = () => {
     setOpen(false);

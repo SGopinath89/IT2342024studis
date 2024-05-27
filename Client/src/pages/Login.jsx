@@ -9,7 +9,9 @@ import { toast } from "sonner"
 import { setCredentials } from "../redux/slices/authSlice";
 import Loading from "../components/Loader";
 
+//login page
 const Login = () => {
+  //select users
   const { user } = useSelector((state) => state.auth);
 
   const {
@@ -20,8 +22,12 @@ const Login = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  //login mutation
   const [login, {isLoading}] = useLoginMutation();
 
+  //try to login user
+  //on success send to dashboard
   const submitHandler = async (data) => {
     try {
       const result = await login(data).unwrap();
@@ -33,6 +39,7 @@ const Login = () => {
     }
   };
 
+  //on success with activates
   useEffect(() => {
     user && navigate("/dashboard");
   }, [user, navigate]);

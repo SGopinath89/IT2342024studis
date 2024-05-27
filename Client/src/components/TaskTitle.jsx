@@ -2,6 +2,7 @@ import clsx from "clsx";
 import PropTypes from 'prop-types';
 import { IoMdAdd } from "react-icons/io";
 
+//renders task title
 const TaskTitle = ({ label, className }) => {
   return (
     <div className='w-full h-10 md:h-12 px-2 md:px-4 rounded bg-white flex items-center justify-between'>

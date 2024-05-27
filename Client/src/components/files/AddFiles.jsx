@@ -17,6 +17,7 @@ import Loading from "../Loader.jsx";
 import ModalWrapper from "../ModalWrapper.jsx";
 import Textbox from "../Textbox.jsx";
 
+//for adding and renaming files
 const AddFile = ({ open, setOpen, fileData }) => {
 
     const {
@@ -26,6 +27,7 @@ const AddFile = ({ open, setOpen, fileData }) => {
         reset
     } = useForm();
 
+    //declaring default values for displaying
     useEffect(() => {
         if (fileData){
             const defaultValues = {
@@ -43,11 +45,14 @@ const AddFile = ({ open, setOpen, fileData }) => {
     const [uploading, setUploading] = useState(false);
     const [fileLink, setFileLink] = useState(fileData?.file || "");
 
+    //calling mutations
     const [addNewFile, { isLoading }] = useAddFileMutation();
     const [renameFile, { isLoading: isUpdating }] = useRenameFileMutation();
 
+    //handles adding and renaming
     const submitHandler = async (data) => {
         try {
+            //upload and get the link
             if (assets.length > 0) {
                 setUploading(true);
                 const fileUrl = await uploadFile(assets[0]);
@@ -56,14 +61,18 @@ const AddFile = ({ open, setOpen, fileData }) => {
                 setUploading(false);
             }
   
+            //proceed to creation/renaming
             const res = data._id
                 ? await renameFile({ id: data._id, data }).unwrap()
                 : await addNewFile(data).unwrap();
+
             toast.success(res.message);
+
             setTimeout(() => {
                 setOpen(false);
                 window.location.reload();
             }, 500);
+
         } catch (err) {
             console.log(err);
             toast.error(err?.data?.message || err.error);
@@ -74,6 +83,7 @@ const AddFile = ({ open, setOpen, fileData }) => {
         setAssets(e.target.files);
     };
 
+    //function to upload files. same as others
     const uploadFile = async (file) => {
         const storage = getStorage(app);
         const name = new Date().getTime() + file.name;
@@ -96,7 +106,8 @@ const AddFile = ({ open, setOpen, fileData }) => {
                         .catch((error) => {
                             console.error("Error getting download URL:", error);
                             reject(error);
-                        });
+                        }
+                    );
                 }
             );
         });

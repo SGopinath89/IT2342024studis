@@ -11,7 +11,9 @@ import { useUpdateMeMutation } from "../../redux/slices/api/userApiSlice";
 import { app } from "../../utils/firebase";
 import { BiImages } from "react-icons/bi";
 
+//update user details( for user)
 const UpdateUser = ({ open, setOpen, userData }) => {
+  //get user details
   const { user } = useSelector((state) => state.auth);
 
   const {
@@ -21,6 +23,7 @@ const UpdateUser = ({ open, setOpen, userData }) => {
     setValue,
   } = useForm();
 
+  //declare default values
   useEffect(() => {
     if (userData) {
       setValue("name", userData.name);
@@ -30,7 +33,9 @@ const UpdateUser = ({ open, setOpen, userData }) => {
     }
   }, [userData, setValue]);
 
+  //call mutation to update current user profile
   const [updateUser, { isLoading: isUpdating }] = useUpdateMeMutation();
+
   const [uploading, setUploading] = useState(false);
   const [assets, setAssets] = useState([]);
   // eslint-disable-next-line no-unused-vars
@@ -40,6 +45,7 @@ const UpdateUser = ({ open, setOpen, userData }) => {
     setAssets(e.target.files);
   };
 
+  //update profile details
   const onSubmit = async (data) => {
     try {
       if (assets.length > 0) {
@@ -64,6 +70,7 @@ const UpdateUser = ({ open, setOpen, userData }) => {
     }
   };
 
+  //upload file function
   const uploadFile = async (file) => {
     const storage = getStorage(app);
     const name = new Date().getTime() + file.name;

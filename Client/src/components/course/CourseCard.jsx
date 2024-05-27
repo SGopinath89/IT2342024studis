@@ -8,6 +8,7 @@ import Button from "../Button";
 import ConfirmatioDialog from "../Dialogs";
 import AddCourse from "./AddCourse";
 
+//displays course details
 const CourseCard = ({ course }) => {
   const { user } = useSelector((state) => state.auth);
   const [openDialog, setOpenDialog] = useState(false);
@@ -16,8 +17,10 @@ const CourseCard = ({ course }) => {
   const [selected, setSelected] = useState("");
   const [openEdit, setOpenEdit] = useState(false);
 
+  //for deleting a course
   const [ deleteCourse ] = useDeleteCourseMutation();
 
+  //handles deleting process
   const deleteRestoreHandler = async () => {
     try {
       let result = await deleteCourse({
@@ -26,20 +29,25 @@ const CourseCard = ({ course }) => {
       }).unwrap();
 
       toast.success(result?.message);
+
       setTimeout(() => {
         setOpenDialog(false);
       }, 500);
+
     } catch (err) {
       console.log(err);
       toast.error(err?.data?.message || err.error);
     }
   };
 
+  //delete button
   const deleteClick = (id) => {
     setType("delete");
     setSelected(id);
     setOpenDialog(true);
   };
+
+  //edit button
   const editClick = (id) => {
     setSelected(id);
     setOpenEdit(true);
@@ -64,14 +72,6 @@ const CourseCard = ({ course }) => {
             />
           </div>
           )}
-          {/* <Button
-            icon={<MdEdit className='text-xl text-gray-600' />}
-            onClick={() => editClick(course._id)}
-          />
-          <Button
-            icon={<MdDelete className='text-xl text-red-600' />}
-            onClick={() => deleteClick(course._id)}
-          /> */}
         </div>
         <div className='flex items-center gap-2'>
           <h4 className='text-black text-sm'>Title: {course?.title}</h4>
@@ -84,7 +84,6 @@ const CourseCard = ({ course }) => {
         </div>
         <div className='flex items-center gap-2'>
           <h4 className='text-black text-sm'>
-            {/* Course content:{" "} */}
             {course?.courseContent ? (
               <a
                 href={course.courseContent}

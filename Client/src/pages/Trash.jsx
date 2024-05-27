@@ -16,49 +16,58 @@ import { useDeleteRestoreTaskMutation, useGetAllTaskQuery } from "../redux/slice
 import Loading from "../components/Loader";
 import { toast } from "sonner";
 
+//task priority icons
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,
   medium: <MdKeyboardArrowUp />,
   low: <MdKeyboardArrowDown />,
 };
 
+//displayed the trashed tasks
 const Trash = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [msg, setMsg] = useState(null);
   const [type, setType] = useState("delete");
   const [selected, setSelected] = useState("");
 
+  //retrieve only trashed tasks
   const {data, isLoading, refetch } = useGetAllTaskQuery({
     strQuery: "",
     isTrashed: "true",
     search: "",
   });
 
+  //function to restor or delete tasks
   const [deleteRestoreTask] = useDeleteRestoreTaskMutation();
 
+  //handles passing data to the mutation
   const deleteRestoreHandler = async () => {
     try {
       let result;
 
       switch (type) {
+        //to delete one
         case "delete":
           result = await deleteRestoreTask({
             id: selected,
             actionType: "delete",
           }).unwrap();
           break;
+        //to delete multiple
         case "deleteAll":
           result = await deleteRestoreTask({
             id: selected,
             actionType: "deleteAll",
           }).unwrap();
           break;
+        //to restore one
         case "restore":
           result = await deleteRestoreTask({
             id: selected,
             actionType: "restore",
           }).unwrap();
           break;
+        //to restore multiple
         case "restoreAll":
           result = await deleteRestoreTask({
             id: selected,
@@ -80,24 +89,28 @@ const Trash = () => {
     }
   };
 
+  //delete all handler
   const deleteAllClick = () => {
     setType("deleteAll");
     setMsg("Do you want to permenantly delete all items?");
     setOpenDialog(true);
   };
 
+  //restore all handler
   const restoreAllClick = () => {
     setType("restoreAll");
     setMsg("Do you want to restore all items in the trash?");
     setOpenDialog(true);
   };
 
+  //delete one handler
   const deleteClick = (id) => {
     setType("delete");
     setSelected(id);
     setOpenDialog(true);
   };
 
+  //restore one handler
   const restoreClick = (id) => {
     setSelected(id);
     setType("restore");
@@ -112,6 +125,7 @@ const Trash = () => {
       </div>
     );
 
+  //table header for trash table
   const TableHeader = () => (
     <thead className='border-b border-gray-300'>
       <tr className='text-black  text-left'>
@@ -123,6 +137,7 @@ const Trash = () => {
     </thead>
   );
 
+  //table row for trash table
   const TableRow = ({ item }) => (
     <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-400/10'>
       <td className='py-2'>
@@ -213,6 +228,7 @@ const Trash = () => {
   );
 };
 
+//propTypes
 Trash.propTypes = {
   item: PropTypes.shape({
     _id: PropTypes.string,

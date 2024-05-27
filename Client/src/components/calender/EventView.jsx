@@ -5,12 +5,14 @@ import Loading from '../Loader';
 
 const EventView = () => {
 
+  //gets available events
   const { data: allEvents, isLoading} = useGetAllEventsQuery({
     isTrashed: "",
   });
 
   const [events, setEvents] = useState([]);
 
+  //assign retrieved data to the format ract-big-calender accepts
   useEffect(() => {
     if (allEvents && allEvents.events) {
       const formattedEvents = allEvents.events.map(event => ({
@@ -28,12 +30,13 @@ const EventView = () => {
     <div className='py-10'>
       <Loading />
     </div>
-  ) : (
-        <div>
-          <h1>My Calendar</h1>
-          <Calendar events={events} />
-        </div>
-      );
+  ) : 
+  (
+    <div>
+      <h1>My Calendar</h1>
+      <Calendar events={events} />
+    </div>
+  );
 }
 
 export default EventView;

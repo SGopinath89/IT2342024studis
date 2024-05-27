@@ -14,6 +14,9 @@ import ConfirmatioDialog from "../Dialogs";
 import ModalWrapper from "../ModalWrapper";
 import Textbox from "../Textbox";
 
+//contain form for adding/ editing events
+//need to feed the event
+//called inside calender
 const AddEvent = ({ open, setOpen, event }) => {
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -121,7 +124,7 @@ const AddEvent = ({ open, setOpen, event }) => {
             as='h2'
             className='text-base font-bold leading-6 text-gray-900 mb-4'
           >
-             {event ? 'Edit Event' : 'Add Event'}
+            {event ? 'Edit Event' : 'Add Event'}
           </DialogTitle>
 
           <div className='mt-2 flex flex-col gap-6'>
@@ -134,7 +137,6 @@ const AddEvent = ({ open, setOpen, event }) => {
               register={register("eventName", { required: "Event name is required" })}
               error={errors.eventName ? errors.eventName.message : ""}
             />
-
             <Textbox
               placeholder="Start Time"
               type="datetime-local"
@@ -144,7 +146,6 @@ const AddEvent = ({ open, setOpen, event }) => {
               register={register("startTime", { required: "Start Time is required" })}
               error={errors.startTime ? errors.startTime.message : ""}
             />
-
             <Textbox
               placeholder="End Time"
               type="datetime-local"
@@ -154,7 +155,6 @@ const AddEvent = ({ open, setOpen, event }) => {
               register={register("endTime", { required: "End Time is required" })}
               error={errors.endTime ? errors.endTime.message : ""}
             />
-
             <Textbox
               placeholder="Description"
               type="text"
@@ -164,7 +164,6 @@ const AddEvent = ({ open, setOpen, event }) => {
               register={register("description")}
               error={errors.description ? errors.description.message : ""}
             />
-
             <div className="bg-gray-50 py-6 sm:flex sm:flex-row-reverse gap-4">
               <Button
                 label="Submit"

@@ -4,6 +4,7 @@ import { setOpenSidebar } from "../redux/slices/authSlice";
 import NotificationPanel from "./NotificationPanel";
 import UserAvatar from "./user/UserAvatar";
 
+//navigation bar
 const Navbar = () => {
   const dispatch = useDispatch();
 

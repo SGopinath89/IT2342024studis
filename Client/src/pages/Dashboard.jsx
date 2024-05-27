@@ -14,7 +14,9 @@ import Loading from "../components/Loader";
 import { useGetDashboardStatsQuery } from "../redux/slices/api/taskApiSlice.js";
 import { PRIOTITYSTYELS, TASK_TYPE } from "../utils";
 
+//table to display tasks
 const TaskTable = ({ tasks }) => {
+  //icons for priority
   const ICONS = {
     high: <MdKeyboardDoubleArrowUp />,
     medium: <MdKeyboardArrowUp />,
@@ -60,6 +62,7 @@ const TaskTable = ({ tasks }) => {
     </tr>
   );
 
+  //propTypes for the task table row
   TableRow.propTypes = {
     task: PropTypes.shape({
       stage: PropTypes.string,
@@ -85,6 +88,7 @@ const TaskTable = ({ tasks }) => {
   );
 };
 
+//propTypes for task table
 TaskTable.propTypes = {
   tasks: PropTypes.arrayOf(
     PropTypes.shape({
@@ -96,7 +100,9 @@ TaskTable.propTypes = {
   ).isRequired
 };
 
+//main dashboard function
 const Dashboard = () => {
+  //get dashboard statistics
   const { data, isLoading } = useGetDashboardStatsQuery();
 
   if (isLoading)
@@ -105,8 +111,11 @@ const Dashboard = () => {
         <Loading />
       </div>
     );
+  
+  //total number of tasks
   const totals = data?.tasks;
 
+  //details to show in the cards
   const stats = [
     {
       _id: "1",
@@ -131,6 +140,7 @@ const Dashboard = () => {
     },
   ];
 
+  //cards that show summerized details
   const Card = ({ label, count, bg, icon }) => {
     return (
       <div className='w-full h-32 bg-white p-5 shadow-md rounded-md flex items-center justify-between'>
@@ -152,6 +162,7 @@ const Dashboard = () => {
     );
   };
 
+  //propTypes for cards
   Card.propTypes = {
     label: PropTypes.string.isRequired,
     count: PropTypes.number.isRequired,
@@ -175,7 +186,6 @@ const Dashboard = () => {
       </div>
 
       <div className='w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8'>
-        {/* /left */}
 
         <TaskTable tasks={data.last10Task} />
 
@@ -184,6 +194,7 @@ const Dashboard = () => {
   );
 };
 
+//propTypes for dashboard
 Dashboard.propTypes = {
   data: PropTypes.shape({
     totalTasks: PropTypes.number,

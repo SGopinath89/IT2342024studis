@@ -20,17 +20,20 @@ import Button from "../Button";
 import ConfirmatioDialog from "../Dialogs";
 import AddTask from "./AddTask";
 
+//priority icons
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,
   medium: <MdKeyboardArrowUp />,
   low: <MdKeyboardArrowDown />,
 };
 
+//render table view
 const Table = ({ tasks }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selected, setSelected] = useState(null);
   const [openEdit, setOpenEdit] = useState(false);
 
+  //call delete mutation
   const [deleteTask] = useTrashTaskMutation();
 
   const deleteClicks = (id) => {
@@ -43,6 +46,7 @@ const Table = ({ tasks }) => {
     setOpenEdit(true);
   }
 
+  //handles delete
   const deleteHandler = async () => {
     try {
       const res = await deleteTask({
@@ -62,6 +66,7 @@ const Table = ({ tasks }) => {
     }
   };
 
+  //table structure
   const TableHeader = () => (
     <thead className='w-full border-b border-gray-300'>
       <tr className='w-full text-black  text-left'>

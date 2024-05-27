@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { setOpenSidebar } from "../redux/slices/authSlice";
 
+//holds links to other pages
 const linkData = [
   {
     label: "Dashboard",
@@ -61,6 +62,7 @@ const linkData = [
   },
 ];
 
+//sidebar
 const Sidebar = () => {
   const { user } = useSelector((state) => state.auth);
 
@@ -69,12 +71,14 @@ const Sidebar = () => {
 
   const path = location.pathname.split("/")[1];
 
+  //according to isAdmin decide whats to render
   const sidebarLinks = user?.isAdmin ? linkData : linkData.slice(0, 7);
 
   const closeSidebar = () => {
     dispatch(setOpenSidebar(false));
   };
 
+  //navigation linking
   const NavLink = ({ el }) => {
     return (
       <Link

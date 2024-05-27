@@ -53,16 +53,6 @@ export const fileApiSlice = apiSlice.injectEndpoints({
                 credentials: "include",
             }),
         }),
-
-        // duplicateFile: builder.mutation({
-        //     query: ({ id }) => ({
-        //         url: `${FILE_URL}/duplicate/${id}`,
-        //         method: "POST",
-        //         body: {},
-        //         credentials: "include",
-        //     }),
-        // }),
-
     })
 });
 

@@ -11,6 +11,7 @@ import { logout } from "../../redux/slices/authSlice.js";
 import AddUser from './AddUser.jsx';
 import ChangePassword from './ChangePassword.jsx';
 
+//renders user avatar
 const UserAvatar = () => {
   const [open, setOpen] = useState(false);
   const [openPassword, setOpenPassword] = useState(false);
@@ -18,8 +19,10 @@ const UserAvatar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  //logout mutations
   const [logoutUser] = useLogoutMutation();
 
+  //handles logout
   const logoutHandler = async () => {
     try {
       await logoutUser().unwrap();
@@ -30,6 +33,7 @@ const UserAvatar = () => {
     }
   };
 
+  //link to profile page
   const goToProfilePage = () => {
     navigate(`/profile/${user._id}`)
   };

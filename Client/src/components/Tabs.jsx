@@ -1,10 +1,12 @@
 import { Tab, TabGroup, TabList, TabPanels } from "@headlessui/react";
 import PropTypes from 'prop-types';
 
+//classname function for passing complex styles
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+//renders view options visible
 export default function Tabs({ tabs, setSelected, children }) {
   return (
     <div className='w-full px-1 sm:px-0'>
@@ -38,6 +40,6 @@ export default function Tabs({ tabs, setSelected, children }) {
 Tabs.propTypes = {
   tabs: PropTypes.array,  
   selected: PropTypes.string,  
-  children: PropTypes.object,  
+  children: PropTypes.array,  
   setSelected: PropTypes.func,  
 };

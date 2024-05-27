@@ -21,12 +21,17 @@ import ModalWrapper from "../ModalWrapper";
 import SelectList from "../SelectList";
 import Textbox from "../Textbox";
 
+//list options
 const LISTS = ["IN PROGRESS", "COMPLETED"];
 const PRIORITY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
 
+//saves assets urls
 const uploadedFileURLs = [];
 
+//add / edit tasks
 const AddTask = ({ open, setOpen, task }) => {
+
+  //declare default values
   const defaultValues =  {
     title: task?.title || "",
     date: dateFormatter(task?.date || new Date()),
@@ -47,11 +52,16 @@ const AddTask = ({ open, setOpen, task }) => {
   const [assets, setAssets] = useState([]);
   const [uploading, setUploading] = useState(false);
 
+  //call mutations
   const [createTask] = useCreateTaskMutation();
   const [updateTask] = useUpdateTaskMutation();
+  
+  //add current assets to the URLS
   const URLS = task?.assets ? [...task.assets] : [];
 
   const submitHandler = async(data) => {
+
+    //upload assets
     for (const file of assets) {
       setUploading(true);
       try {
@@ -64,6 +74,7 @@ const AddTask = ({ open, setOpen, task }) => {
       }
     }
 
+    //create tasks
     try {
       const newData = {
         ...data,
@@ -88,6 +99,7 @@ const AddTask = ({ open, setOpen, task }) => {
     setAssets(e.target.files);
   };
 
+  //upload file functions
   const uploadFile = async (file) => {
     const storage = getStorage(app);
     const name = new Date().getTime() + file.name;

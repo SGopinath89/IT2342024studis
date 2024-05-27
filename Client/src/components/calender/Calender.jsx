@@ -1,3 +1,7 @@
+//using react-big-calender with localizer
+//documentation
+//https://jquense.github.io/react-big-calendar/examples/index.html
+
 import moment from 'moment';
 import { useState } from 'react';
 import PropTypes from 'prop-types';

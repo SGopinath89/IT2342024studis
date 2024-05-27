@@ -1,3 +1,7 @@
+//using react recharts
+//documentation
+//https://recharts.org/en-US/guide
+
 import PropTypes from 'prop-types';
 import {
   Bar,
@@ -10,6 +14,8 @@ import {
   Tooltip,
 } from "recharts";
 
+//creates a bar chart using recharts
+//called in dashboard
 export const Chart = ({data}) => {
   return (
     <ResponsiveContainer width={"100%"} height={300}>

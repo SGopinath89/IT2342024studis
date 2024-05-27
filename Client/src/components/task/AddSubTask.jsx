@@ -7,6 +7,7 @@ import Button from "../Button";
 import ModalWrapper from "../ModalWrapper";
 import Textbox from "../Textbox";
 
+//add subTasks
 const AddSubTask = ({ open, setOpen, id }) => {
   const {
     register,
@@ -14,8 +15,10 @@ const AddSubTask = ({ open, setOpen, id }) => {
     formState: { errors },
   } = useForm();
 
+  //call mutation
   const [addSbTask] = useCreateSubtaskMutation();
 
+  //handles creation process
   const handleOnSubmit = async (data) => {
     try {
       const res = await addSbTask({ data, id }).unwrap();

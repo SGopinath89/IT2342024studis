@@ -7,18 +7,26 @@ import AddUser from "../components/user/AddUser";
 import Button from "../components/Button";
 import ConfirmatioDialog, { UserAction } from "../components/Dialogs";
 import Title from "../components/Title";
-import { useDeleteUserMutation, useGetUserListQuery, useUserActionMutation } from "../redux/slices/api/userApiSlice";
+import { 
+  useDeleteUserMutation, 
+  useGetUserListQuery, 
+  useUserActionMutation 
+} from "../redux/slices/api/userApiSlice";
 
+//displayes theall users registered in the system
+//only for admin
 const Users = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [open, setOpen] = useState(false);
   const [openAction, setOpenAction] = useState(false);
   const [selected, setSelected] = useState(null);
 
+  //mutations and querties for user CRUD
   const { data, refetch } = useGetUserListQuery();
   const [deleteUser] = useDeleteUserMutation();
   const [userAction] = useUserActionMutation();
 
+  //handles setting user acount active oe not
   const userActionHandler = async () => {
     try {
       const result = await userAction({
@@ -37,6 +45,7 @@ const Users = () => {
     }
   };
 
+  //handles deleting user acount
   const deleteHandler = async () => {
     try {
 
@@ -54,21 +63,25 @@ const Users = () => {
     }
   };
 
+  //confirm delete popup
   const deleteClick = (id) => {
     setSelected(id);
     setOpenDialog(true);
   };
 
+  //opends edit popup
   const editClick = (el) => {
     setSelected(el);
     setOpen(true);
   };
 
+  //acount status popup
   const userStatusClick = (el) => {
     setSelected(el);
     setOpenAction(true);
   };
 
+  //table structure
   const TableHeader = () => (
     <thead className='border-b border-gray-300'>
       <tr className='text-black text-left'>
@@ -172,6 +185,7 @@ const Users = () => {
   );
 };
 
+//propTypes
 Users.propTypes = {
   user: PropTypes.shape({
     name: PropTypes.string,

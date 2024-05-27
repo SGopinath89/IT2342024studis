@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from './Button';
 import ModalWrapper from './ModalWrapper';
 
+//displays notifications
 const ViewNotification = ({ open, setOpen, el }) => {
   return (
     <>

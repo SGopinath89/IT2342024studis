@@ -8,11 +8,13 @@ import Title from '../components/Title';
 import AddFile from '../components/files/AddFiles'
 import { useGetFilesQuery } from '../redux/slices/api/filesApiSlice';
  
+//displays the user uploaded file(not to confused with assets in tasks)
 const Files = () => {
   const params = useParams();
 
   const [open, setOpen] = useState(false);
 
+  //get file details
   const {data, isLoading} = useGetFilesQuery({
     isTrashed: "",
   });

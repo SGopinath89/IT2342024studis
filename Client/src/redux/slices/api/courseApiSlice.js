@@ -46,14 +46,6 @@ export const courseApiSlice = apiSlice.injectEndpoints({
             }),
         }),
 
-        // getSigleTask: builder.query({
-        //     query: (id) => ({
-        //         url: `${TASK_URL}/${id}`,
-        //         method: "GET",
-        //         credentials: "include",
-        //     }),
-        // }),
-
         deleteCourse: builder.mutation({
             query: ({ id }) => ({
                 url: `${COURSE_URL}/delete/${id}`,

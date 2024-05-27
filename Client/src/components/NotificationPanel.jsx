@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { useGetNotificationsQuery, useMarkNotificationsAsReadMutation } from "../redux/slices/api/userApiSlice";
 import ViewNotification from "./ViewNotification";
 
+//notification alert icons
 const ICONS = {
   alert: (
     <HiBellAlert className='h-5 w-5 text-gray-600 group-hover:text-indigo-600' />
@@ -17,13 +18,16 @@ const ICONS = {
   ),
 };
 
+//notification panel
 const NotificationPanel = () => {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
 
+  //call mutations
   const { data, refetch } = useGetNotificationsQuery();
   const [markAsRead] = useMarkNotificationsAsReadMutation();
 
+  //handles mark as read
   const readHandler = async (type, id) => {
     await markAsRead({type, id}).unwrap();
     refetch();
@@ -35,6 +39,7 @@ const NotificationPanel = () => {
     setOpen(true);
   };
 
+  //actions
   const callsToAction = [
     { name: "Cancel", href: "#", icon: "" },
     {

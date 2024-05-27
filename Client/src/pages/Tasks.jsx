@@ -12,16 +12,20 @@ import Title from "../components/Title";
 import AddTask from "../components/task/AddTask";
 import Table from "../components/task/Table";
 import { useGetAllTaskQuery } from "../redux/slices/api/taskApiSlice";
+
+//view options
 const TABS = [
   { title: "Board View", icon: <MdGridView /> },
   { title: "List View", icon: <FaList /> },
 ];
 
+//task type customization
 const TASK_TYPE = {
   "in progress": "bg-yellow-600",
   completed: "bg-green-600",
 };
 
+//renders tasks
 const Tasks = () => {
   const params = useParams();
 
@@ -30,6 +34,7 @@ const Tasks = () => {
 
   const status = params?.status || "";
 
+  //get all task data
   const {data, isLoading} = useGetAllTaskQuery({
     strQuery: status,
     isTrashed: "",
