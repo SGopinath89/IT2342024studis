@@ -3,7 +3,7 @@ import { useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { toast } from "sonner";
 import PropTypes from 'prop-types';
-import AddUser from "../components/AddUser";
+import AddUser from "../components/user/AddUser";
 import Button from "../components/Button";
 import ConfirmatioDialog, { UserAction } from "../components/Dialogs";
 import Title from "../components/Title";

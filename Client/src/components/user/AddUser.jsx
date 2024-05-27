@@ -1,17 +1,15 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-import React from "react";
+import { DialogTitle } from "@headlessui/react";
+import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
-import { useSelector, useDispatch } from "react-redux";
-import ModalWrapper from "./ModalWrapper";
-import { Dialog, DialogTitle } from "@headlessui/react";
-import Textbox from "./Textbox";
-import Loading from "./Loader";
-import Button from "./Button";
-import { useRegisterMutation } from "../redux/slices/api/authApiSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
-import { useUpdateUserMutation } from "../redux/slices/api/userApiSlice";
-import { setCredentials } from "../redux/slices/authSlice";
+import { useRegisterMutation } from "../../redux/slices/api/authApiSlice";
+import { useUpdateUserMutation } from "../../redux/slices/api/userApiSlice";
+import { setCredentials } from "../../redux/slices/authSlice";
+import Button from "../Button";
+import Loading from "../Loader";
+import ModalWrapper from "../ModalWrapper";
+import Textbox from "../Textbox";
 
 const AddUser = ({ open, setOpen, userData }) => {
   let defaultValues = userData ?? {};
@@ -38,7 +36,7 @@ const AddUser = ({ open, setOpen, userData }) => {
           dispatch(setCredentials({...result.user }));
         }
       } else {
-        const result = await addNewUser({
+        await addNewUser({
           ...data, 
           password: data.email
         }).unwrap();
@@ -158,6 +156,14 @@ const AddUser = ({ open, setOpen, userData }) => {
       </ModalWrapper>
     </>
   );
+};
+
+AddUser.propTypes = {
+  open: PropTypes.bool.isRequired, 
+  setOpen: PropTypes.func.isRequired, 
+  userData: PropTypes.shape({
+    _id: PropTypes.string,
+  }),
 };
 
 export default AddUser;

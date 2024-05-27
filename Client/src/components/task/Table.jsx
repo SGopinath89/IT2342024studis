@@ -1,6 +1,8 @@
-/* eslint-disable react/prop-types */
+import clsx from "clsx";
+import PropTypes from 'prop-types';
 import { useState } from "react";
 import { BiMessageAltDetail } from "react-icons/bi";
+import { FaList } from "react-icons/fa";
 import {
   MdAttachFile,
   MdKeyboardArrowDown,
@@ -8,18 +10,15 @@ import {
   MdKeyboardDoubleArrowUp,
 } from "react-icons/md";
 import { toast } from "sonner";
-import { 
-  PRIOTITYSTYELS, 
-  TASK_TYPE, 
-  formatDate 
+import { useTrashTaskMutation } from "../../redux/slices/api/taskApiSlice";
+import {
+  PRIOTITYSTYELS,
+  TASK_TYPE,
+  formatDate
 } from "../../utils";
-import clsx from "clsx";
-import { FaList } from "react-icons/fa";
 import Button from "../Button";
 import ConfirmatioDialog from "../Dialogs";
-import { useTrashTaskMutation } from "../../redux/slices/api/taskApiSlice";
 import AddTask from "./AddTask";
-import PropTypes from 'prop-types';
 
 const ICONS = {
   high: <MdKeyboardDoubleArrowUp />,
@@ -171,6 +170,19 @@ const Table = ({ tasks }) => {
 
 Table.propTypes = {
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
+  task: PropTypes.shape({
+    _id: PropTypes.string,
+    title: PropTypes.string,
+    priority: PropTypes.string,
+    stage: PropTypes.string,
+    date: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Date),
+    ]),
+    assets: PropTypes.array,
+    activities: PropTypes.array,
+    subTasks: PropTypes.array,
+  })
 };
 
 export default Table;

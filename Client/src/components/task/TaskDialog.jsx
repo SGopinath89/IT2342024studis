@@ -1,6 +1,4 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React, { Fragment, useState } from "react";
+import { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiTwotoneFolderOpen } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
@@ -10,6 +8,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { Menu, Transition, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import AddTask from "./AddTask";
 import AddSubTask from "./AddSubTask";
+import PropTypes from 'prop-types';
 import ConfirmatioDialog from "../Dialogs";
 import { useDuplicateTaskMutation, useTrashTaskMutation } from "../../redux/slices/api/taskApiSlice";
 import { toast } from "sonner";
@@ -160,6 +159,12 @@ const TaskDialog = ({ task }) => {
       />
     </>
   );
+};
+
+TaskDialog.propTypes = {
+  task: PropTypes.shape({
+    _id: PropTypes.string
+  })
 };
 
 export default TaskDialog;

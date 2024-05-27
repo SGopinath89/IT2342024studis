@@ -1,7 +1,7 @@
 import { Popover, PopoverButton, PopoverPanel, Transition } from "@headlessui/react";
 import PropTypes from 'prop-types';
 import { Fragment } from "react";
-import { getInitials } from "../utils";
+import { getInitials } from "../../utils";
 
 const UserInfo = ({ user }) => {
   return (

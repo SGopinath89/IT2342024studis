@@ -1,22 +1,17 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React from "react";
+import clsx from "clsx";
+import PropTypes from 'prop-types';
+import { FaRegFile, FaTasks, FaUsers } from "react-icons/fa";
+import { FaRegTrashCan } from "react-icons/fa6";
 import {
   MdDashboard,
   MdOutlineAddTask,
-  MdSettings,
   MdTaskAlt,
 } from "react-icons/md";
-import { RiProgress5Line } from "react-icons/ri";
 import { PiGraduationCap } from "react-icons/pi";
-import { FaRegTrashCan } from "react-icons/fa6";
-import { FaRegFile } from "react-icons/fa";
-import { RiCalendarScheduleLine  } from "react-icons/ri";
-import { FaTasks, FaUsers } from "react-icons/fa";
+import { RiCalendarScheduleLine, RiProgress5Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { setOpenSidebar } from "../redux/slices/authSlice";
-import clsx from "clsx";
 
 const linkData = [
   {
@@ -64,11 +59,6 @@ const linkData = [
     link: "profile",
     icon: <FaUsers />,
   },
-  // {
-  //   label: "Users",
-  //   link: "profile/user",
-  //   icon: <FaUsers />,
-  // },
 ];
 
 const Sidebar = () => {
@@ -114,15 +104,16 @@ const Sidebar = () => {
           <NavLink el={link} key={link.label} />
         ))}
       </div>
-
-      {/* <div className=''>
-        <button className='w-full flex gap-2 p-2 items-center text-lg text-gray-800'>
-          <MdSettings />
-          <span>Settings</span>
-        </button>
-      </div> */}
     </div>
   );
+};
+
+Sidebar.propTypes = {
+  el: PropTypes.shape({
+    link: PropTypes.array,
+    icon: PropTypes.object,
+    label: PropTypes.string,
+  }),
 };
 
 export default Sidebar;

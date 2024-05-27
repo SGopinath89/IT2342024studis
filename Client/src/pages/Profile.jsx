@@ -1,5 +1,5 @@
 import { useState } from "react";
-import UpdateUser from "../components/UpdateUser";
+import UpdateUser from "../components/user/UpdateUser";
 import Button from "../components/Button";
 import { IoMdAdd } from "react-icons/io";
 import { useSelector } from "react-redux";

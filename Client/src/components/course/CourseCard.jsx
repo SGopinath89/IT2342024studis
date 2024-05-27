@@ -1,19 +1,16 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-
-import React, { useState } from "react";
+import PropTypes from 'prop-types';
+import { useState } from "react";
 import { MdAttachFile, MdDelete, MdEdit } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
-import { useDeleteCourseMutation } from "../redux/slices/api/courseApiSlice";
+import { useDeleteCourseMutation } from "../../redux/slices/api/courseApiSlice";
+import Button from "../Button";
+import ConfirmatioDialog from "../Dialogs";
 import AddCourse from "./AddCourse";
-import Button from "./Button";
-import ConfirmatioDialog from "./Dialogs";
 
 const CourseCard = ({ course }) => {
   const { user } = useSelector((state) => state.auth);
   const [openDialog, setOpenDialog] = useState(false);
-  const [open, setOpen] = useState(false);
   const [type, setType] = useState("delete");
   const [msg, setMsg] = useState(null);
   const [selected, setSelected] = useState("");
@@ -121,6 +118,18 @@ const CourseCard = ({ course }) => {
       />
     </>
   );
+};
+
+//propTypes for this file
+CourseCard.propTypes = {
+  course: PropTypes.shape({
+    _id: PropTypes.string,
+    courseCode: PropTypes.string,
+    title: PropTypes.string,
+    lectureInCharge: PropTypes.string,
+    duration: PropTypes.string,
+    courseContent: PropTypes.string,
+  }),
 };
 
 export default CourseCard;

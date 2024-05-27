@@ -1,13 +1,10 @@
-/* eslint-disable no-unused-vars */
-import React from "react";
 import { MdOutlineSearch } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setOpenSidebar } from "../redux/slices/authSlice";
-import UserAvatar from "./UserAvatar";
 import NotificationPanel from "./NotificationPanel";
+import UserAvatar from "./user/UserAvatar";
 
 const Navbar = () => {
-  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   return (

@@ -1,45 +1,41 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react";
-import ModalWrapper from "../ModalWrapper";
-import { Dialog, DialogTitle } from "@headlessui/react";
-import Textbox from "../Textbox";
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { BiImages } from "react-icons/bi";
-import Button from "../Button";
-import { toast } from "sonner";
-import { app } from "../../utils/firebase.js";
+import { DialogTitle } from "@headlessui/react";
 import {
     getDownloadURL,
     getStorage,
     ref,
     uploadBytesResumable,
 } from "firebase/storage";
-import { useAddFileMutation, useRenameFileMutation } from "../../redux/slices/api/filesApiSlice";
+import PropTypes from 'prop-types';
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { BiImages } from "react-icons/bi";
+import { toast } from "sonner";
+import { useAddFileMutation, useRenameFileMutation } from "../../redux/slices/api/filesApiSlice.js";
+import { app } from "../../utils/firebase.js";
+import Button from "../Button.jsx";
 import Loading from "../Loader.jsx";
+import ModalWrapper from "../ModalWrapper.jsx";
+import Textbox from "../Textbox.jsx";
 
 const AddFile = ({ open, setOpen, fileData }) => {
-
-    const defaultValues = {
-        _id: fileData?._id || "",
-        fileName: fileData?.fileName || "",
-        dateAdded: fileData?.dateAdded || "",
-        file: fileData?.file || "",
-    };
 
     const {
         register,
         handleSubmit,
         formState: { errors },
         reset
-    } = useForm({
-        defaultValues,
-    });
+    } = useForm();
 
     useEffect(() => {
-        reset(defaultValues);
+        if (fileData){
+            const defaultValues = {
+                _id: fileData?._id || "",
+                fileName: fileData?.fileName || "",
+                dateAdded: fileData?.dateAdded || "",
+                file: fileData?.file || "",
+            };
+            reset(defaultValues);
+        }
         setFileLink(fileData?.file || "");
     }, [fileData, reset]);
 
@@ -47,7 +43,6 @@ const AddFile = ({ open, setOpen, fileData }) => {
     const [uploading, setUploading] = useState(false);
     const [fileLink, setFileLink] = useState(fileData?.file || "");
 
-    const dispatch = useDispatch();
     const [addNewFile, { isLoading }] = useAddFileMutation();
     const [renameFile, { isLoading: isUpdating }] = useRenameFileMutation();
 
@@ -88,9 +83,7 @@ const AddFile = ({ open, setOpen, fileData }) => {
         return new Promise((resolve, reject) => {
             uploadTask.on(
                 "state_changed",
-                (snapshot) => {
-                    console.log("Uploading");
-                },
+                () => {},
                 (error) => {
                     console.error("Error uploading file:", error);
                     reject(error);
@@ -179,6 +172,21 @@ const AddFile = ({ open, setOpen, fileData }) => {
             </form>
         </ModalWrapper>
     );
+};
+
+//propTypes for this file
+AddFile.propTypes = {
+    open: PropTypes.bool.isRequired, 
+    setOpen: PropTypes.func.isRequired, 
+    fileData: PropTypes.shape({
+      _id: PropTypes.string,
+      fileName: PropTypes.string,
+      dateAdded: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.instanceOf(Date),
+      ]),
+      file: PropTypes.string,
+    }),
 };
 
 export default AddFile;

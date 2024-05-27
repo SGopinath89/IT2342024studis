@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { IoMdAdd } from "react-icons/io";
 import { useParams } from "react-router-dom";
 import Button from "../components/Button";
-import FileView from '../components/FileView';
+import FileView from '../components/files/FileView';
 import Loading from '../components/Loader';
 import Title from '../components/Title';
-import AddFile from '../components/userFiles/AddFiles';
+import AddFile from '../components/files/AddFiles'
 import { useGetFilesQuery } from '../redux/slices/api/filesApiSlice';
  
 const Files = () => {

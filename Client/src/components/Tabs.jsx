@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import { Tab, TabGroup, TabList, TabPanels } from "@headlessui/react";
+import PropTypes from 'prop-types';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -34,3 +34,10 @@ export default function Tabs({ tabs, setSelected, children }) {
     </div>
   );
 }
+
+Tabs.propTypes = {
+  tabs: PropTypes.array,  
+  selected: PropTypes.string,  
+  children: PropTypes.object,  
+  setSelected: PropTypes.func,  
+};

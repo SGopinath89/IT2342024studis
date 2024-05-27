@@ -1,17 +1,13 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React from 'react'
+import { DialogTitle } from "@headlessui/react";
+import PropTypes from 'prop-types';
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
-import ModalWrapper from "./ModalWrapper";
-import { Dialog, DialogTitle } from "@headlessui/react";
-import Textbox from "./Textbox";
-import Loading from "./Loader";
-import Button from "./Button";
+import Button from "../Button";
+import Loading from "../Loader";
+import ModalWrapper from "../ModalWrapper";
+import Textbox from "../Textbox";
 
 const ProfileInfo = ({ open, setOpen, userData }) => {
     let defaultValues = userData ?? {};
-    const { user } = useSelector((state) => state.auth);
   
     const isLoading = false,
       isUpdating = false;
@@ -117,6 +113,12 @@ const ProfileInfo = ({ open, setOpen, userData }) => {
         </ModalWrapper>
       </>
     );
-}
+};
+
+ProfileInfo.propTypes = {
+  open: PropTypes.bool.isRequired, 
+  setOpen: PropTypes.func.isRequired, 
+  userData: PropTypes.array.isRequired,
+};
 
 export default ProfileInfo

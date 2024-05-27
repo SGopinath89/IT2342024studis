@@ -1,7 +1,5 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React from "react";
 import CourseCard from "./CourseCard";
+import PropTypes from 'prop-types';
  
 const CourseView = ({ courses }) => {
   return (
@@ -11,6 +9,12 @@ const CourseView = ({ courses }) => {
       ))}
     </div>
   );
+};
+
+
+//propTypes for this file
+CourseView.propTypes = {
+  courses: PropTypes.array
 };
 
 export default CourseView;

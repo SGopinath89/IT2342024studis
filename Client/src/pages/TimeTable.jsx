@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { IoMdAdd } from "react-icons/io";
 import { useParams } from "react-router-dom";
 import Button from "../components/Button";
-import EventView from '../components/EventView';
+import EventView from '../components/calender/EventView';
 import Loading from '../components/Loader';
 import Title from '../components/Title';
-import AddEvent from '../components/userEvents/AddEvent';
+import AddEvent from '../components/calender/AddEvent';
 import { useGetAllEventsQuery } from '../redux/slices/api/eventApiSlice';
 
 const TimeTable = () => {

@@ -9,7 +9,7 @@ import {
   MdKeyboardArrowUp,
   MdKeyboardDoubleArrowUp,
 } from "react-icons/md";
-import { Chart } from "../components/Chart";
+import { Chart } from "../components/dashboard/Chart.jsx";
 import Loading from "../components/Loader";
 import { useGetDashboardStatsQuery } from "../redux/slices/api/taskApiSlice.js";
 import { PRIOTITYSTYELS, TASK_TYPE } from "../utils";

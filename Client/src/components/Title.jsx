@@ -1,7 +1,5 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import clsx from "clsx";
-import React from "react";
+import PropTypes from 'prop-types';
 
 const Title = ({ title, className }) => {
   return (
@@ -9,6 +7,11 @@ const Title = ({ title, className }) => {
       {title}
     </h2>
   );
+};
+
+Title.propTypes = {
+  title: PropTypes.string,
+  className: PropTypes.string,
 };
 
 export default Title;

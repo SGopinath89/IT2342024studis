@@ -1,20 +1,19 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
 import { MdOutlineFileOpen } from "react-icons/md";
 import moment from "moment";
-import Button from './Button';
-import React, { useState } from "react";
-import FileDialog from "./userFiles/FileDialog";
-import { useDeleteFileMutation } from "../redux/slices/api/filesApiSlice";
+import Button from '../Button';
+import PropTypes from 'prop-types';
+import { useState } from "react";
+import FileDialog from "./FileDialog";
+import { useDeleteFileMutation } from "../../redux/slices/api/filesApiSlice";
 import { toast } from "sonner";
-import AddFile from "./userFiles/AddFiles";
-import ConfirmatioDialog from "./Dialogs";
+import AddFile from "./AddFiles";
+import ConfirmatioDialog from "../Dialogs";
 
 const FileView = ({ files }) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [selected, setSelected] = useState(null);
-// console.log(files);
+
     const [deleteFIle] = useDeleteFileMutation();
 
     const deleteClicks = (id) => {
@@ -128,6 +127,20 @@ const FileView = ({ files }) => {
       />
         </>
       );
-}
+};
+
+//propTypes for this file
+FileView.propTypes = {
+  files: PropTypes.array,
+  file: PropTypes.shape({
+    _id: PropTypes.string,
+    file: PropTypes.string,
+    fileName: PropTypes.string,
+    dateAdded: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Date),
+    ]),
+  }),
+};
 
 export default FileView

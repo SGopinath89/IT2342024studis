@@ -1,13 +1,9 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
-import { useSelector } from "react-redux";
-import { useGetAllEventsQuery } from '../redux/slices/api/eventApiSlice';
+import { useEffect, useState } from 'react';
+import { useGetAllEventsQuery } from '../../redux/slices/api/eventApiSlice';
 import Calendar from "./Calender";
-import moment from 'moment';
-import Loading from './Loader';
+import Loading from '../Loader';
 
 const EventView = () => {
-  const { user } = useSelector((state) => state.auth);
 
   const { data: allEvents, isLoading} = useGetAllEventsQuery({
     isTrashed: "",

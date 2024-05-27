@@ -1,14 +1,14 @@
+import PropTypes from 'prop-types';
 import {
   Bar,
   BarChart,
   CartesianGrid,
   Legend,
-  ResponsiveContainer,
-  Tooltip,
   XAxis as RechartsXAxis,
   YAxis as RechartsYAxis,
+  ResponsiveContainer,
+  Tooltip,
 } from "recharts";
-import PropTypes from 'prop-types';
 
 export const Chart = ({data}) => {
   return (

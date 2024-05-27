@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
-import Button from "../components/Button";
-import ModalWrapper from "../components/ModalWrapper";
-import Textbox from "../components/Textbox";
-import { useUpdateMeMutation } from "../redux/slices/api/userApiSlice";
-import { app } from "../utils/firebase";
+import Button from "../Button";
+import ModalWrapper from "../ModalWrapper";
+import Textbox from "../Textbox";
+import { useUpdateMeMutation } from "../../redux/slices/api/userApiSlice";
+import { app } from "../../utils/firebase";
 import { BiImages } from "react-icons/bi";
 
 const UpdateUser = ({ open, setOpen, userData }) => {
@@ -33,6 +33,7 @@ const UpdateUser = ({ open, setOpen, userData }) => {
   const [updateUser, { isLoading: isUpdating }] = useUpdateMeMutation();
   const [uploading, setUploading] = useState(false);
   const [assets, setAssets] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [fileLink,setFileLink] = useState(user?.profilePic || "");
 
   const handleSelect = (e) => {

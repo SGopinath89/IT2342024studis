@@ -1,6 +1,4 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React from "react";
+import PropTypes from 'prop-types';
 import TaskCard from "./TaskCard";
 
 const BoardView = ({ tasks }) => {
@@ -11,6 +9,10 @@ const BoardView = ({ tasks }) => {
       ))}
     </div>
   );
+};
+
+BoardView.propTypes = {
+  tasks: PropTypes.array,
 };
 
 export default BoardView;

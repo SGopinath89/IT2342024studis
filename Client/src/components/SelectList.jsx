@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-import { Listbox, Transition, ListboxOption, ListboxOptions, ListboxButton } from "@headlessui/react";
-import React, { Fragment } from "react";
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions, Transition } from "@headlessui/react";
+import PropTypes from 'prop-types';
+import { Fragment } from "react";
 import { BsChevronExpand } from "react-icons/bs";
 import { MdCheck } from "react-icons/md";
 
@@ -62,6 +61,13 @@ const SelectList = ({ lists, selected, setSelected, label }) => {
       </Listbox>
     </div>
   );
+};
+
+SelectList.propTypes = {
+  lists: PropTypes.array,  
+  selected: PropTypes.string,  
+  label: PropTypes.string,  
+  setSelected: PropTypes.func,  
 };
 
 export default SelectList;

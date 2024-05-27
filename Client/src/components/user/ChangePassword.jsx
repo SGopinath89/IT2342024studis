@@ -1,14 +1,12 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React from 'react';
-import { Dialog, DialogTitle } from '@headlessui/react';
+import { DialogTitle } from '@headlessui/react';
 import { useForm } from 'react-hook-form';
-import Button from './Button';
-import Loading from './Loader';
-import ModalWrapper from './ModalWrapper';
-import Textbox from './Textbox';
-import { useChangePasswordMutation } from '../redux/slices/api/userApiSlice';
 import { toast } from "sonner";
+import { useChangePasswordMutation } from '../../redux/slices/api/userApiSlice';
+import Button from '../Button';
+import PropTypes from 'prop-types';
+import Loading from '../Loader';
+import ModalWrapper from '../ModalWrapper';
+import Textbox from '../Textbox';
 
 const ChangePassword = ({ open, setOpen }) => {
     const {
@@ -25,7 +23,7 @@ const ChangePassword = ({ open, setOpen }) => {
             return;
         }
         try {
-            const res = await changeUserPassword(data).unwrap();
+            await changeUserPassword(data).unwrap();
             toast.success("New User added successfully");
 
             setTimeout(() => {
@@ -93,6 +91,11 @@ const ChangePassword = ({ open, setOpen }) => {
         </ModalWrapper>
     </>
   )
-}
+};
+
+ChangePassword.propTypes = {
+    open: PropTypes.bool.isRequired, 
+    setOpen: PropTypes.func.isRequired, 
+  };
 
 export default ChangePassword

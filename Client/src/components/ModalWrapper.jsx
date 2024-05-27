@@ -1,5 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useRef } from "react";
+import PropTypes from 'prop-types';
 
 const ModalWrapper = ({ open, setOpen, children }) => {
   const cancelButtonRef = useRef(null);
@@ -50,6 +51,12 @@ const ModalWrapper = ({ open, setOpen, children }) => {
       </Dialog>
     </Transition.Root>
   );
+};
+
+ModalWrapper.propTypes = {
+  open: PropTypes.bool.isRequired, 
+  setOpen: PropTypes.func.isRequired, 
+  children: PropTypes.object,
 };
 
 export default ModalWrapper;

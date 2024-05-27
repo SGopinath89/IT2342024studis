@@ -1,4 +1,5 @@
 import { DialogTitle } from "@headlessui/react";
+import PropTypes from 'prop-types';
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -12,7 +13,6 @@ import Button from "../Button";
 import ConfirmatioDialog from "../Dialogs";
 import ModalWrapper from "../ModalWrapper";
 import Textbox from "../Textbox";
-import PropTypes from 'prop-types';
 
 const AddEvent = ({ open, setOpen, event }) => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -24,6 +24,7 @@ const AddEvent = ({ open, setOpen, event }) => {
     reset,
   } = useForm({});
 
+  //setting default values for event duplication
   useEffect(() => {
     if (event) {
       const defaultValues = {
@@ -37,11 +38,13 @@ const AddEvent = ({ open, setOpen, event }) => {
     }
   }, [event, reset]);
 
+  //CRUD mutatons for events
   const [createEvent, { isLoading }] = useCreateEventMutation();
   const [updateEvent, { isLoading: isUpdating }] = useUpdateEventMutation();
   const [duplicateEvent] = useDuplicateEventMutation();
   const [deleteEvent] = useDeleteEventMutation();
 
+  //handles creation and updating
   const submitHandler = async(data) => {
     try {
       const eventData = {
@@ -51,7 +54,8 @@ const AddEvent = ({ open, setOpen, event }) => {
         endTime: new Date(data.endTime),
         description: data.description,
       };
-
+      
+      //set event or update
       const res = event?.id
         ? await updateEvent({ ...eventData, _id: event.id }).unwrap()
         : await createEvent(eventData).unwrap();
@@ -62,6 +66,7 @@ const AddEvent = ({ open, setOpen, event }) => {
         setOpen(false);
         window.location.reload();
       }, 500);
+
     } catch (err) {
       console.log(err);
       toast.error(err?.data?.message || err.error);
@@ -72,6 +77,7 @@ const AddEvent = ({ open, setOpen, event }) => {
     setOpenDialog(true);
   };
 
+  //handles delete 
   const deleteHandler = async () => {
     try {
       const res = await deleteEvent({
@@ -90,6 +96,7 @@ const AddEvent = ({ open, setOpen, event }) => {
     }
   };
 
+  //handles duplication
   const duplicateHandler = async () => {
     try {
       const res = await duplicateEvent(event.id).unwrap();
@@ -196,6 +203,7 @@ const AddEvent = ({ open, setOpen, event }) => {
   );
 };
 
+//propTypes for this file
 AddEvent.propTypes = {
   open: PropTypes.bool.isRequired, 
   setOpen: PropTypes.func.isRequired, 

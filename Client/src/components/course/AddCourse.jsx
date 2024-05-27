@@ -1,6 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
 import { DialogTitle } from "@headlessui/react";
 import {
   getDownloadURL,
@@ -8,48 +5,48 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import React, { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { BiImages } from "react-icons/bi";
-import { useDispatch } from "react-redux";
 import { toast } from "sonner";
-import { useAddCourseMutation, useUpdateCourseMutation } from "../redux/slices/api/courseApiSlice";
-import { app } from "../utils/firebase.js";
-import Button from "./Button";
-import Loading from "./Loader";
-import ModalWrapper from "./ModalWrapper";
-import Textbox from "./Textbox";
+import {
+  useAddCourseMutation,
+  useUpdateCourseMutation
+} from "../../redux/slices/api/courseApiSlice.js";
+import { app } from "../../utils/firebase.js";
+import Button from "../Button.jsx";
+import Loading from "../Loader.jsx";
+import ModalWrapper from "../ModalWrapper.jsx";
+import Textbox from "../Textbox.jsx";
 
 const AddCourse = ({ open, setOpen, courseData }) => {
-  const defaultValues = {
-    _id: courseData?._id || "",
-    courseCode: courseData?.courseCode || "",
-    title: courseData?.title || "",
-    lectureInCharge: courseData?.lectureInCharge || "",
-    duration: courseData?.duration || "",
-    courseContent: courseData?.courseContent || "",
-  };
-
-  let uploadedFileURLs = "";
-
+  
   const { 
     register, 
     handleSubmit, 
     formState: { errors }, 
-    reset } = useForm({
-    defaultValues,
-  });
+    reset 
+  } = useForm({});
 
   useEffect(() => {
-    reset(defaultValues);
+    if (courseData){
+      const defaultValues = {
+        _id: courseData?._id || "",
+        courseCode: courseData?.courseCode || "",
+        title: courseData?.title || "",
+        lectureInCharge: courseData?.lectureInCharge || "",
+        duration: courseData?.duration || "",
+        courseContent: courseData?.courseContent || "",
+      };
+      reset(defaultValues);
+    }
   }, [courseData, reset]);
 
   const [assets, setAssets] = useState([]);
   const [uploading, setUploading] = useState(false);
-  const [uploadError, setUploadError] = useState(null);
   const [fileLink, setFileLink] = useState(courseData?.courseContent || "");
   
-  const dispatch = useDispatch();
   const [addNewCourse, { isLoading }] = useAddCourseMutation();
   const [updateCourse, { isLoading: isUpdating }] = useUpdateCourseMutation();
 
@@ -70,6 +67,7 @@ const AddCourse = ({ open, setOpen, courseData }) => {
 
       setTimeout(() => {
         setOpen(false);
+        window.location.reload();
       }, 500);
     } catch (err) {
       console.log(err);
@@ -90,9 +88,7 @@ const AddCourse = ({ open, setOpen, courseData }) => {
     return new Promise((resolve, reject) => {
       uploadTask.on(
         "state_changed",
-        (snapshot) => {
-          console.log("Uploading");
-        },
+        () => {},
         (error) => {
           console.error("Error uploading file:", error);
           reject(error);
@@ -222,6 +218,20 @@ const AddCourse = ({ open, setOpen, courseData }) => {
       </ModalWrapper>
     </>
   );
+};
+
+//propTypes for this file
+AddCourse.propTypes = {
+  open: PropTypes.bool.isRequired, 
+  setOpen: PropTypes.func.isRequired, 
+  courseData: PropTypes.shape({
+    _id: PropTypes.string,
+    courseCode: PropTypes.string,
+    title: PropTypes.string,
+    lectureInCharge: PropTypes.string,
+    duration: PropTypes.string,
+    courseContent: PropTypes.string,
+  }),
 };
 
 export default AddCourse;

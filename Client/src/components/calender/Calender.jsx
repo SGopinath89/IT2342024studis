@@ -1,11 +1,10 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import moment from 'moment';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import "../index.css";
-import AddEvent from './userEvents/AddEvent.jsx';
+import "../../index.css";
+import AddEvent from './AddEvent.jsx';
 
 const localizer = momentLocalizer(moment);
 
@@ -40,4 +39,8 @@ const Calender = ({ events }) => {
   );
 };
 
+//propTypes for this file
+Calender.propTypes = {
+  events: PropTypes.array,
+};
 export default Calender;

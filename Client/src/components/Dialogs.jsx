@@ -1,8 +1,8 @@
-/* eslint-disable react/prop-types */
 import { DialogTitle } from "@headlessui/react";
 import clsx from "clsx";
 import { FaQuestion } from "react-icons/fa";
 import ModalWrapper from "./ModalWrapper";
+import PropTypes from 'prop-types';
 import Button from "./Button";
 
 export default function ConfirmatioDialog({
@@ -67,6 +67,16 @@ export default function ConfirmatioDialog({
   );
 }
 
+ConfirmatioDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  setOpen: PropTypes.func.isRequired,
+  msg: PropTypes.string,
+  setMsg: PropTypes.func,
+  onClick: PropTypes.func,
+  type: PropTypes.oneOf(['delete', 'restore', 'restoreAll']),
+  setType: PropTypes.func,
+};
+
 export function UserAction({ open, setOpen, onClick = () => {} }) {
   const closeDialog = () => {
     setOpen(false);
@@ -109,3 +119,9 @@ export function UserAction({ open, setOpen, onClick = () => {} }) {
     </>
   );
 }
+
+UserAction.propTypes = {
+  open: PropTypes.bool.isRequired,
+  setOpen: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
+};

@@ -1,7 +1,6 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import clsx from "clsx";
-import React, { useState } from "react";
+import { useState } from "react";
+import PropTypes from 'prop-types';
 import {
   MdAttachFile,
   MdKeyboardArrowDown,
@@ -9,7 +8,7 @@ import {
   MdKeyboardDoubleArrowUp,
 } from "react-icons/md";
 import { useSelector } from "react-redux";
-import { BGS, PRIOTITYSTYELS, TASK_TYPE, formatDate } from "../utils";
+import { PRIOTITYSTYELS, TASK_TYPE, formatDate } from "../utils";
 import TaskDialog from "./task/TaskDialog";
 import { BiMessageAltDetail } from "react-icons/bi";
 import { FaList } from "react-icons/fa";
@@ -112,6 +111,22 @@ const TaskCard = ({ task }) => {
       <AddSubTask open={open} setOpen={setOpen} id={task._id} />
     </>
   );
+};
+
+TaskCard.propTypes = {
+  task: PropTypes.shape({
+    _id: PropTypes.string,
+    title: PropTypes.string,
+    date: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Date),
+    ]),
+    priority: PropTypes.string,
+    stage: PropTypes.string,
+    activities: PropTypes.array,
+    assets: PropTypes.array,
+    subTasks: PropTypes.array,
+  }),
 };
 
 export default TaskCard;
