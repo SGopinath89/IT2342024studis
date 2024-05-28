@@ -2,8 +2,10 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import Grid from "gridfs-stream";
 
+//mongodb connection
 export const dbConnection = async () => {
   try {
+    //get connection string from .env
     await mongoose.connect(process.env.MONGODB_URI);
 
     console.log("DB connection established");
@@ -18,6 +20,7 @@ export const dbConnection = async () => {
 };
 
 export const createJWT = (res, userId) => {
+  //creates JWT token
   const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });

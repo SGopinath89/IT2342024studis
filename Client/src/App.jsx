@@ -20,6 +20,7 @@ import Courses from "./pages/Courses";
 import { setOpenSidebar } from "./redux/slices/authSlice";
 import Profile from "./pages/Profile";
 
+//layout of the page
 function Layout() {
   const { user } = useSelector((state) => state.auth);
 
@@ -46,6 +47,7 @@ function Layout() {
   );
 }
 
+//mobile sidebar view
 const MobileSidebar = () => {
   const { isSidebarOpen } = useSelector((state) => state.auth);
   const mobileMenuRef = useRef(null);
@@ -97,6 +99,7 @@ const MobileSidebar = () => {
   );
 };
 
+//contains all the api routes
 function App() {
   return (
     <main className='w-full min-h-screen bg-[#f3f4f6] '>

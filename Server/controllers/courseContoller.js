@@ -1,10 +1,13 @@
 import Course from "../models/course.js";
 
+//for adding courses
 export const addCourse = async (req, res) => {
     try {
 
+        //get properties from the request body
         const { courseCode, title, lectureInCharge, duration, courseContent } = req.body;
         
+        //create a new course object
         const course = await Course.create({
             courseCode, 
             title, 
@@ -22,12 +25,17 @@ export const addCourse = async (req, res) => {
 
 };
  
+//to get all course details
 export const getCourse = async (req, res) => {
     try {
+        //value for isTrashed need to be provided to get active courses
         const { isTrashed } = req.query;
+
         let query = { 
             isTrashed: isTrashed ? true : false
         };
+
+        //get query result
         let queryResult = Course.find(query)
             .sort({ _id: -1 });
 
@@ -39,10 +47,13 @@ export const getCourse = async (req, res) => {
     }
 };
 
+//get a single course
 export const getCourseById = async (req, res) => {
     try {
+        //provide id parameter
         const { id } = req.params
 
+        //find course by id
         const course = await Course.findById(id);
 
         if (!course) {
@@ -54,11 +65,15 @@ export const getCourseById = async (req, res) => {
     }
 };
 
+//update course details
 export const updateCourse = async (req, res) => {
     try {
+        //get id parameter
         const { id } = req.params;
+        //provide data needed to be updated
         const { courseCode, title, lectureInCharge, duration, courseContent } = req.body;
 
+        //fill empty fields with current values
         const updatedFields = {};
         if (courseCode) updatedFields.courseCode = courseCode;
         if (title) updatedFields.title = title;
@@ -66,6 +81,7 @@ export const updateCourse = async (req, res) => {
         if (duration) updatedFields.duration = duration;
         if (courseContent) updatedFields.courseContent = courseContent;
 
+        //update the document
         const course = await Course.findByIdAndUpdate(
             id,
             { $set: updatedFields },
@@ -83,6 +99,7 @@ export const updateCourse = async (req, res) => {
     }
 };
 
+//toggle isTrash state of a course
 export const trashCourse = async (req, res) => {
     try {
         const { id } = req.params;
@@ -101,16 +118,12 @@ export const trashCourse = async (req, res) => {
     }
 };
 
+//delete course document
 export const deleteRestoreCourse = async (req, res) => {
     try {
         const { id } = req.params;
-        // const { actionType } = req.query;
+        
         await Course.findByIdAndDelete(id);
-        // if(actionType === "delete"){
-        //     await Course.findByIdAndDelete(id);
-        // } else if (actionType === "deleteAll"){
-        //     await Course.deleteMany({ isTrashed: true });
-        // }
 
         res.status(200).json({
             status: true,

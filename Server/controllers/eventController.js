@@ -1,11 +1,15 @@
 import Event from "../models/event.js";
 import Notice from "../models/notification.js";
 
+//create events
 export const createEvent = async (req, res) => {
     try {
+        //get current user id
         const { userId } = req.user;
+        //get event details
         const { eventName, startTime, endTime, description } = req.body;
         
+        //create new event object
         const event = await Event.create({
             eventName,  
             startTime,
@@ -23,13 +27,18 @@ export const createEvent = async (req, res) => {
 
 };
 
+//duplicate event
 export const duplicateEvent = async (req, res) => {
     try {
+        //get current user id
         const { userId } = req.user;
+        //get id of the evnt
         const { id } = req.params;
 
+        //find the relevent event
         const event = await Event.findById(id);
 
+        //create new event with above results
         const newEvent = await Event.create({
             eventName: event.eventName + " - Duplicate",
             startTime: event.startTime,
@@ -40,6 +49,7 @@ export const duplicateEvent = async (req, res) => {
 
         await newEvent.save();
 
+        //notifications
         let text = "New Event has been created,"
         
         await Notice.create({
@@ -56,6 +66,7 @@ export const duplicateEvent = async (req, res) => {
     }
 };
 
+//get all events
 export const getEvents = async (req, res) => {
     try {
         const { userId } = req.user;
@@ -80,6 +91,7 @@ export const getEvents = async (req, res) => {
     }
 };
 
+//get single event
 export const getEvent = async (req, res) => {
     try {
         const { userId } = req.user;
@@ -104,6 +116,7 @@ export const getEvent = async (req, res) => {
     }
 };
 
+//update event
 export const updateEvent = async (req, res) => {
     try {
         
@@ -131,6 +144,7 @@ export const updateEvent = async (req, res) => {
     }
 };
 
+//trash an event
 export const trashEvent = async (req, res) => {
     try {
         const { id } = req.params;
@@ -149,6 +163,7 @@ export const trashEvent = async (req, res) => {
     }
 };
 
+//delete an event
 export const deleteEvent = async (req, res) => {
     try {
         const { id } = req.params;
