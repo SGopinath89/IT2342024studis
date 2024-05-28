@@ -24,8 +24,8 @@ const TaskTable = ({ tasks }) => {
   };
 
   const TableHeader = () => (
-    <thead className='border-b border-gray-300 '>
-      <tr className='text-black text-left'>
+    <thead className='border-b border-[#E9ECEF] '>
+      <tr className='text-[#343A40] text-left'>
         <th className='py-2'>Task Title</th>
         <th className='py-2'>Priority</th>
         <th className='py-2 md:block'>Created At</th>
@@ -34,14 +34,14 @@ const TaskTable = ({ tasks }) => {
   );
 
   const TableRow = ({ task }) => (
-    <tr className='border-b border-gray-300 text-gray-600 hover:bg-gray-300/10'>
+    <tr className='border-b border-[#E9ECEF] text-[#495057] hover:bg-gray-300/10'>
       <td className='py-2'>
         <div className='flex items-center gap-2'>
           <div
             className={clsx("w-4 h-4 rounded-full", TASK_TYPE[task.stage])}
           />
 
-          <p className='text-base text-black'>{task.title}</p>
+          <p className='text-base text-[#343A40]'>{task.title}</p>
         </div>
       </td>
 
@@ -55,7 +55,7 @@ const TaskTable = ({ tasks }) => {
       </td>
 
       <td className='py-2 hidden md:block'>
-        <span className='text-base text-gray-600'>
+        <span className='text-base text-[#495057]'>
           {moment(task?.date).fromNow()}
         </span>
       </td>
@@ -74,7 +74,7 @@ const TaskTable = ({ tasks }) => {
 
   return (
     <>
-      <div className='w-full md:w-2/3 bg-white px-2 md:px-4 pt-4 pb-4 shadow-md rounded'>
+      <div className='w-full md:w-2/3 bg-[#F8F9FA] px-2 md:px-4 pt-4 pb-4 shadow-md rounded'>
         <table className='w-full'>
           <TableHeader />
           <tbody>
@@ -122,37 +122,37 @@ const Dashboard = () => {
       label: "TOTAL TASK",
       total: data?.totalTasks || 0,
       icon: <FaNewspaper />,
-      bg: "bg-[#1d4ed8]",
+      bg: "bg-[#6F42C1]",
     },
     {
       _id: "2",
       label: "COMPLTED TASK",
       total: totals["completed"] || 0,
       icon: <MdAdminPanelSettings />,
-      bg: "bg-[#0f766e]",
+      bg: "bg-[#20C997]",
     },
     {
       _id: "3",
       label: "TASK IN PROGRESS ",
       total: totals["in progress"] || 0,
       icon: <LuClipboardEdit />,
-      bg: "bg-[#f59e0b]",
+      bg: "bg-[#FFC107]",
     },
   ];
 
   //cards that show summerized details
   const Card = ({ label, count, bg, icon }) => {
     return (
-      <div className='w-full h-32 bg-white p-5 shadow-md rounded-md flex items-center justify-between'>
+      <div className='w-full h-32 bg-[#F8F9FA] p-5 shadow-md rounded-md flex items-center justify-between'>
         <div className='h-full flex flex-1 flex-col justify-between'>
-          <p className='text-base text-gray-600'>{label}</p>
+          <p className='text-base text-[#343A40]'>{label}</p>
           <span className='text-2xl font-semibold'>{count}</span>
-          <span className='text-sm text-gray-400'>{"110 last month"}</span>
+          <span className='text-sm text-[#6C757D]'>{"last month"}</span>
         </div>
 
         <div
           className={clsx(
-            "w-10 h-10 rounded-full flex items-center justify-center text-white",
+            "w-10 h-10 rounded-full flex items-center justify-center text-[#F8F9FA]",
             bg
           )}
         >
@@ -171,21 +171,21 @@ const Dashboard = () => {
   };
 
   return (
-    <div className='h-full py-4 bg-[#F8F9FA]'>
+    <div className='h-full bg-[#E9ECEF]'>
       <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
         {stats.map(({ icon, bg, label, total }, index) => (
           <Card key={index} icon={icon} bg={bg} label={label} count={total} />
         ))}
       </div>
 
-      <div className='w-full bg-white my-16 p-4 rounded shadow-sm'>
-        <h4 className='text-xl text-gray-600 font-semibold'>
+      <div className='w-full bg-[#F8F9FA] my-16 p-4 rounded shadow-md'>
+        <h4 className='text-xl text-[#343A40] font-semibold'>
           Chart by Priority
         </h4>
         <Chart data={data?.graphData}/>
       </div>
 
-      <div className='w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8'>
+      <div className='w-full flex flex-col md:flex-row gap-4 2xl:gap-10'>
 
         <TaskTable tasks={data.last10Task} />
 

@@ -28,7 +28,7 @@ function Layout() {
 
   return user ? (
     <div className='w-full h-screen flex flex-col md:flex-row'>
-      <div className='w-1/5 h-screen bg-white sticky top-0 hidden md:block'>
+      <div className='w-1/5 h-screen bg-[#E9ECEF] sticky top-0 hidden md:block'>
         <Sidebar />
       </div>
 
@@ -78,7 +78,7 @@ const MobileSidebar = () => {
             )}
             onClick={() => closeSidebar()}
           >
-            <div className='bg-white w-3/4 h-full'>
+            <div className='bg-[#E9ECEF] w-3/4 h-full'>
               <div className='w-full flex justify-end px-5 mt-5'>
                 <button
                   onClick={() => closeSidebar()}
@@ -102,7 +102,7 @@ const MobileSidebar = () => {
 //contains all the api routes
 function App() {
   return (
-    <main className='w-full min-h-screen bg-[#f3f4f6] '>
+    <main className='w-full min-h-screen bg-[#E9ECEF] '>
       <Routes>
         <Route element={<Layout />}>
           <Route index path='/' element={<Navigate to='/dashboard' />} />

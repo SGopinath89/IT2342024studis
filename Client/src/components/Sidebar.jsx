@@ -85,20 +85,20 @@ const Sidebar = () => {
         to={el.link}
         onClick={closeSidebar}
         className={clsx(
-          "w-full lg:w-3/4 flex gap-2 px-3 py-2 rounded-full items-center text-gray-800 text-base hover:bg-[#2564ed2d]",
-          path === el.link.split("/")[0] ? "bg-blue-700 text-neutral-100" : ""
+          "w-full lg:w-3/4 flex gap-2 px-3 py-2 rounded-full items-center text-[#343A40] text-base hover:bg-[#67E8CE]",
+          path === el.link.split("/")[0] ? "bg-[#28A745] text-[#F8F9FA]" : ""
         )}
       >
         {el.icon}
-        <span className='hover:text-[#2564ed]'>{el.label}</span>
+        <span className='hover:text-[#343A40]'>{el.label}</span>
       </Link>
     );
   };
   return (
     <div className='w-full  h-full flex flex-col gap-6 p-5 shadow-md'>
       <h1 className='flex gap-1 items-center'>
-        <p className='bg-blue-600 p-2 rounded-full'>
-          <MdOutlineAddTask className='text-white text-2xl font-black' />
+        <p className='bg-[#FFC107] p-2 rounded-full'>
+          <MdOutlineAddTask className='text-[#F8F9FA] text-2xl font-black' />
         </p>
         <span className='text-2xl font-bold text-black'>Studius</span>
       </h1>

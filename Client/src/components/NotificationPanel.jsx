@@ -11,10 +11,10 @@ import ViewNotification from "./ViewNotification";
 //notification alert icons
 const ICONS = {
   alert: (
-    <HiBellAlert className='h-5 w-5 text-gray-600 group-hover:text-indigo-600' />
+    <HiBellAlert className='h-5 w-5 text-[#343A40] group-hover:text-[#6F42C1]' />
   ),
   message: (
-    <BiSolidMessageRounded className='h-5 w-5 text-gray-600 group-hover:text-indigo-600' />
+    <BiSolidMessageRounded className='h-5 w-5 text-[#343A40] group-hover:text-[#6F42C1]' />
   ),
 };
 
@@ -54,10 +54,10 @@ const NotificationPanel = () => {
     <>
       <Popover className='relative'>
         <PopoverButton className='inline-flex items-center outline-none'>
-          <div className='w-8 h-8 flex items-center justify-center text-gray-800 relative shadow-md rounded-md py-1 px-2'>
+          <div className='w-8 h-8 flex items-center justify-center text-[#343A40] relative shadow-md rounded-md py-1 px-2'>
             <IoIosNotificationsOutline className='text-2xl' />
             {data?.length > 0 && (
-              <span className='absolute text-center top-0 right-1 text-sm text-white font-semibold w-4 h-4 rounded-full bg-red-600'>
+              <span className='absolute text-center top-0 right-1 text-sm text-[#F8F9FA] font-semibold w-4 h-4 rounded-full bg-[#DC3545]'>
                 {data?.length}
               </span>
             )}
@@ -76,14 +76,14 @@ const NotificationPanel = () => {
           <PopoverPanel className='absolute -right-16 md:-right-2 z-10 mt-5 flex w-screen max-w-max  px-4'>
             {({ close }) =>
               data?.length > 0 && (
-                <div className='w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5'>
+                <div className='w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-[#F8F9FA] text-sm leading-6 shadow-lg ring-1 ring-[#DEE2E6]'>
                   <div className='p-4'>
                     {data?.slice(0, 5).map((item, index) => (
                       <div
                         key={item._id + index}
-                        className='group relative flex gap-x-4 rounded-lg p-4 hover:bg-gray-50'
+                        className='group relative flex gap-x-4 rounded-lg p-4 hover:bg-[#67E8CE]'
                       >
-                        <div className='mt-1 h-8 w-8 flex items-center justify-center rounded-lg bg-gray-200 group-hover:bg-white'>
+                        <div className='mt-1 h-8 w-8 flex items-center justify-center rounded-lg bg-[#F8F9FA] group-hover:bg-[#67E8CE]'>
                           {ICONS[item.notiType]}
                         </div>
 
@@ -91,7 +91,7 @@ const NotificationPanel = () => {
                           className='cursor-pointer'
                           onClick={() => viewHandler(item)}
                         >
-                          <div className='flex items-center gap-3 font-semibold text-gray-900 capitalize'>
+                          <div className='flex items-center gap-3 font-semibold text-[#343A40] capitalize'>
                             <p> {item.notiType}</p>
                             <span className='text-xs font-normal lowercase'>
                               {moment(item.createdAt).fromNow()}
@@ -105,14 +105,14 @@ const NotificationPanel = () => {
                     ))}
                   </div>
 
-                  <div className='grid grid-cols-2 divide-x bg-gray-50'>
+                  <div className='grid grid-cols-2 divide-x bg-[#E9ECEF]'>
                     {callsToAction.map((item) => (
                       <Link
                         key={item.name}
                         onClick={
                           item?.onClick ? () => item.onClick() : () => close()
                         }
-                        className='flex items-center justify-center gap-x-2.5 p-3 font-semibold text-blue-600 hover:bg-gray-100'
+                        className='flex items-center justify-center gap-x-2.5 p-3 font-semibold text-[#0056b3] hover:bg-[#66B2FF] hover:text-[#E9ECEF]'
                       >
                         {item.name}
                       </Link>

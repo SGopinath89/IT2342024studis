@@ -21,8 +21,8 @@ const TABS = [
 
 //task type customization
 const TASK_TYPE = {
-  "in progress": "bg-yellow-600",
-  completed: "bg-green-600",
+  "in progress": "bg-[#FFC107]",
+  completed: "bg-[#20C997]",
 };
 
 //renders tasks
@@ -46,7 +46,7 @@ const Tasks = () => {
       <Loading />
     </div>
   ) : (
-    <div className='w-full'>
+    <div className='w-full bg-[#E9ECEF]'>
       <div className='flex items-center justify-between mb-4'>
         <Title title={status ? `${status} Tasks` : "Tasks"} />
 
@@ -55,7 +55,7 @@ const Tasks = () => {
             onClick={() => setOpen(true)}
             label='Create Task'
             icon={<IoMdAdd className='text-lg' />}
-            className='flex flex-row-reverse gap-1 items-center bg-blue-600 text-white rounded-md py-2 2xl:py-2.5'
+            className='flex flex-row-reverse gap-1 items-center bg-[#28A745] text-[#F8F9FA] rounded-md py-2 2xl:py-2.5'
           />
         )}
       </div>

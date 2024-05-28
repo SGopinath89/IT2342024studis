@@ -43,8 +43,8 @@ const UserAvatar = () => {
       <div>
         <Menu as='div' className='relative inline-block text-left'>
           <div>
-            <MenuButton className='w-10 h-10 2xl:w-12 2xl:h-12 items-center justify-center rounded-full bg-blue-600'>
-              <span className='text-white font-semibold'>
+            <MenuButton className='w-10 h-10 2xl:w-12 2xl:h-12 items-center justify-center rounded-full bg-[#28A745]'>
+              <span className='text-[#E9ECEF] font-semibold'>
                 {getInitials(user?.name)}
               </span>
             </MenuButton>
@@ -59,13 +59,13 @@ const UserAvatar = () => {
             leaveFrom='transform opacity-100 scale-100'
             leaveTo='transform opacity-0 scale-95'
           >
-            <MenuItems className='absolute right-0 mt-2 w-56 origin-top-right divide-gray-100 rounded-md bg-white shadow-2xl ring-1 ring-black/5 focus:outline-none'>
+            <MenuItems className='absolute right-0 mt-2 w-56 origin-top-right divide-[#DEE2E6] rounded-md bg-[#E9ECEF] shadow-2xl ring-1 ring-[#DEE2E6] focus:outline-none'>
               <div className='p-4'>
-                <MenuItem>
+                <MenuItem className='hover:bg-[#67E8CE]'>
                   {() => (
                     <button
                     onClick={goToProfilePage}
-                      className='text-gray-700 group flex w-full items-center rounded-md px-2 py-2 text-base'
+                      className='text-[#343A40] group flex w-full items-center rounded-md px-2 py-2 text-base'
                     >
                       <FaUser className='mr-2' aria-hidden='true' />
                       Profile
@@ -74,11 +74,11 @@ const UserAvatar = () => {
                   )}
                 </MenuItem>
 
-                <MenuItem>
+                <MenuItem className='hover:bg-[#67E8CE]'>
                   {() => (
                     <button
                       onClick={() => setOpenPassword(true)}
-                      className={`tetx-gray-700 group flex w-full items-center rounded-md px-2 py-2 text-base`}
+                      className={`text-[#343A40] group flex w-full items-center rounded-md px-2 py-2 text-base`}
                     >
                       <FaUserLock className='mr-2' aria-hidden='true' />
                       Change Password
@@ -86,11 +86,11 @@ const UserAvatar = () => {
                   )}
                 </MenuItem>
 
-                <MenuItem>
+                <MenuItem className='hover:bg-[#67E8CE]'>
                   {() => (
                     <button
                       onClick={logoutHandler}
-                      className={`text-red-600 group flex w-full items-center rounded-md px-2 py-2 text-base`}
+                      className={`text-[#DC3545] group flex w-full items-center rounded-md px-2 py-2 text-base `}
                     >
                       <IoLogOutOutline className='mr-2' aria-hidden='true' />
                       Logout

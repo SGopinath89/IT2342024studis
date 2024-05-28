@@ -25,7 +25,7 @@ export const Chart = ({data}) => {
         <Tooltip />
         <Legend />
         <CartesianGrid strokeDasharray='3 3' />
-        <Bar dataKey='total' fill='#8884d8' />
+        <Bar dataKey='total' fill='#66B2FF' />
       </BarChart>
     </ResponsiveContainer>
   );

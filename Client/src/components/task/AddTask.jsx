@@ -135,7 +135,7 @@ const AddTask = ({ open, setOpen, task }) => {
         <form onSubmit={handleSubmit(submitHandler)}>
           <DialogTitle
             as='h2'
-            className='text-base font-bold leading-6 text-gray-900 mb-4'
+            className='text-base font-bold leading-6 text-[#343A40] mb-4'
           >
             {task ? "UPDATE TASK" : "ADD TASK"}
           </DialogTitle>

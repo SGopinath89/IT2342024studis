@@ -7,7 +7,7 @@ const Textbox = Reacts.forwardRef(
     return (
       <div className='w-full flex flex-col gap-1'>
         {label && (
-          <label htmlFor={name} className='text-slate-800'>
+          <label htmlFor={name} className='text-[#343A40]'>
             {label}
           </label>
         )}
@@ -21,13 +21,13 @@ const Textbox = Reacts.forwardRef(
             {...register}
             aria-invalid={error ? "true" : "false"}
             className={clsx(
-              "bg-transparent px-3 py-2.5 2xl:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 outline-none text-base focus:ring-2 ring-blue-300",
+              "bg-transparent px-3 py-2.5 2xl:py-3 border border-gray-300 placeholder-[#6C757D] text-[#495057] outline-none text-base focus:ring-2 ring-[#66B2FF]",
               className
             )}
           />
         </div>
         {error && (
-          <span className='text-xs text-[#f64949fe] mt-0.5 '>{error}</span>
+          <span className='text-xs text-[#DC3545] mt-0.5 '>{error}</span>
         )}
       </div>
     );
