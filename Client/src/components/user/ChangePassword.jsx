@@ -44,7 +44,7 @@ const ChangePassword = ({ open, setOpen }) => {
     <>
         <ModalWrapper open={open} setOpen={setOpen}>
             <form onSubmit={handleSubmit(handleOnSubmit)} className=''>
-                <DialogTitle as='h2' className='text-base font-bold leading-6 text-gray-900 mb-4'>
+                <DialogTitle as='h2' className='text-base font-bold leading-6 text-[#343A40] mb-4'>
                     Change Password
                 </DialogTitle>
                 <div className='mt-2 flex flex-col gap-6'>
@@ -76,15 +76,15 @@ const ChangePassword = ({ open, setOpen }) => {
                         <Loading />
                     </div>
                 ) : (
-                    <div className='py-3 mt-4 sm:flex sm:flex-row-reverse'>
+                    <div className='py-3 mt-4 sm:flex sm:flex-row-reverse gap-4'>
                         <Button 
                             type='submit'
-                            className='bg-blue-600 px-8 text-sm font-semibold text-white hover:bg-blue-700  sm:w-auto'
+                            className='bg-[#007BFF] px-8 text-sm font-semibold text-[#F8F9FA] hover:bg-[#0056b3] sm:w-auto'
                             label='save'
                         />
                         <button
                             type='button'
-                            className='bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto'
+                            className='bg-[#6C757D] px-7 text-sm font-semibold text-[#F8F9FA] hover:bg-[#495057] sm:w-auto'
                             onClick={() => setOpen(false)}
                         >
                             Cancel

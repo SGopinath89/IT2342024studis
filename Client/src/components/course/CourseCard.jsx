@@ -55,7 +55,7 @@ const CourseCard = ({ course }) => {
   
   return (
     <>
-      <div className='w-full h-fit bg-white shadow-md p-4 rounded'>
+      <div className='w-full h-fit bg-[#F8F9FA] shadow-md p-4 rounded'>
         <div className='w-full flex justify-between'>
           <div className='flex flex-1 gap-1 items-center font-medium'>
             <span className='text-lg'> {course?.courseCode}</span>
@@ -63,33 +63,33 @@ const CourseCard = ({ course }) => {
           {user?.isAdmin && (
             <div className='flex gap-2'>
             <Button
-              icon={<MdEdit className='text-xl text-gray-600' />}
+              icon={<MdEdit className='text-xl text-[#495057]' />}
               onClick={() => editClick(course._id)}
             />
             <Button
-              icon={<MdDelete className='text-xl text-red-600' />}
+              icon={<MdDelete className='text-xl text-[#DC3545]' />}
               onClick={() => deleteClick(course._id)}
             />
           </div>
           )}
         </div>
         <div className='flex items-center gap-2'>
-          <h4 className='text-black text-sm'>Title: {course?.title}</h4>
+          <h4 className='text-[#343A40] text-sm'>Title: {course?.title}</h4>
         </div>
         <div className='flex items-center gap-2'>
-          <h4 className='text-black text-sm'>Lecturer in charge: {course?.lectureInCharge}</h4>
+          <h4 className='text-[#343A40] text-sm'>Lecturer in charge: {course?.lectureInCharge}</h4>
         </div>
         <div className='flex items-center gap-2'>
-          <h4 className='text-black text-sm'>Course duration: {course?.duration}</h4>
+          <h4 className='text-[#343A40] text-sm'>Course duration: {course?.duration}</h4>
         </div>
         <div className='flex items-center gap-2'>
-          <h4 className='text-black text-sm'>
+          <h4 className='text-[#343A40] text-sm'>
             {course?.courseContent ? (
               <a
                 href={course.courseContent}
                 target='_blank'
                 rel='noopener noreferrer'
-                className='text-blue-600 underline flex items-center gap-1'
+                className='text-[#0056b3] underline flex items-center gap-1'
               >
                 <MdAttachFile className='text-lg' />
                 View Course Content
@@ -99,7 +99,7 @@ const CourseCard = ({ course }) => {
             )}
           </h4>
         </div>
-        <div className='w-full border-t border-gray-200 my-2' />
+        <div className='w-full border-t border-[#F8F9FA] my-2' />
       </div>
       <AddCourse
         open={openEdit}

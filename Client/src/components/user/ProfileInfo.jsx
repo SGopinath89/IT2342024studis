@@ -28,7 +28,7 @@ const ProfileInfo = ({ open, setOpen, userData }) => {
           <form onSubmit={handleSubmit(handleOnSubmit)} className=''>
             <DialogTitle
               as='h2'
-              className='text-base font-bold leading-6 text-gray-900 mb-4'
+              className='text-base font-bold leading-6 text-[#343A40] mb-4'
             >
               {userData ? "UPDATE PROFILE" : "ADD NEW USER"}
             </DialogTitle>
@@ -96,16 +96,16 @@ const ProfileInfo = ({ open, setOpen, userData }) => {
                 <Loading />
               </div>
             ) : (
-              <div className='py-3 mt-4 sm:flex sm:flex-row-reverse'>
+              <div className='py-3 mt-4 sm:flex sm:flex-row-reverse gap-4'>
                 <Button
                   type='submit'
-                  className='bg-blue-600 px-8 text-sm font-semibold text-white hover:bg-blue-700  sm:w-auto'
+                  className='bg-[#007BFF] px-8 text-sm font-semibold text-[#F8F9FA] hover:bg-[#0056b3] sm:w-auto'
                   label='Submit'
                 />
   
                 <Button
                   type='button'
-                  className='bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto'
+                  className='bg-[#6C757D] px-8 text-sm font-semibold text-[#F8F9FA] hover:bg-[#495057] sm:w-auto'
                   onClick={() => setOpen(false)}
                   label='Cancel'
                 />

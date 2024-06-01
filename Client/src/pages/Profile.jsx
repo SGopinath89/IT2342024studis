@@ -42,7 +42,7 @@ const Profile = () => {
           onClick={() => setOpen(true)}
           label='Update Profile'
           icon={<IoMdAdd className='text-lg' />}
-          className='flex flex-row-reverse gap-1 items-center bg-blue-600 text-white rounded-md py-2 2xl:py-2.5'
+          className='flex flex-row-reverse gap-1 items-center bg-[#28A745] text-[#F8F9FA] hover:bg-[#1C6B31] rounded-md py-2 2xl:py-2.5'
         />
       </div>
       <div className="flex items-center space-x-4">
@@ -50,11 +50,11 @@ const Profile = () => {
           <img
             src={profilePic}
             alt='Profile Picture'
-            className='w-full rounded h-28 md:h-36 2xl:h-52 cursor-pointer transition-all duration-700 hover:scale-125 hover:z-50'
+            className='w-full rounded h-28 md:h-36 2xl:h-52 cursor-pointer transition-all duration-700'
           />       
           <div>
             <h2 className="text-lg font-semibold">{name}</h2>
-            <p className="text-gray-600">{email}</p>
+            <p className="text-[#495057]">{email}</p>
           </div>
         </div>
       </div>

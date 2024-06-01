@@ -112,7 +112,7 @@ const Login = () => {
               ) : (<Button
                 type='submit'
                 label='Submit'
-                className='w-full h-10 bg-[#007BFF] text-[#F8F9FA] rounded-full hover:bg-[#0056b3]'
+                className='w-full h-10 bg-[#28A745] text-[#F8F9FA] rounded-full hover:bg-[#1C6B31]'
                 />
               )}
             </div>

@@ -108,7 +108,7 @@ const TaskDialog = ({ task }) => {
             leaveFrom='transform opacity-100 scale-100'
             leaveTo='transform opacity-0 scale-95'
           >
-            <MenuItems className='absolute p-4 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none'>
+            <MenuItems className='absolute p-4 right-0 mt-2 w-56 origin-top-right divide-y divide-[#DEE2E6] rounded-md bg-[#E9ECEF] shadow-lg ring-1 ring-[#DEE2E6] focus:outline-none'>
               <div className='px-1 py-1 space-y-2'>
                 {items.map((el) => (
                   <MenuItem key={el.label}>
@@ -116,7 +116,7 @@ const TaskDialog = ({ task }) => {
                       <button
                         onClick={el?.onClick}
                         className={`${
-                          active ? "bg-blue-500 text-white" : "text-gray-900"
+                          active ? "bg-[#67E8CE] text-[#343A40]" : "text-[#495057]"
                         } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                       >
                         {el.icon}
@@ -133,11 +133,11 @@ const TaskDialog = ({ task }) => {
                     <button
                       onClick={() => deleteClicks()}
                       className={`${
-                        active ? "bg-blue-500 text-white" : "text-red-900"
+                        active ? "bg-[#67E8CE] text-[#A71D2A]" : "text-[#A71D2A]"
                       } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                     >
                       <RiDeleteBin6Line
-                        className='mr-2 h-5 w-5 text-red-400'
+                        className='mr-2 h-5 w-5 text-[#DC3545]'
                         aria-hidden='true'
                       />
                       Delete

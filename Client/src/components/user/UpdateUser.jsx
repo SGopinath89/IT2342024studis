@@ -158,7 +158,7 @@ const UpdateUser = ({ open, setOpen, userData }) => {
                 <span>Add picture</span>
               </label>
             </div>    
-            <div className='bg-gray-50 py-6 sm:flex sm:flex-row-reverse gap-4'>
+            <div className='bg-[#F8F9FA] py-6 sm:flex sm:flex-row-reverse gap-4'>
               {uploading || isUpdating ?  (
                 <span className='text-sm py-2 text-red-500'>
                   Uploading
@@ -167,12 +167,12 @@ const UpdateUser = ({ open, setOpen, userData }) => {
                 <Button
                   type='submit'
                   label='Submit'
-                  className='bg-blue-600 text-white rounded'
+                  className='bg-[#007BFF] px-8 text-sm font-semibold text-[#F8F9FA] hover:bg-[#0056b3] sm:w-auto'
                 />
               )} 
               <Button
                 type='button'
-                className='bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto'
+                className='bg-[#6C757D] px-8 text-sm font-semibold text-[#F8F9FA] hover:bg-[#495057] sm:w-auto'
                 onClick={() => setOpen(false)}
                 label='Cancel'
               />

@@ -122,7 +122,7 @@ const AddEvent = ({ open, setOpen, event }) => {
         <form onSubmit={handleSubmit(submitHandler)}>
           <DialogTitle
             as='h2'
-            className='text-base font-bold leading-6 text-gray-900 mb-4'
+            className='text-base font-bold leading-6 text-[#343A40] mb-4'
           >
             {event ? 'Edit Event' : 'Add Event'}
           </DialogTitle>
@@ -164,28 +164,28 @@ const AddEvent = ({ open, setOpen, event }) => {
               register={register("description")}
               error={errors.description ? errors.description.message : ""}
             />
-            <div className="bg-gray-50 py-6 sm:flex sm:flex-row-reverse gap-4">
+            <div className="bg-[#F8F9FA] py-6 sm:flex sm:flex-row-reverse gap-4">
               <Button
                 label="Submit"
                 type="submit"
-                className="bg-blue-600 px-8 text-sm font-semibold text-white hover:bg-blue-700  sm:w-auto"
+                className="bg-[#007BFF] px-7 text-sm font-semibold text-[#F8F9FA] hover:bg-[#0056b3] sm:w-auto"
                 loading={isLoading || isUpdating}
               />
               <Button
                 type="button"
-                className="bg-purple-600 px-5 text-sm font-semibold text-white hover:bg-purple-700 sm:w-auto"
+                className="bg-[#FFC107] px-6 text-sm font-semibold text-[#F8F9FA] hover:bg-[#C79100] sm:w-auto"
                 onClick={() => duplicateHandler()}
                 label="Duplicate"
               />
                <Button
                 type="button"
-                className="bg-red-600 px-5 text-sm font-semibold text-white hover:bg-red-700 sm:w-auto"
+                className="bg-[#DC3545] px-7 text-sm font-semibold text-[#F8F9FA] hover:bg-[#A71D2A] sm:w-auto"
                 onClick={() => deleteClicks()}
                 label="Delete"
               />
               <Button
                 type="button"
-                className="bg-gray-200 px-5 text-sm font-semibold text-gray-900 hover:bg-gray-400 sm:w-auto"
+                className="bg-[#6C757D] px-7 text-sm font-semibold text-[#F8F9FA] hover:bg-[#495057] sm:w-auto"
                 onClick={() => setOpen(false)}
                 label="Cancel"
               />

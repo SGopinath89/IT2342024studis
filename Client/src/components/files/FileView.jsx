@@ -50,8 +50,8 @@ const FileView = ({ files }) => {
 
     //table structure
     const TableHeader = () => (
-        <thead className='border-b border-gray-300 '>
-          <tr className='text-black  text-left'>
+        <thead className='border-b border-[#F8F9FA]'>
+          <tr className='text-[#343A40]  text-left'>
             <th className='py-2'> </th>
             <th className='py-2'>File Name</th>
             <th className='py-2'> </th>
@@ -61,11 +61,11 @@ const FileView = ({ files }) => {
       );
 
     const TableRow = ({ file }) => (
-        <tr className='border-b border-gray-200  text-gray-600 hover:bg-gray-400/10'>
+        <tr className='border-b border-[#F8F9FA] text-[#495057] hover:bg-[#E9ECEF]'>
           <td className='py-2'>
             <div className='flex items-center gap-3'>
               <a href={file.file} target="_blank" rel="noopener noreferrer">
-                <div className='w-9 h-9 rounded-full text-white flex items-center justify-center text-sm bg-violet-700'>
+                <div className='w-9 h-9 rounded-full text-[#E9ECEF] flex items-center justify-center text-sm bg-[#1C6B31]'>
                   <span className='text-center'><MdOutlineFileOpen /></span>
                 </div>
               </a>
@@ -89,14 +89,14 @@ const FileView = ({ files }) => {
           <td className='py-2 text-sm'>{moment(file?.dateAdded).format('YYYY-MM-DD')}</td>
           <td className='py-2 flex gap-2 md:gap-4 justify-end'>
             <Button
-                className='text-blue-600 hover:text-blue-500 sm:px-0 text-sm md:text-base'
+                className='text-[#C79100] hover:text-[#FFC107] sm:px-0 text-sm md:text-base'
                 label='Edit'
                 type='button'
                 onClick={() => editFileHandler(file)}
             />
 
             <Button
-                className='text-red-700 hover:text-red-500 sm:px-0 text-sm md:text-base'
+                className='text-[#A71D2A] hover:text-[#DC3545] sm:px-0 text-sm md:text-base'
                 label='Delete'
                 type='button'
                 onClick={() => deleteClicks(file._id)}
@@ -108,7 +108,7 @@ const FileView = ({ files }) => {
     
       return (
         <>
-        <div className='w-full bg-white px-2 md:px-4 pt-4 pb-4 shadow-md rounded'>
+        <div className='w-full bg-[#F8F9FA] px-2 md:px-4 pt-4 pb-4 shadow-md rounded'>
           <table className='w-full mb-5'>
             <TableHeader />
             <tbody>

@@ -30,26 +30,26 @@ export default function ConfirmatioDialog({
               className={clsx(
                 "p-3 rounded-full ",
                 type === "restore" || type === "restoreAll"
-                  ? "text-yellow-600 bg-yellow-100"
-                  : "text-red-600 bg-red-200"
+                  ? "text-[#FFE082] bg-[#C79100]"
+                  : "text-[#F28B93] bg-[#A71D2A]"
               )}
             >
               <FaQuestion size={60} />
             </p>
           </DialogTitle>
 
-          <p className='text-center text-gray-500'>
+          <p className='text-center text-[#495057]'>
             {msg ?? "Are you sure you want to delete the selected record?"}
           </p>
 
-          <div className='bg-gray-50 py-3 sm:flex sm:flex-row-reverse gap-4'>
+          <div className='bg-[#F8F9FA] py-3 sm:flex sm:flex-row-reverse gap-4'>
             <Button
               type='button'
               className={clsx(
                 " px-8 text-sm font-semibold text-white sm:w-auto",
-                type === "restore" || type === "restoreAll"
-                  ? "bg-yellow-600"
-                  : "bg-red-600 hover:bg-red-500"
+                type === "restoreAll" || type === "restore"
+                ? "text-[#F8F9FA] bg-[#FFC107] hover:bg-[#C79100]"
+                : "text-[#F8F9FA] bg-[#DC3545] hover:bg-[#A71D2A]"
               )}
               onClick={onClick}
               label={type === "restore" ? "Restore" : "Delete"}
@@ -57,7 +57,7 @@ export default function ConfirmatioDialog({
 
             <Button
               type='button'
-              className='bg-white px-8 text-sm font-semibold text-gray-900 sm:w-auto border'
+              className='bg-[#6C757D] px-8 text-sm font-semibold text-[#F8F9FA] hover:bg-[#495057] sm:w-auto'
               onClick={() => closeDialog()}
               label='Cancel'
             />
@@ -89,21 +89,21 @@ export function UserAction({ open, setOpen, onClick = () => {} }) {
       <ModalWrapper open={open} setOpen={closeDialog}>
         <div className='py-4 w-full flex flex-col gap-4 items-center justify-center'>
           <DialogTitle as='h3' className=''>
-            <p className={clsx("p-3 rounded-full ", "text-red-600 bg-red-200")}>
+            <p className={clsx("p-3 rounded-full ", "text-[#A71D2A] bg-[#F28B93]")}>
               <FaQuestion size={60} />
             </p>
           </DialogTitle>
 
-          <p className='text-center text-gray-500'>
+          <p className='text-center text-[#495057]'>
             {"Are you sure you want to activate or deactive this account?"}
           </p>
 
-          <div className='bg-gray-50 py-3 sm:flex sm:flex-row-reverse gap-4'>
+          <div className='bg-[#F8F9FA] py-3 sm:flex sm:flex-row-reverse gap-4'>
             <Button
               type='button'
               className={clsx(
-                " px-8 text-sm font-semibold text-white sm:w-auto",
-                "bg-red-600 hover:bg-red-500"
+                " px-8 text-sm font-semibold text-[#F8F9FA] sm:w-auto",
+                "bg-[#DC3545] hover:bg-[#A71D2A]"
               )}
               onClick={onClick}
               label={"Yes"}
@@ -111,7 +111,7 @@ export function UserAction({ open, setOpen, onClick = () => {} }) {
 
             <Button
               type='button'
-              className='bg-white px-8 text-sm font-semibold text-gray-900 sm:w-auto border'
+              className='bg-[#6C757D] px-8 text-sm font-semibold text-[#F8F9FA] hover:bg-[#495057] sm:w-auto border'
               onClick={() => closeDialog()}
               label='No'
             />

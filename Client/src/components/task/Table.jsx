@@ -65,11 +65,11 @@ const Table = ({ tasks }) => {
       toast.error(err?.data?.message || err.error);
     }
   };
-
+ 
   //table structure
   const TableHeader = () => (
-    <thead className='w-full border-b border-gray-300'>
-      <tr className='w-full text-black  text-left'>
+    <thead className='w-full border-b border-[#F8F9FA'>
+      <tr className='w-full text-[#343A40] text-left'>
         <th className='py-2'>Task Title</th>
         <th className='py-2'>Priority</th>
         <th className='py-2 line-clamp-1'>Created At</th>
@@ -79,13 +79,13 @@ const Table = ({ tasks }) => {
   );
 
   const TableRow = ({ task }) => (
-    <tr className='border-b border-gray-200 text-gray-600 hover:bg-gray-300/10'>
+    <tr className='border-b border-[#F8F9FA] text-[#495057] hover:bg-[#E9ECEF]'>
       <td className='py-2'>
         <div className='flex items-center gap-2'>
           <div
             className={clsx("w-4 h-4 rounded-full", TASK_TYPE[task.stage])}
           />
-          <p className='w-full line-clamp-2 text-base text-black'>
+          <p className='w-full line-clamp-2 text-base text-[#495057]'>
             {task?.title}
           </p>
         </div>
@@ -103,22 +103,22 @@ const Table = ({ tasks }) => {
       </td>
 
       <td className='py-2'>
-        <span className='text-sm text-gray-600'>
+        <span className='text-sm text-[#495057]'>
           {formatDate(new Date(task?.date))}
         </span>
       </td>
 
       <td className='py-2'>
         <div className='flex items-center gap-3'>
-          <div className='flex gap-1 items-center text-sm text-gray-600'>
+          <div className='flex gap-1 items-center text-sm text-[#6C757D]'>
             <BiMessageAltDetail />
             <span>{task?.activities?.length}</span>
           </div>
-          <div className='flex gap-1 items-center text-sm text-gray-600 dark:text-gray-400'>
+          <div className='flex gap-1 items-center text-sm text-[#6C757D] dark:text-[#343A40]'>
             <MdAttachFile />
             <span>{task?.assets?.length}</span>
           </div>
-          <div className='flex gap-1 items-center text-sm text-gray-600 dark:text-gray-400'>
+          <div className='flex gap-1 items-center text-sm text-[#6C757D] dark:text-[#343A40]'>
             <FaList />
             <span>0/{task?.subTasks?.length}</span>
           </div>
@@ -127,14 +127,14 @@ const Table = ({ tasks }) => {
 
       <td className='py-2 flex gap-2 md:gap-4 justify-end'>
         <Button
-          className='text-blue-600 hover:text-blue-500 sm:px-0 text-sm md:text-base'
+          className='text-[#FFC107] hover:text-[#C79100] sm:px-0 text-sm md:text-base'
           label='Edit'
           type='button'
           onClick={() => editTaskHandler(task)}
         />
 
         <Button
-          className='text-red-700 hover:text-red-500 sm:px-0 text-sm md:text-base'
+          className='text-[#DC3545] hover:text-[#A71D2A] sm:px-0 text-sm md:text-base'
           label='Delete'
           type='button'
           onClick={() => deleteClicks(task._id)}
@@ -145,7 +145,7 @@ const Table = ({ tasks }) => {
 
   return (
     <>
-      <div className='bg-white  px-2 md:px-4 pt-4 pb-9 shadow-md rounded'>
+      <div className='bg-[#F8F9FA]  px-2 md:px-4 pt-4 pb-9 shadow-md rounded'>
         <div className='overflow-x-auto'>
           <table className='w-full '>
             <TableHeader />

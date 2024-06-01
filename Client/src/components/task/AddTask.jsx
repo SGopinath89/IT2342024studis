@@ -201,22 +201,22 @@ const AddTask = ({ open, setOpen, task }) => {
               </div>
             </div>
 
-            <div className='bg-gray-50 py-6 sm:flex sm:flex-row-reverse gap-4'>
+            <div className='bg-[#F8F9FA] py-6 sm:flex sm:flex-row-reverse gap-4'>
               {uploading ? (
-                <span className='text-sm py-2 text-red-500'>
+                <span className='text-sm py-2 text-[#DC3545]'>
                   Uploading assets
                 </span>
               ) : (
                 <Button
                   label='Submit'
                   type='submit'
-                  className='bg-blue-600 px-8 text-sm font-semibold text-white hover:bg-blue-700  sm:w-auto'
+                  className='bg-[#007BFF] px-8 text-sm font-semibold text-[#F8F9FA] hover:bg-[#0056b3] sm:w-auto'
                 />
               )}
 
               <Button
                 type='button'
-                className='bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto'
+                className='bg-[#6C757D] px-8 text-sm font-semibold text-[#F8F9FA] hover:bg-[#495057] sm:w-auto'
                 onClick={() => setOpen(false)}
                 label='Cancel'
               />

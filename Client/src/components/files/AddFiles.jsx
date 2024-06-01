@@ -118,7 +118,7 @@ const AddFile = ({ open, setOpen, fileData }) => {
             <form onSubmit={handleSubmit(submitHandler)}>
                 <DialogTitle
                     as='h2'
-                    className='text-base font-bold leading-6 text-gray-900 mb-4'
+                    className='text-base font-bold leading-6 text-[#343A40] mb-4'
                 >
                     {fileData ? "UPDATE File" : "ADD NEW File"}
                 </DialogTitle>
@@ -151,12 +151,12 @@ const AddFile = ({ open, setOpen, fileData }) => {
                         </label>
                     </div>
                     {fileLink && (
-                        <div className='text-sm text-gray-700 mt-2'>
+                        <div className='text-sm text-[#495057] mt-2'>
                             Uploaded File: <a href={fileLink} target='_blank' rel='noopener noreferrer'>{fileLink}</a>
                         </div>
                     )}
                     {uploading && (
-                        <div className='text-sm text-gray-700 mt-2'>
+                        <div className='text-sm text-[#495057] mt-2'>
                             Uploading file, please wait...
                         </div>
                     )}
@@ -165,15 +165,15 @@ const AddFile = ({ open, setOpen, fileData }) => {
                             <Loading />
                         </div>
                     ) : (
-                        <div className="bg-gray-50 py-6 sm:flex sm:flex-row-reverse gap-4">
+                        <div className="bg-[#F8F9FA] py-6 sm:flex sm:flex-row-reverse gap-4">
                             <Button
                                 label="Submit"
                                 type="submit"
-                                className="bg-blue-600 px-8 text-sm font-semibold text-white hover:bg-blue-700  sm:w-auto"
+                                className="bg-[#007BFF] px-8 text-sm font-semibold text-[#F8F9FA] hover:bg-[#0056b3] sm:w-auto"
                             />
                             <Button
                                 type="button"
-                                className="bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto"
+                                className="bg-[#6C757D] px-8 text-sm font-semibold text-[#F8F9FA] hover:bg-[#495057] sm:w-auto"
                                 onClick={() => setOpen(false)}
                                 label="Cancel"
                             />
