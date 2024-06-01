@@ -35,19 +35,19 @@ export function getInitials(fullName) {
 }
 
 export const PRIOTITYSTYELS = {
-  high: "text-red-600",
-  medium: "text-yellow-600",
-  low: "text-blue-600",
+  high: "text-[#DC3545]",//red
+  medium: "text-[#FFC107]",//yellow
+  low: "text-[#28A745]",//green
 };
 
 export const TASK_TYPE = {
-  "in progress": "bg-yellow-600",
-  completed: "bg-green-600",
+  "in progress": "bg-[#FFC107]",//yellow
+  completed: "bg-[#28A745]",//green
 };
 
 export const BGS = [
-  "bg-blue-600",
-  "bg-yellow-600",
-  "bg-red-600",
-  "bg-green-600",
+  "bg-[#007BFF]",//blue
+  "bg-[#FFC107]",//yellow
+  "bg-[#DC3545]",//red
+  "bg-[#28A745]",//green
 ];
