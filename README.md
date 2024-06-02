@@ -104,8 +104,13 @@ While Studius is unique to ABC Institute's specific requirements, it draws inspi
     MONGODB_URI=your MongoDB database connection URL
     JWT_SECRET=define your secret key for the jwt
     PORT=port number to run the backend
+    ADMIN_USERNAME = user name for admin
+    ADMIN_PASSWORD = password for admin
+    ADMIN_EMAIL = email for admin account (Used for logging).
+    ADMIN_REGNUMBER = registration number for admin
     ```
-6. Type the following command in the terminal to run the backend:
+6. Be sure to change the admin details after first run. Above details are only for initialization.
+7. Type the following command in the terminal to run the backend:
     ```
     npm start
     ```

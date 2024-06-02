@@ -1,6 +1,11 @@
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import Grid from "gridfs-stream";
+import dotenv from "dotenv";
+import User from '../models/user.js';
+import bcrypt from 'bcryptjs';
+
+dotenv.config();
 
 //mongodb connection
 export const dbConnection = async () => {
@@ -12,6 +17,21 @@ export const dbConnection = async () => {
 
     const conn = mongoose.connection;
     const gfs = Grid(conn.db, mongoose.mongo);
+
+    // Check if there's any admin user, if not, create one
+    const adminExists = await User.findOne({ role: 'admin' });
+    if (!adminExists) {
+      const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);
+      const adminUser = new User({
+        name: process.env.ADMIN_USERNAME,
+        password: hashedPassword,
+        role: 'admin',
+        email: process.env.ADMIN_EMAIL,
+        regNumber: process.env.ADMIN_REGNUMBER,
+      });
+      await adminUser.save();
+      console.log('Admin user initialized');
+    }
 
     return { gfs };
   } catch (error) {
