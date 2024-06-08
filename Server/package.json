@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SGopinath89/IT2342024studis.git"
+    "url": "git+https://github.com/5yndr0m/simple-management-app.git"
   },
   "author": "5yndr0m",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/SGopinath89/IT2342024studis/issues"
+    "url": "https://github.com/5yndr0m/simple-management-app/issues"
   },
-  "homepage": "https://github.com/SGopinath89/IT2342024studis#readme",
+  "homepage": "https://github.com/5yndr0m/simple-management-app#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
