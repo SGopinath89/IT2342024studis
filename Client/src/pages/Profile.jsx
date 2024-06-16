@@ -5,6 +5,8 @@ import { IoMdAdd } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { useGetUserQuery } from "../redux/slices/api/userApiSlice";
 import { dateFormatter } from "../utils";
+import { ReactSVG } from 'react-svg';
+import defaultProfilePic from '../assets/profile_default.svg';
 
 //shows user details
 const Profile = () => {
@@ -47,15 +49,21 @@ const Profile = () => {
       </div>
       <div className="flex items-center space-x-4">
         <div className='w-full grid grid-cols-2 gap-4'>
-          <img
-            src={profilePic}
-            alt='Profile Picture'
-            className='w-full rounded h-28 md:h-36 2xl:h-52 cursor-pointer transition-all duration-700'
-          />       
-          <div>
+          {profilePic ? (
+            <img
+              src={profilePic}
+              alt='Profile Picture'
+              className='w-28 h-28 md:h-36 2xl:h-52 rounded-full object-cover'
+            /> 
+          ) : (
+            <ReactSVG 
+            src={defaultProfilePic} 
+            className= 'w-28 h-28 md:h-36 2xl:h-52 rounded-full' />
+          )}<br/>
+          <span>
             <h2 className="text-lg font-semibold">{name}</h2>
-            <p className="text-[#495057]">{email}</p>
-          </div>
+            <h3 className="text-[#495057]">{email}</h3>
+          </span>
         </div>
       </div>
       <div className="mt-8">
