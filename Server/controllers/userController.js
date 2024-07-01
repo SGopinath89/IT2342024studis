@@ -47,9 +47,9 @@ export const registerUser = async (req, res) => {
   export const loginUser = async (req, res) => {
     try {
       const { email, password } = req.body;
-  
+
       const user = await User.findOne({ email });
-  
+
       if (!user) {
         return res
           .status(401)
@@ -62,9 +62,9 @@ export const registerUser = async (req, res) => {
           message: "User account has been deactivated, contact the administrator",
         });
       }
-  
+
       const isMatch = await user.matchPassword(password);
-  
+
       if (user && isMatch) {
         createJWT(res, user._id);
   
@@ -74,7 +74,7 @@ export const registerUser = async (req, res) => {
       } else {
         return res
           .status(401)
-          .json({ status: false, message: "Invalid email or password" });
+          .json({ status: false, message: "Invalid password" });
       }
     } catch (error) {
       console.log(error);

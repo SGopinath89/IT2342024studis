@@ -48,7 +48,7 @@ const AddUser = ({ open, setOpen, userData }) => {
         //adds a new usr
         await addNewUser({
           ...data, 
-          password: data.email
+          password: data.password
         }).unwrap();
 
         toast.success("New User added successfully");

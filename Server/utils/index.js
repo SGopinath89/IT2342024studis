@@ -21,13 +21,15 @@ export const dbConnection = async () => {
     // Check if there's any admin user, if not, create one
     const adminExists = await User.findOne({ role: 'admin' });
     if (!adminExists) {
-      const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);
+      // const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);
       const adminUser = new User({
         name: process.env.ADMIN_USERNAME,
-        password: hashedPassword,
+        password: process.env.ADMIN_PASSWORD,
+        isAdmin: true,
         role: 'admin',
         email: process.env.ADMIN_EMAIL,
         regNumber: process.env.ADMIN_REGNUMBER,
+        isActive: true,
       });
       await adminUser.save();
       console.log('Admin user initialized');
