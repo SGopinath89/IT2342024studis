@@ -88,6 +88,24 @@ While Studius is unique to ABC Institute's specific requirements, it draws inspi
     ```
     npm run dev
     ```
+### Setting up Firebase storage
+ - **Important**: Since firebase storage is used as the default storage setting up this is a must!!.
+- **Important**: firebase.js file already contain the most of the data, as I used it to  test the app. Using the file as it is will not provide functionality to this app through my firebase account. It is adviced to set up your own firebase acount. 
+
+1. Log into the https://console.firebase.google.com using the google account.
+2. Create a project named Studius(or any prefered name).
+3. Select web app from the get started and follow the steps shown in their.
+4. Under the installation command there is the firebase SDK.
+5. Copy it and paste it in the 'firebase.js' file in following directory : /Client/src/utils/firebase.js .
+6. From the file, copy the apikey and pass it's value as 'VITE_APP_FIREBASE_API_KEY' in .env file.
+7. Then replace the apikey value of the firebase.js file with 'import.meta.env.VITE_APP_FIREBASE_API_KRY' .
+8. Next from sidebar click on Build > storage. Then click get started and follow its steps.
+9. After the Process is done, New entry called "Storage" will appear on  sidebar. Click on it.
+10. Under the Storage, head to Rules tab and make following changes : 
+
+    ```
+    allow read, write: if true;
+    ```
 
 ### Backend
 
@@ -114,3 +132,4 @@ While Studius is unique to ABC Institute's specific requirements, it draws inspi
     ```
     npm start
     ```
+- **Important!!** : "PORT" and the port number of the "VITE_APP_BASE_URL" must be the same!
