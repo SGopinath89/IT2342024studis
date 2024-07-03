@@ -292,8 +292,8 @@ export const passResetRequest = async (req, res) => {
         const { name, email, regNumber } = req.body;
 
         const mailOptions = {
-            from: 'sdilanjana18@gmail.com',
-            to: 'sdilanjana21@gmail.com', //sysadminStudius@gmail.com
+            from: process.env.SUPPORTMAIL,
+            to: process.env.SYSADMINMAIL, 
             subject: 'Password Reset Request',
             text: `Name: ${name}\nEmail: ${email}\nRegistration Number: ${regNumber}\n\nPlease reset the password for this user.`
         };

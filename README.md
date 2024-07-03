@@ -89,7 +89,7 @@ While Studius is unique to ABC Institute's specific requirements, it draws inspi
     npm run dev
     ```
 ### Setting up Firebase storage
- - **Important**: Since firebase storage is used as the default storage setting up this is a must!!.
+- **Important**: Since firebase storage is used as the default storage setting up this is a must!!.
 - **Important**: firebase.js file already contain the most of the data, as I used it to  test the app. Using the file as it is will not provide functionality to this app through my firebase account. It is adviced to set up your own firebase acount. 
 
 1. Log into the https://console.firebase.google.com using the google account.
@@ -126,9 +126,14 @@ While Studius is unique to ABC Institute's specific requirements, it draws inspi
     ADMIN_PASSWORD = password for admin
     ADMIN_EMAIL = email for admin account (Used for logging).
     ADMIN_REGNUMBER = registration number for admin
+    SUPPORTMAIL = email used to provide support for users (For sending password reset requests. keep-in mind that this email will be used by users, so it's better to make a new mail for just this.)
+    SUPPORTAPPPASSWORD = google app password (Note: This is not the acount password. How to obtain this password will be list in the below.)
+    MAILSERVICE = mail service you will be using (ex: 'gmail', 'yahoo.mail')
+    SYSADMINMAIL = system admin mail (This will receive password reset requests from the support mail).
     ```
-6. Be sure to change the admin details after first run. Above details are only for initialization.
-7. Type the following command in the terminal to run the backend:
+6. For obtainig app password, first access the manage acount of your selected mail. Then search the term App Passwords. Follow the Link and it will ask for a app name. Provide the appropriate app name and it will automatically generate a app password.
+7. Be sure to change the admin details after first run. Above details are only for initialization.
+8. Type the following command in the terminal to run the backend:
     ```
     npm start
     ```
