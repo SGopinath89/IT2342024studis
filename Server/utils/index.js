@@ -58,9 +58,9 @@ export const createJWT = (res, userId) => {
 };
 
 export const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: process.env.MAILSERVICE,
   auth: {
-    user: 'sdilanjana18@gmail.com',
-    pass: 'esqy lxof axws dftu '
+    user: process.env.SUPPORTMAIL,
+    pass: process.env.SUPPORTAPPPASSWORD
   }
 });
