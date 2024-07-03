@@ -13,6 +13,7 @@ import {
     deleteUserProfile,
     getUser,
     updateMyProfile,
+    passResetRequest,
  } from '../controllers/userController.js';
 
 const router = express.Router();
@@ -20,6 +21,7 @@ const router = express.Router();
 router.post("/register", registerUser)
 router.post("/login", loginUser)
 router.post("/logout", logoutUser)
+router.post("/passwordReset", passResetRequest)
 
 router.get("/get-user", protectRoute, isAdminRoute, getUserList);
 router.get("/get-user/:id", protectRoute, getUser);

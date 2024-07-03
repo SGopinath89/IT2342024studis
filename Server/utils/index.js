@@ -4,6 +4,7 @@ import Grid from "gridfs-stream";
 import dotenv from "dotenv";
 import User from '../models/user.js';
 import bcrypt from 'bcryptjs';
+import nodemailer from 'nodemailer'
 
 dotenv.config();
 
@@ -55,3 +56,11 @@ export const createJWT = (res, userId) => {
     maxAge: 1 * 24 * 60 * 60 * 1000, //1 day
   });
 };
+
+export const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'sdilanjana18@gmail.com',
+    pass: 'esqy lxof axws dftu '
+  }
+});

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Textbox from "../components/Textbox";
@@ -8,6 +8,7 @@ import { useLoginMutation } from "../redux/slices/api/authApiSlice";
 import { toast } from "sonner"
 import { setCredentials } from "../redux/slices/authSlice";
 import Loading from "../components/Loader";
+import Request from "../components/Request";
 
 //login page
 const Login = () => {
@@ -25,6 +26,8 @@ const Login = () => {
 
   //login mutation
   const [login, {isLoading}] = useLoginMutation();
+
+  const [isRequestOpen, setIsRequestOpen] = useState(false);
 
   //try to login user
   //on success send to dashboard
@@ -103,7 +106,10 @@ const Login = () => {
                 error={errors.password ? errors.password.message : ""}
               />
 
-              <span className='text-sm text-[#495057] hover:text-[#0056b3] hover:underline cursor-pointer'>
+              <span
+                className='text-sm text-[#495057] hover:text-[#0056b3] hover:underline cursor-pointer'
+                onClick={() => setIsRequestOpen(true)}
+              >
                 Forget Password?
               </span>
 
@@ -119,6 +125,7 @@ const Login = () => {
           </form>
         </div>
       </div>
+      <Request isOpen={isRequestOpen} onClose={() => setIsRequestOpen(false)} />
     </div>
   );
 };

@@ -2,6 +2,8 @@ import { response } from "express";
 import User from "../models/user.js";
 import { createJWT } from "../utils/index.js";
 import Notice from "../models/notification.js";
+import nodemailer from 'nodemailer';
+import { transporter } from "../utils/index.js";
 
 export const registerUser = async (req, res) => {
     try {
@@ -280,6 +282,32 @@ export const updateMyProfile = async (req, res) => {
             res
             .status(200)
             .json({ status: true, message: "Profile updated successfully." });
+    } catch (error) {
+        return res.status(400).json({ status: false, message: error.message });
+    }
+};
+
+export const passResetRequest = async (req, res) => {
+    try {
+        const { name, email, regNumber } = req.body;
+
+        const mailOptions = {
+            from: 'sdilanjana18@gmail.com',
+            to: 'sdilanjana21@gmail.com', //sysadminStudius@gmail.com
+            subject: 'Password Reset Request',
+            text: `Name: ${name}\nEmail: ${email}\nRegistration Number: ${regNumber}\n\nPlease reset the password for this user.`
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if(error) {
+                console.error(error);
+                res.status(500).json({ message: 'Error sending email'});
+            } else {
+                console.log('Email sent: ' + info.response);
+                res.status(200).json({ message: 'Password reset request sent successfully'});
+            }
+        })
+
     } catch (error) {
         return res.status(400).json({ status: false, message: error.message });
     }
