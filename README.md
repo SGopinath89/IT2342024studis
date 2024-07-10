@@ -70,7 +70,7 @@ While Studius is unique to ABC Institute's specific requirements, it draws inspi
 
 ## Screenshots
 
-<a href="/ScreenShots/"> Screenshots</a>
+<a href="/ScreenShots/README.md"> Screenshots</a>
 
 ## Setting Up
 
