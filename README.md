@@ -68,6 +68,10 @@ While Studius is unique to ABC Institute's specific requirements, it draws inspi
 - **Client:** React.js, Vite.js, TailwindCSS, HeadlessUI, HTML, CSS
 - **Backend:** Node.js, Express, MongoDB
 
+## Screenshots
+
+<a href="/ScreenShots/"> Screenshots</a>
+
 ## Setting Up
 
 ### Frontend
